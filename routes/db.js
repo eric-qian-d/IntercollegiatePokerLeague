@@ -11,5 +11,4 @@ client.connect();
 
 
 
-// module.exports = 
 module.exports = client;
