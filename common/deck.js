@@ -1,4 +1,4 @@
-card = require('./card.js');
+card = require('./card');
 
 suitsMap = {};
 suitsMap[0] = 'Heart';
