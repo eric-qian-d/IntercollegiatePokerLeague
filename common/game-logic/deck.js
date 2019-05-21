@@ -8,6 +8,9 @@ suitsMap[3] = 'Club';
 
 
 var Deck = class {
+	/**
+	 * Creates a new, ordered deck
+	 */
 	constructor() {
 		this.cards = [];
 		for(int i = 1; i < 14; i++) {
@@ -18,12 +21,11 @@ var Deck = class {
 	}
 
 	/**
-	 * Shuffles
-	 * @param  {[Deck]} deck [description]
+	 * Shuffles the deck so that it's in a random order
 	 */
-	function shuffleDeck(deck) {
+	function shuffleDeck() {
 		// from https://gomakethings.com/how-to-shuffle-an-array-with-vanilla-js/
-		var currentIndex = deck.cards.length;
+		var currentIndex = this.cards.length;
 		var temporaryValue, randomIndex;
 		// While there remain elements to shuffle...
 		while (0 !== currentIndex) {
@@ -31,9 +33,9 @@ var Deck = class {
 			randomIndex = Math.floor(Math.random() * currentIndex);
 			currentIndex -= 1;
 			// And swap it with the current element.
-			temporaryValue = deck.cards[currentIndex];
-			deck.cards[currentIndex] = deck[randomIndex];
-			deck.cards[randomIndex] = temporaryValue;
+			temporaryValue = this.cards[currentIndex];
+			this.cards[currentIndex] = deck[randomIndex];
+			this.cards[randomIndex] = temporaryValue;
 		}
 	}
 };

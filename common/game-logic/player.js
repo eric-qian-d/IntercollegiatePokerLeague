@@ -4,6 +4,7 @@ var Player = class {
 		this.position = position;
 		this.hand = [];
 		this.stackSize = initStack;
+		this.inHand = false;
 	}
 
 	/**
@@ -16,6 +17,10 @@ var Player = class {
 		this.hand[1] = card2;
 	}
 
+	/**
+	 * Updates the player's stack
+	 * @param  {Integer} stackDelta the amount that the player's stack size changes by
+	 */
 	function updateStack(stackDelta) {
 		this.stackSize += stackDelta;
 	}
