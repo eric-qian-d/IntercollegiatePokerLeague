@@ -1,6 +1,6 @@
 var Player = class {
-	constructor(id, position, initStack) {
-		this.id = id;
+	constructor(playerId, position, initStack) {
+		this.id = playerId;
 		this.position = position;
 		this.hand = [];
 		this.stackSize = initStack;
