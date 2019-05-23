@@ -1,4 +1,11 @@
-var Player = class {
+class Player {
+	/**
+	 * Creates a new player to be used in a game
+	 * @param {String} playerId  UUID of the player
+	 * @param {Integer} position  position of the player, where 0 is the small blind and n-1 is the button
+	 * maybe make position not a part of the Player class, just Game
+	 * @param {Integer} initStack the amount of chips the player starts with
+	 */
 	constructor(playerId, position, initStack) {
 		this.id = playerId;
 		this.position = position;

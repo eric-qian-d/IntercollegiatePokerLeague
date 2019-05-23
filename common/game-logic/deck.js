@@ -6,8 +6,7 @@ suitsMap[1] = 'Spade';
 suitsMap[2] = 'Diamond';
 suitsMap[3] = 'Club';
 
-
-var Deck = class {
+class Deck{
 	/**
 	 * Creates a new, ordered deck
 	 */
