@@ -40,4 +40,23 @@ class Game { // maybe rename this to be Table
   }
 
   //game logic
+
+  /**
+   * Begins new hand. Moves the button and deals cards to everyone that was present at the Table
+   * when this function was first called
+   */
+  function startHand() {
+
+  }
+
+  /**
+   * Executes logic for a player move
+   * @param  {Player} player the player who is acting
+   * @param  {Act} action the player's action
+   */
+  function act(player, action) {
+
+  }
+
+
 }
