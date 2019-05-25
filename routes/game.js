@@ -7,10 +7,12 @@ var playerGameMap = {};
 var gameMap = {};
 
 
+
+
 /**
  * Map a socket to a playerId
  * @param {[type]} socket [description]
- * @param {String} id the UUID of the player
+ * @param {String} playerId the UUID of the player
  */
 function addPlayer(socket, playerId) {
   socketMap[socket] = playerId;

@@ -3,21 +3,26 @@ Client:
 
   Gameplay actions:
     Fold:
-      "ACT FOLD"
+      Socket message: "FOLD"
+      Body: None
     Call:
-      "ACT CALL"
+      Socket message: "CALL"
+      Body: None
     Raise:
-      "ACT RAISE" + " " + `final raise amount`
+      Socket message: "RAISE"
+      Body: `final raise amount`
     Leave the game:
-      "EXIT"
+      Socket message: "EXIT"
+      Body: None
 
 Server:
   The message that the server will send to the client as either notifications of game state or action
 
   Game state notification:
-    "STATE" + " " `Number of Seats` + " " + `Pot Size (doesn't include bets on this street)` + " " + `Button Seat Number` + "\n" +
-    `Your Seat Number` + " " + `Your Cards` + "\n"
-    `Player Seat Number (increasing order)` + " " + `Player name` + " " + `Player stack size` + " " + `Folded (boolean)` + " " + `Amount in Pot This Street` + "\n" for all players
+    Socket message: "STATE"
+    Body: Number of Seats` + " " + `Pot Size (doesn't include bets on this street)` + " " + `Button Seat Number` + "\n" +
+          `Your Seat Number` + " " + `Your Cards` + "\n"
+          `Player Seat Number (increasing order)` + " " + `Player name` + " " + `Player stack size` + " " + `Folded (boolean)` + " " + `Amount in Pot This Street` + "\n" for all players
 
 
   Card format:
