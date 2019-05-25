@@ -1,11 +1,29 @@
 var socketIO = require("socket.io");
 var game = require("../common/game");
 var gameType = require("../common/gameType");
+var io = socketIO(server); // fix this
 
-var socketMap = {};
-var playerGameMap = {};
-var gameMap = {};
+var socketMap = {}; //maps from socketId to playerId
+var playerGameMap = {}; //maps from playerId to gameId
+var gameMap = {}; //maps from gameId to Game
 
+
+
+io.on("connection", function(socket) {
+  socket.on("FOLD", async function() {
+    fold(socketMap.get(socket.id));
+  });
+  socket.on("CALL", async function() {
+    call(socketMap.get(socket.id));
+  });
+  socket.on("RAISE"), async function(finalAmount) {
+    raise(socketMap.get(socket.id), finalAmount);
+  }
+  socket.on("EXIT"), async function() {
+    leaveGame(socketMap.get(socket.id));
+    //logic for handling ranking
+  }
+})
 
 
 

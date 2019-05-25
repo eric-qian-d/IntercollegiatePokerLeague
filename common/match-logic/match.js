@@ -1,5 +1,7 @@
 var game = require("../game-logic/game");
 
+
+//Use this class later, once Game works
 class Match {
   /**
    * Creates a new match between two teams
