@@ -11,6 +11,7 @@ class Deck{
 	 * Creates a new, ordered deck
 	 */
 	constructor() {
+		this.currentCardIndex = 0;
 		this.cards = [];
 		for(int i = 1; i < 14; i++) {
 			for(int j = 0; j < 4; j++) {
@@ -36,5 +37,13 @@ class Deck{
 			this.cards[currentIndex] = deck[randomIndex];
 			this.cards[randomIndex] = temporaryValue;
 		}
+	}
+
+	/**
+	 * Returns the next card object in the deck that hasn't been seen yet
+	 * @return {Card} The next card
+	 */
+	function getNextCard() {
+
 	}
 };

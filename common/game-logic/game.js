@@ -18,24 +18,20 @@ class Game { // maybe rename this to be Table
 
   /**
    * Adds a player to the poker game
-   * @param {Player} player   the player to be added
-   * @param {Integer} position position of the player, where 0 is the small blind and n-1 is the button
-   * maybe eliminate the position field in Player.js
+   * @param {String} playerId   the player to be added
+   * @param {Integer} seatNumber seat position of the player
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
-  function addPlayer(player, position) {
+  function addPlayer(playerId, seatNumber) {
 
   }
 
   /**
    * Removes a player from the poker game
-   * @param {Player} player   the player to be removed
-   * @param {Integer} position position of the player, where 0 is the small blind and n-1 is the button
-   * maybe eliminate the position field in Player.js
-   * additionally, maybe eliminate either the player argument or position argument
+   * @param {String} playerId   the player to be removed
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
-  function removePlayer(player, position) {
+  function removePlayer(playerId) {
 
   }
 
@@ -51,8 +47,8 @@ class Game { // maybe rename this to be Table
 
   /**
    * Executes logic for a player move
-   * @param  {Player} player the player who is acting
-   * @param  {Act} action the player's action
+   * @param  {String} playerId the player who is acting
+   * @param  {Action} action the player's action
    */
   function act(player, action) {
 
