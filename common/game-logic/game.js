@@ -1,8 +1,8 @@
-var deck = require("deck");
-var card = require("card");
-var player = require("player");
-var gameType = require("gameType");
-var hand = require("hand");
+var deck = require("./deck");
+var card = require("./card");
+var player = require("./player");
+var gameType = require("./gameType");
+var hand = require("./hand");
 
 class Game { // maybe rename this to be Table
   /**
@@ -22,7 +22,7 @@ class Game { // maybe rename this to be Table
    * @param {Integer} seatNumber seat position of the player
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
-  function addPlayer(playerId, seatNumber) {
+  addPlayer(playerId, seatNumber) {
 
   }
 
@@ -31,7 +31,7 @@ class Game { // maybe rename this to be Table
    * @param {String} playerId   the UUID of the player
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
-  function removePlayer(playerId) {
+  removePlayer(playerId) {
 
   }
 
@@ -41,7 +41,7 @@ class Game { // maybe rename this to be Table
    * Begins new hand. Moves the button and deals cards to everyone that was present at the Table
    * when this function was first called
    */
-  function startHand() {
+  startHand() {
 
   }
 
@@ -50,7 +50,7 @@ class Game { // maybe rename this to be Table
    * @param  {String} playerId the UUID of the player
    * @return {Boolean}         True if the call is legal (correct turn) and went through, False otherwise
    */
-  function call(playerId) {
+  call(playerId) {
 
   }
 
@@ -60,7 +60,7 @@ class Game { // maybe rename this to be Table
    * @param  {Integer} finalAmount the final amount to be raised to
    * @return {Boolean}             True if the raise is legal (correct turn and valid raise size) and False otherwise.
    */
-  function raise(playerId, finalAmount) {
+  raise(playerId, finalAmount) {
 
   }
 
@@ -69,7 +69,7 @@ class Game { // maybe rename this to be Table
    * @param  {String} playerId the UUID of the player
    * @return {Boolean}         True if the fold is legal (correct turn) and went through, False otherwise
    */
-  function fold(playerId) {
+  fold(playerId) {
 
   }
 
@@ -79,7 +79,7 @@ class Game { // maybe rename this to be Table
    * @param  {String}  playerId the UUID of the player
    * @return {Boolean}          True if it's the player's turn and False otherwise
    */
-  function isPlayersTurn(playerId) {
+  isPlayersTurn(playerId) {
 
   }
 
@@ -88,7 +88,7 @@ class Game { // maybe rename this to be Table
    * @param  {String} playerId the UUID of the player
    * @return {String}          a representation of the game state for the SPECIFIC PLAYER as defined in wire-protocol.txt
    */
-  function getGameState(playerId){
+  getGameState(playerId){
 
   }
 

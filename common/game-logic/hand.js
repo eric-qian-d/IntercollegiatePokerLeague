@@ -72,7 +72,7 @@ function getRanking(cards) {
 	for(var i = 1; i < 15; i++) {
 		if (rankMap[i] > 0) {
 			straightCtr++;
-			if (straightCtr) > 5 {
+			if (straightCtr > 5) {
 				straight = true;
 				straightHigh = i;
 			}
@@ -87,7 +87,7 @@ function getRanking(cards) {
 		}
 	}
 	if (flush) {
-		for (int i = 6; i >= 0; i--) {
+		for (var i = 6; i >= 0; i--) {
 			const currentCard = sortedCards[i]
 			if (currentCard.suit == flushSuit) {
 				const currentCardValue = currentCard.power;
@@ -123,6 +123,6 @@ function getRanking(cards) {
 			straightFlushHigh = 5;
 		}
 	}
-	
+
 
 }
