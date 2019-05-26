@@ -8,7 +8,10 @@ var playerGameMap = {}; //maps from playerId to gameId
 var gameMap = {}; //maps from gameId to Game
 
 
-
+/**
+ * Routes for handling socket connections
+ * @param  {Socket} socket Default parameter of Socket.io
+ */
 io.on("connection", function(socket) {
   socket.on("FOLD", async function() {
     fold(socketMap.get(socket.id));
@@ -29,11 +32,11 @@ io.on("connection", function(socket) {
 
 /**
  * Map a socket to a playerId
- * @param {[type]} socket [description]
+ * @param {String} socketId the UUID of the player's socket
  * @param {String} playerId the UUID of the player
  */
-function addPlayer(socket, playerId) {
-  socketMap[socket] = playerId;
+function addPlayer(socketId, playerId) {
+  socketMap[socketId] = playerId;
 }
 
 /**
@@ -47,26 +50,44 @@ function addGame(gameId, type) {
 
 /**
  * Joins an existing game
- * @param  {[type]} playerId [description]
- * @param  {[type]} gameId   [description]
- * @return {[type]}          [description]
+ * @param  {String} playerId the UUID of the player
+ * @param  {String} gameId   the UUID of the game that the player is joining
+ * @return {Boolean}         true if the game was joined successfully and false otherwise
  */
 function joinGame(playerId, gameId) {
   playerGameMap[playerId] = gameId;
 }
 
+/**
+ * Has the player leave the game
+ * @param  {String} playerId the UUID of the player
+ * @return {Boolean}         true if the game was exited successfully and false otherwise
+ */
 function leaveGame(playerId) {
 
 }
 
+/**
+ * Forwards the player's fold action to the respective Game.
+ * @param  {String} playerId the UUID of the player
+ */
 function fold(playerId) {
 
 }
 
+/**
+ * Forwards the player's call action to the respective Game.
+ * @param  {String} playerId the UUID of the player
+ */
 function call(playerId) {
 
 }
 
+/**
+ * Forwards the player's raise action to the respective Game.
+ * @param  {String} playerId    the UUID of the player
+ * @param  {Integer} finalAmount the final amount that the player is raising to
+ */
 function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
 
 }

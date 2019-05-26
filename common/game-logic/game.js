@@ -18,7 +18,7 @@ class Game { // maybe rename this to be Table
 
   /**
    * Adds a player to the poker game
-   * @param {String} playerId   the player to be added
+   * @param {String} playerId   the UUID of the player to be added
    * @param {Integer} seatNumber seat position of the player
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
@@ -28,7 +28,7 @@ class Game { // maybe rename this to be Table
 
   /**
    * Removes a player from the poker game
-   * @param {String} playerId   the player to be removed
+   * @param {String} playerId   the UUID of the player
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
   function removePlayer(playerId) {
@@ -46,11 +46,38 @@ class Game { // maybe rename this to be Table
   }
 
   /**
-   * Executes logic for a player move
-   * @param  {String} playerId the player who is acting
-   * @param  {Action} action the player's action
+   * Logic for having the player call the previous bet. If the player is requesting this when it is not his/her turn, nothing happens
+   * @param  {String} playerId the UUID of the player
    */
-  function act(player, action) {
+  function call(playerId) {
+
+  }
+
+  /**
+   * Logic for having the player raise the previous bet. If the player is requesting this when it is not his/her turn, nothing happens
+   * @param  {String} playerId    the UUID of the player
+   * @param  {Integer} finalAmount the final amount to be raised to
+   * @return {Boolean}             True if the raise is valid and False otherwise.
+   */
+  function raise(playerId, finalAmount) {
+
+  }
+
+  /**
+   * Logic for having the player fold. If the player is requesting this when it is not his/her turn, nothing happens
+   * @param  {String} playerId the UUID of the player
+   */
+  function fold(playerId) {
+
+  }
+
+
+  /**
+   * Determines whether or not it's the player's turn
+   * @param  {String}  playerId the UUID of the player
+   * @return {Boolean}          True if it's the player's turn and False otherwise
+   */
+  function isPlayersTurn(playerId) {
 
   }
 
