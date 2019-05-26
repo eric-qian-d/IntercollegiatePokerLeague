@@ -14,17 +14,26 @@ var gameMap = {}; //maps from gameId to Game
  * @param  {Socket} socket Default parameter of Socket.io
  */
 io.on("connection", function(socket) {
+  socket.on("JOIN LOBBY", async function(seatNumber) {
+    addPlayer(socket.id, "1234");//how to get player ID?
+  });
+  socket.on("JOIN GAME", async function(gameId) {
+    joinGame(socketMap[socket.id], gameId);//how to get player ID?
+  });
+  socket.on("SEAT", async function(seatNumber) {
+    pickSeat(socketMap[socket.id], seatNumber);
+  })
   socket.on("FOLD", async function() {
-    fold(socketMap.get(socket.id));
+    fold(socketMap[socket.id]);
   });
   socket.on("CALL", async function() {
-    call(socketMap.get(socket.id));
+    call(socketMap[socket.id]);
   });
   socket.on("RAISE", async function(finalAmount) {
-    raise(socketMap.get(socket.id), finalAmount);
+    raise(socketMap[socket.id], finalAmount);
   });
   socket.on("EXIT", async function() {
-    leaveGame(socketMap.get(socket.id));
+    leaveGame(socketMap[socket.id]);
     //logic for handling ranking
   });
 })
@@ -53,12 +62,22 @@ function addGame(gameId, type) {
  * Joins an existing game
  * @param  {String} playerId the UUID of the player
  * @param  {String} gameId   the UUID of the game that the player is joining
- * @return {Boolean}         true if the game was joined successfully and false otherwise
+ *
  */
 function joinGame(playerId, gameId) {
   playerGameMap[playerId] = gameId;
+
+}
+
+/**
+ * Selects a seat at the player's game
+ * @param  {String} playerId the UUID of the player
+ * @param  {Integer} seatNumber the seatNumber the player is trying to sit at
+ * @return {Boolean}         true if the game was joined successfully and false otherwise
+ */
+function pickSeat(playerId, seatNumber) {
   var game = gameMap[playerGameMap[playerId]];
-  game.addPlayer(playerId); //TODO: add seat number
+  game.addPlayer(playerId, seatNumber);
 }
 
 /**
