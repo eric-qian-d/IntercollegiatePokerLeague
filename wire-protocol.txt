@@ -25,6 +25,8 @@ Server:
           `Player Seat Number (increasing order)` + " " + `Player name` + " " + `Player stack size` + " " + `Folded (boolean)` + " " + `Amount in Pot This Street` + "\n" for all players
 
 
+   FUTURE CONSIDERATIONS: make as few incremental updates as necessary ie: don't resend player cards every update
+
   Card format:
 
 

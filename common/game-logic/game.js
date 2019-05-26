@@ -48,6 +48,7 @@ class Game { // maybe rename this to be Table
   /**
    * Logic for having the player call the previous bet. If the player is requesting this when it is not his/her turn, nothing happens
    * @param  {String} playerId the UUID of the player
+   * @return {Boolean}         True if the call is legal (correct turn) and went through, False otherwise
    */
   function call(playerId) {
 
@@ -57,7 +58,7 @@ class Game { // maybe rename this to be Table
    * Logic for having the player raise the previous bet. If the player is requesting this when it is not his/her turn, nothing happens
    * @param  {String} playerId    the UUID of the player
    * @param  {Integer} finalAmount the final amount to be raised to
-   * @return {Boolean}             True if the raise is valid and False otherwise.
+   * @return {Boolean}             True if the raise is legal (correct turn and valid raise size) and False otherwise.
    */
   function raise(playerId, finalAmount) {
 
@@ -66,6 +67,7 @@ class Game { // maybe rename this to be Table
   /**
    * Logic for having the player fold. If the player is requesting this when it is not his/her turn, nothing happens
    * @param  {String} playerId the UUID of the player
+   * @return {Boolean}         True if the fold is legal (correct turn) and went through, False otherwise
    */
   function fold(playerId) {
 
@@ -78,6 +80,15 @@ class Game { // maybe rename this to be Table
    * @return {Boolean}          True if it's the player's turn and False otherwise
    */
   function isPlayersTurn(playerId) {
+
+  }
+
+  /**
+   * Returns a String representing the game state as defined in wire-protocol.txt
+   * @param  {String} playerId the UUID of the player
+   * @return {String}          a representation of the game state for the SPECIFIC PLAYER as defined in wire-protocol.txt
+   */
+  function getGameState(playerId){
 
   }
 

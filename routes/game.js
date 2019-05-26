@@ -19,13 +19,13 @@ io.on("connection", function(socket) {
   socket.on("CALL", async function() {
     call(socketMap.get(socket.id));
   });
-  socket.on("RAISE"), async function(finalAmount) {
+  socket.on("RAISE", async function(finalAmount) {
     raise(socketMap.get(socket.id), finalAmount);
-  }
-  socket.on("EXIT"), async function() {
+  });
+  socket.on("EXIT", async function() {
     leaveGame(socketMap.get(socket.id));
     //logic for handling ranking
-  }
+  });
 })
 
 
@@ -56,6 +56,8 @@ function addGame(gameId, type) {
  */
 function joinGame(playerId, gameId) {
   playerGameMap[playerId] = gameId;
+  var game = gameMap[playerGameMap[playerId]];
+  game.addPlayer(playerId); //TODO: add seat number
 }
 
 /**
@@ -64,7 +66,8 @@ function joinGame(playerId, gameId) {
  * @return {Boolean}         true if the game was exited successfully and false otherwise
  */
 function leaveGame(playerId) {
-
+  var game = gameMap[playerGameMap[playerId]];
+  game.removePlayer(playerId);
 }
 
 /**
@@ -72,7 +75,8 @@ function leaveGame(playerId) {
  * @param  {String} playerId the UUID of the player
  */
 function fold(playerId) {
-
+  var game = gameMap[playerGameMap[playerId]];
+  game.fold(playerId);
 }
 
 /**
@@ -80,7 +84,8 @@ function fold(playerId) {
  * @param  {String} playerId the UUID of the player
  */
 function call(playerId) {
-
+  var game = gameMap[playerGameMap[playerId]];
+  game.call(playerId);
 }
 
 /**
@@ -89,5 +94,6 @@ function call(playerId) {
  * @param  {Integer} finalAmount the final amount that the player is raising to
  */
 function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
-
+  var game = gameMap[playerGameMap[playerId]];
+  game.raise(playerId, finalAmount);
 }
