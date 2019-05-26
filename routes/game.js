@@ -2,7 +2,7 @@ var socketIO = require("socket.io");
 var game = require("../common/game-logic/game");
 var gameType = require("../common/game-logic/gameType");
 var server = require("../bin/server");
-var io = socketIO(server); // fix this
+var io = socketIO(server);
 
 var socketMap = {}; //maps from socketId to playerId
 var playerGameMap = {}; //maps from playerId to gameId
