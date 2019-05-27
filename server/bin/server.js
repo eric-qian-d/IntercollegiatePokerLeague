@@ -2,12 +2,15 @@ var http = require("http");
 var socketIO = require("socket.io");
 var game = require("../common/game-logic/game");
 var gameType = require("../common/game-logic/gameType");
+var Match = require("../common/match-logic/match");
 
 
 
 var socketMap = {}; //maps from socketId to playerId
 var playerGameMap = {}; //maps from playerId to gameId
 var gameMap = {}; //maps from gameId to Game
+
+var HUGameMap = {};
 
 
 
@@ -27,6 +30,28 @@ function addPlayer(socketId, playerId) {
  */
 function addGame(gameId, type) {
 
+}
+
+/**
+ * TO SPECCCC
+ * @param {[type]} matchId    [description]
+ * @param {[type]} name       [description]
+ * @param {[type]} type       [description]
+ * @param {[type]} numPlayers [description]
+ */
+function addHUMatch(matchId, name, numPlayers) {
+  console.log("New game being added");
+  HUGameMap[matchId] = new Match(matchId, name, numPlayers);
+  notifyHULobby();
+}
+
+function notifyHULobby() {
+  // var finalString = Object.keys(HUGameMap).map(matchId => {
+  //   return (HUGameMap[matchId].name).concat("\n", HUGameMap[matchId].numPlayers);
+  // }).reduce()
+  console.log("Notifying");
+  console.log(Object.values(HUGameMap));
+  HULobbySocket.emit("HU MATCHES", Object.values(HUGameMap));
 }
 
 /**
@@ -89,20 +114,30 @@ function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather
   game.raise(playerId, finalAmount);
 }
 
-
+var HULobbySocket;
 
 module.exports = {
 	start: app => {
 		port = process.env.PORT || 8081;
 		var server = http.createServer(app);
 		var io = socketIO(server);
+    HULobbySocket = io.of("/HULobby");
+
+    HULobbySocket.on("connection", function(socket) {
+      console.log("connection in HU lobby");
+      socket.on("NEW HU MATCH", async function(name, numPlayers) {
+        console.log("received request for making a new match");
+        addHUMatch(name, name, numPlayers);
+      })
+    })
+
 
 		io.on("connection", function(socket) {
 		  console.log("New client connected");
-
 		  socket.on("JOIN LOBBY", async function(seatNumber) {
 		    addPlayer(socket.id, "1234");//how to get player ID?
 		  });
+
 		  socket.on("JOIN GAME", async function(gameId) {
 		    joinGame(socketMap[socket.id], gameId);//how to get player ID?
 		  });

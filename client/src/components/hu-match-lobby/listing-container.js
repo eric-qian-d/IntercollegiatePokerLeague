@@ -29,19 +29,19 @@ class HUListingContainer extends React.Component {
     );
   }
 
-  getMatches() {
-    playerSocket.on("HU MATCHES", data => {
-      this.props.matches = [];
-      var matchesList = data.split(/\n/);
-      for(var i = 0; i < matchesList.length; i++) {
-        // matchProps = {
-          var name =  matchesList[i][0];
-          var numPlayers =  matchesList[i][1]
-        // };
-        this.props.matches.push(<Listing name = {name} numPlayers = {numPlayers}/>);
-      }
-    })
-  }
+  // getMatches() {
+  //   playerSocket.on("HU MATCHES", matchesList => {
+  //     console.log(matchesList);
+  //     // this.props.matches = [];
+  //     // var matchesList = data.split(/\n/);
+  //     for(var i = 0; i < matchesList.length; i++) {
+  //         var name =  matchesList[i][0];
+  //         var numPlayers =  matchesList[i][1];
+  //       // };
+  //       this.props.matches.push(<Listing name = {name} numPlayers = {numPlayers}/>);
+  //     }
+  //   })
+  // }
 
 
 
@@ -49,13 +49,14 @@ class HUListingContainer extends React.Component {
 
   componentDidMount() {
     playerSocket.emit("GET HU MATCHES");
-    playerSocket.on("HU MATCHES", data => {
-      var matchesList = data.split(/\n/);
+    playerSocket.on("HU MATCHES", matchesList => {
+      // var matchesList = data.split(/\n/);
+      console.log(matchesList);
       var tempMatches = [];
       for(var i = 0; i < matchesList.length; i++) {
           // matchProps = {
-            var name =  matchesList[i][0];
-            var numPlayers =  matchesList[i][1]
+            var name =  matchesList[i].name;
+            var numPlayers =  matchesList[i].numPlayers;
           // };
           tempMatches.push(<Listing name = {name} numPlayers = {numPlayers}/>);
         }
