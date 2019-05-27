@@ -1,6 +1,8 @@
 import openSocket from 'socket.io-client';
 const  socket = openSocket('http://localhost:8081'); // to make adaptable
 
+export const playerSocket = socket;
+
 export const seat = (seatNumber) => {
   socket.emit("SEAT", seatNumber);
 }
