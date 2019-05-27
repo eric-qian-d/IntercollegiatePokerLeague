@@ -11,6 +11,7 @@ export const fold = () => {
 
 export const call = () => {
   console.log("CALLING");
+  console.log(socket);
   socket.emit("CALL");
 }
 

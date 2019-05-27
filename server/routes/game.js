@@ -1,43 +1,46 @@
 var socketIO = require("socket.io");
 var game = require("../common/game-logic/game");
 var gameType = require("../common/game-logic/gameType");
-var server = require("../bin/server");
-var io = socketIO(server);
+// var server = require("../bin/server");
+// console.log("socket server initiating");
+// var io = socketIO(server);
 
 var socketMap = {}; //maps from socketId to playerId
 var playerGameMap = {}; //maps from playerId to gameId
 var gameMap = {}; //maps from gameId to Game
 
 
-/**
- * Routes for handling socket connections
- * @param  {Socket} socket Default parameter of Socket.io
- */
-io.on("connection", function(socket) {
-  socket.on("JOIN LOBBY", async function(seatNumber) {
-    addPlayer(socket.id, "1234");//how to get player ID?
-  });
-  socket.on("JOIN GAME", async function(gameId) {
-    joinGame(socketMap[socket.id], gameId);//how to get player ID?
-  });
-  socket.on("SEAT", async function(seatNumber) {
-    pickSeat(socketMap[socket.id], seatNumber);
-  })
-  socket.on("FOLD", async function() {
-    fold(socketMap[socket.id]);
-  });
-  socket.on("CALL", async function() {
-    console.log("received a call action");
-    call(socketMap[socket.id]);
-  });
-  socket.on("RAISE", async function(finalAmount) {
-    raise(socketMap[socket.id], finalAmount);
-  });
-  socket.on("EXIT", async function() {
-    leaveGame(socketMap[socket.id]);
-    //logic for handling ranking
-  });
-})
+// /**
+//  * Routes for handling socket connections
+//  * @param  {Socket} socket Default parameter of Socket.io
+//  */
+// io.on("connection", function(socket) {
+//   console.log("New client connected");
+//
+//   socket.on("JOIN LOBBY", async function(seatNumber) {
+//     addPlayer(socket.id, "1234");//how to get player ID?
+//   });
+//   socket.on("JOIN GAME", async function(gameId) {
+//     joinGame(socketMap[socket.id], gameId);//how to get player ID?
+//   });
+//   socket.on("SEAT", async function(seatNumber) {
+//     pickSeat(socketMap[socket.id], seatNumber);
+//   })
+//   socket.on("FOLD", async function() {
+//     fold(socketMap[socket.id]);
+//   });
+//   socket.on("CALL", async function() {
+//     console.log("received a call action");
+//     call(socketMap[socket.id]);
+//   });
+//   socket.on("RAISE", async function(finalAmount) {
+//     raise(socketMap[socket.id], finalAmount);
+//   });
+//   socket.on("EXIT", async function() {
+//     leaveGame(socketMap[socket.id]);
+//     //logic for handling ranking
+//   });
+// })
 
 
 

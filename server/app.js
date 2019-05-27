@@ -9,7 +9,7 @@ var game = require("./routes/game");
 var app = express();
 
 app.use(cors);
-
+// app.use("/game", game);
 // app.use('/static', express.static('public'));
 
 // app.get("/game", function(request, response) {
