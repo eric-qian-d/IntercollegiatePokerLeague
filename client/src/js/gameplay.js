@@ -10,6 +10,7 @@ export const fold = () => {
 }
 
 export const call = () => {
+  console.log("CALLING");
   socket.emit("CALL");
 }
 

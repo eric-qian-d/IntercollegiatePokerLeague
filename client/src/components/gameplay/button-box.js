@@ -1,3 +1,5 @@
+import React from 'react';
+
 import CallButton from "./call-button";
 
 class ButtonBox extends React.Component {
@@ -12,8 +14,4 @@ class ButtonBox extends React.Component {
   }
 }
 
-
-ReactDOM.render(
-  <ButtonBox />,
-  document.getElementById('root')
-);
+export default ButtonBox;
