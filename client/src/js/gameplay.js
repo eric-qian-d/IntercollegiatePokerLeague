@@ -1,31 +1,27 @@
 import openSocket from 'socket.io-client';
-const  socket = openSocket('http://localhost:8081/HULobby'); // to make adaptable
 
-export const playerSocket = socket;
-
-export const newHUMatch = (name, numPlayers) => {
-  console.log("requesting new HU Game");
-  socket.emit("NEW HU MATCH", name, numPlayers);
+export const makeSocket(gameId) => {
+  return openSocket("http://localhost:8081/" + gameId);// to make adaptable
 }
 
-export const seat = (seatNumber) => {
+export const seat = (socket, seatNumber) => {
   socket.emit("SEAT", seatNumber);
 }
 
-export const fold = () => {
+export const fold = (socket) => {
   socket.emit("FOLD");
 }
 
-export const call = () => {
+export const call = (socket) => {
   console.log("CALLING");
   console.log(socket);
   socket.emit("CALL");
 }
 
-export const raise = (finalAmount) => {
+export const raise = (socket, finalAmount) => {
   socket.emit("RAISE", finalAmount);
 }
 
-export const exit = () => {
+export const exit = (socket) => {
   socket.emit("EXIT");
 }

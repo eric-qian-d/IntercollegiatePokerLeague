@@ -7,7 +7,10 @@ class RaiseButton extends React.Component {
   //from https://reactjs.org/docs/forms.html
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {
+      value : '',
+      socket : props.socket
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -17,7 +20,7 @@ class RaiseButton extends React.Component {
   }
 
   handleSubmit(event) {
-    raise(this.state);
+    raise(this.props.socket, this.state.value);
   }
 
   render() {
