@@ -1,5 +1,5 @@
 import React from 'react';
-import {socket} from "../../js/hu-match-lobby";
+import {socket} from "../../js/hu-match-listings";
 import Listing from "./listing";
 
 class HUListingContainer extends React.Component {
@@ -30,23 +30,6 @@ class HUListingContainer extends React.Component {
     );
   }
 
-  // getMatches() {
-  //   playerSocket.on("HU MATCHES", matchesList => {
-  //     console.log(matchesList);
-  //     // this.props.matches = [];
-  //     // var matchesList = data.split(/\n/);
-  //     for(var i = 0; i < matchesList.length; i++) {
-  //         var name =  matchesList[i][0];
-  //         var numPlayers =  matchesList[i][1];
-  //       // };
-  //       this.props.matches.push(<Listing name = {name} numPlayers = {numPlayers}/>);
-  //     }
-  //   })
-  // }
-
-
-
-
 
   componentDidMount() {
     this.state.socket.emit("GET HU MATCHES");
@@ -55,10 +38,8 @@ class HUListingContainer extends React.Component {
       console.log(matchesList);
       var tempMatches = [];
       for(var i = 0; i < matchesList.length; i++) {
-          // matchProps = {
-            var name =  matchesList[i].name;
-            var numPlayers =  matchesList[i].numPlayers;
-          // };
+          var name =  matchesList[i].name;
+          var numPlayers =  matchesList[i].numPlayers;
           tempMatches.push(<Listing name = {name} numPlayers = {numPlayers}/>);
         }
       this.setState({matches: tempMatches});
