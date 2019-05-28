@@ -5,10 +5,11 @@ class PlayerListing extends React.Component {
     super(props);
   }
 
+  //eventually should make props pass in something that's not just a name
   render() {
     return (
       <div>
-        {this.props.player.playerName}
+        {this.props.player}
       </div>
     )
   }

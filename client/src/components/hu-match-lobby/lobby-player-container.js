@@ -6,8 +6,12 @@ class PlayerContainer extends React.Component {
     super(props);
   }
 
+  joinTeamLogic() {
+    console.log("in join team logic");
+    this.props.updateTeamFunction(this.props.socket, this.props.matchId);
+  }
+
   render() {
-    console.log(this.props.updateTeamFunction);
     var playersList = this.props.players.map((p, i) => {
       return (
         <div key = {i}>
@@ -22,7 +26,7 @@ class PlayerContainer extends React.Component {
           {playersList}
         </div>
         <div>
-          <button onClick = {this.props.updateTeamFunction(this.props.socket)}>
+          <button onClick = {() => {this.joinTeamLogic()}}>
             Join Team
           </button>
         </div>

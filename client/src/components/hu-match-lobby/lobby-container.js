@@ -13,7 +13,8 @@ class LobbyContainer extends React.Component {
   render() {
     return (
       <div>
-        <TeamContainer socket = {this.state.socket} />
+      {this.props.matchId}
+        <TeamContainer socket = {this.state.socket} matchId = {this.props.match.params.matchId}/>
       </div>
     )
   }
