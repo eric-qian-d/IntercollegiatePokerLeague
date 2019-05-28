@@ -3,6 +3,7 @@ var socketIO = require("socket.io");
 var game = require("../common/game-logic/game");
 var gameType = require("../common/game-logic/gameType");
 var Match = require("../common/match-logic/match");
+var MatchSocket = require("../common/match-logic/match-socket");
 var app = require("../app");
 
 
@@ -10,7 +11,7 @@ var socketMap = {}; //maps from socketId to playerId
 var playerGameMap = {}; //maps from playerId to gameId
 var gameMap = {}; //maps from gameId to Game
 
-var HUGameMap = {};
+var HUMatchMap = {};
 
 
 
@@ -39,14 +40,55 @@ function addGame(gameId, type) {
  * @param {[type]} type       [description]
  * @param {[type]} numPlayers [description]
  */
-function addHUMatch(matchId, name, numPlayers) {
+function addHUMatch(io, matchId, name, numPlayers) {
   console.log("New game being added");
-  HUGameMap[matchId] = new Match(matchId, name, numPlayers);
+  var newMatch = new Match(matchId, name, numPlayers);
+  newMatchSocket = io.of("/match/" + matchId);
+  console.log(matchId);
+  newMatchSocket.on("connection", socket => {
+    console.log("LOBBY JOIN");
+    socket.on("JOIN TEAM 1", async () => {
+        console.log("join team 1 req");
+        newMatch.team1.push(socket.id);
+        newMatch.team2 = newMatchSocket.team2.filter(id => {return id === socket.id});
+        newMatchSocket.socket.emit("TEAM 1");
+        newMatchSocket.socket.emit("TEAM 2");
+      });
+      socket.on("JOIN TEAM 2", async () => {
+        console.log("join team 2 req");
+        newMatch.team2.push(socket.id);
+        newMatch.team1 = newMatchSocket.team1.filter(id => {return id === socket.id});
+        newMatchSocket.socket.emit("TEAM 1");
+        newMatchSocket.socket.emit("TEAM 2");
+      });
+      socket.on("GET TEAM 1", async () => {
+        console.log("get team 1 req");
+        newMatchSocket.socket.emit("TEAM 1", newMatchSocket.team1);
+      });
+      socket.on("GET TEAM 2", async () => {
+        console.log("get team 2 req");
+        newMatchSocket.socket.emit("TEAM 2", newMatchSocket.team2);
+      });
+  });
+  HUMatchMap[newMatchSocket] = newMatch;
+  // HUMatchSocketMap[matchId] = newMatchSocket;
+  console.log("finished adding");
   notifyHULobby();
 }
 
 function notifyHULobby() {
-  HULobbySocket.emit("HU MATCHES", Object.values(HUGameMap));
+  var matches = Object.values(HUMatchMap).map(m => {
+    return (
+      {
+        id : m.id,
+        name : m.name,
+        numPlayers : m.numPlayers,
+      }
+    )
+  });
+  console.log(matches);
+  HULobbySocket.emit("HU MATCHES", matches);
+  console.log("done");
 }
 
 /**
@@ -110,6 +152,9 @@ function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather
 }
 
 
+function random() {
+  console.log("randommmmm");
+}
 
 
 
@@ -120,10 +165,14 @@ var io = socketIO(server);
 var HULobbySocket = io.of("/HULobby");
 
 HULobbySocket.on("connection", function(socket) {
-  socket.emit("HU MATCHES", Object.values(HUGameMap));
-  socket.on("NEW HU MATCH", async function(name, numPlayers) {
-    addHUMatch(name, name, numPlayers);
-  })
+  socket.emit("HU MATCHES", Object.values(HUMatchMap));
+  socket.on("NEW HU MATCH", async (name, numPlayers) => {
+    addHUMatch(io, name, name, numPlayers); //toChange with UUID
+  });
+  socket.on("JOIN HU MATCH", () => {
+    console.log("joining");
+    random();
+  });
 })
 
 
