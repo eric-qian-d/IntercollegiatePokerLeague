@@ -1,4 +1,6 @@
 import React from 'react';
+import {joinMatch} from "../../js/hu-match-listings";
+import { Redirect } from 'react-router-dom'
 
 class Listing extends React.Component {
   constructor(props) {
@@ -9,12 +11,26 @@ class Listing extends React.Component {
     // }
   }
 
+  joinMatchButtonLogic() {
+    joinMatch(this.props.socket);
+    // var endPoint = "/game".concat(this.props.matchId);
+    console.log("/match/" + this.props.matchId);
+    // return <Redirect to= {"/match/" + this.props.matchId} />
+  }
+
+
   render() {
 
     return (
       <div>
         {this.props.name}
         {this.props.numPlayers}
+        <a href= {"/match/" +  this.props.matchId }>
+          <button className = "JoinMatchButton" onClick = {() => {this.joinMatchButtonLogic()}}>
+            {"Join"}
+          </button>
+        </a>
+
       </div>
     );
   }

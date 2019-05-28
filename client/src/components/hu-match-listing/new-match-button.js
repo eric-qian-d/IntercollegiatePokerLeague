@@ -1,5 +1,4 @@
 import React from "react";
-
 import {newHUMatch} from "../../js/hu-match-listings";
 
 class newHUMatchButton extends React.Component {
@@ -28,7 +27,7 @@ class newHUMatchButton extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log("from new match button ")
-    newHUMatch(this.state.name, this.state.numPlayers);
+    newHUMatch(this.props.socket, this.state.name, this.state.numPlayers);
   }
 
   render() {

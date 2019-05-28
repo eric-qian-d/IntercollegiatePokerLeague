@@ -3,7 +3,10 @@ const  newSocket = openSocket('http://localhost:8081/HULobby'); // to make adapt
 
 export const socket = newSocket;
 
-export const newHUMatch = (name, numPlayers) => {
-  console.log("requesting new HU Game");
-  socket.emit("NEW HU MATCH", name, numPlayers);
+export const newHUMatch = (playerSocket, name, numPlayers) => {
+  playerSocket.emit("NEW HU MATCH", name, numPlayers);
+}
+
+export const joinMatch = (playerSocket, matchId) => {
+  playerSocket.emit("JOIN HU MATCH", matchId);
 }
