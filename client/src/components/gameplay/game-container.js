@@ -1,13 +1,13 @@
 import React from "react";
 import ButtonBox from "./button-box";
-import {makeSocket} from "../../js/gameplay";
+import {socket} from "../../js/socket";
 
 class GameContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       stackSize : 0,
-      socket : makeSocket(props.gameId),
+      socket : socket,
     }
   }
 

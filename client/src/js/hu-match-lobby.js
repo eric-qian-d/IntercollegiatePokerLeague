@@ -1,11 +1,3 @@
-import React from "react";
-import openSocket from 'socket.io-client';
-
-export const makeSocket = (matchId) => {
-  console.log(matchId);
-  return openSocket("http://localhost:8081/match/" + matchId);// to make adaptable
-}
-
 export const joinTeam1 = (socket) => {
   console.log('requesting 1');
   socket.emit("JOIN TEAM 1");

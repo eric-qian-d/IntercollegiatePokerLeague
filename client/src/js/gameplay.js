@@ -1,9 +1,3 @@
-import openSocket from 'socket.io-client';
-
-export const makeSocket = (gameId) => {
-  return openSocket("http://localhost:8081/" + gameId);// to make adaptable
-}
-
 export const seat = (socket, seatNumber) => {
   socket.emit("SEAT", seatNumber);
 }
