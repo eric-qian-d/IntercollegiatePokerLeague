@@ -7,7 +7,7 @@ class CallButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket = props.socket;
+      socket : props.socket,
     }
   }
   render() {

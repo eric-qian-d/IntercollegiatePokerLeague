@@ -1,5 +1,5 @@
 import React from 'react';
-import {playerSocket} from "../../js/gameplay";
+// import {playerSocket} from "../../js/gameplay";
 import Listing from "./listing";
 
 class HUListingContainer extends React.Component {
@@ -48,8 +48,8 @@ class HUListingContainer extends React.Component {
 
 
   componentDidMount() {
-    playerSocket.emit("GET HU MATCHES");
-    playerSocket.on("HU MATCHES", matchesList => {
+    this.props.socket.emit("GET HU MATCHES");
+    this.props.socket.on("HU MATCHES", matchesList => {
       // var matchesList = data.split(/\n/);
       console.log(matchesList);
       var tempMatches = [];
