@@ -46,11 +46,6 @@ function addHUMatch(matchId, name, numPlayers) {
 }
 
 function notifyHULobby() {
-  // var finalString = Object.keys(HUGameMap).map(matchId => {
-  //   return (HUGameMap[matchId].name).concat("\n", HUGameMap[matchId].numPlayers);
-  // }).reduce()
-  console.log("Notifying");
-  console.log(Object.values(HUGameMap));
   HULobbySocket.emit("HU MATCHES", Object.values(HUGameMap));
 }
 
@@ -125,9 +120,8 @@ var io = socketIO(server);
 var HULobbySocket = io.of("/HULobby");
 
 HULobbySocket.on("connection", function(socket) {
-  console.log("connection in HU lobby");
+  socket.emit("HU MATCHES", Object.values(HUGameMap));
   socket.on("NEW HU MATCH", async function(name, numPlayers) {
-    console.log("received request for making a new match");
     addHUMatch(name, name, numPlayers);
   })
 })
