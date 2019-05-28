@@ -8,7 +8,7 @@ class PlayerListing extends React.Component {
   render() {
     return (
       <div>
-        {props.player.playerName}
+        {this.props.player.playerName}
       </div>
     )
   }

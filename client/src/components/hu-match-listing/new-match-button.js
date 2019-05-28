@@ -1,6 +1,6 @@
 import React from "react";
 
-import {newHUMatch} from "../../js/hu-match-lobby";
+import {newHUMatch} from "../../js/hu-match-listings";
 
 class newHUMatchButton extends React.Component {
   constructor(props) {

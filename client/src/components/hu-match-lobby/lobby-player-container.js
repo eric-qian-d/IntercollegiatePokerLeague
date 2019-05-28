@@ -7,14 +7,24 @@ class PlayerContainer extends React.Component {
   }
 
   render() {
-    var playersList = props.players.map((p, i) => {
-      <div key = {i}>
-        <PlayerListing player = {p}/>
-      </div>
+    var playersList = this.props.players.map((p, i) => {
+      return (
+        <div key = {i}>
+          <PlayerListing player = {p}/>
+        </div>
+      )
+
     })
     return (
       <div>
-        {playersList}
+        <div>
+          {playersList}
+        </div>
+        <div>
+          <button onclick = {this.props.updateTeamFunction(this.props.socket)}>
+            Join Team
+          </button>
+        </div>
       </div>
     )
   }
