@@ -3,7 +3,7 @@ var socketIO = require("socket.io");
 var game = require("../common/game-logic/game");
 var gameType = require("../common/game-logic/gameType");
 var Match = require("../common/match-logic/match");
-
+var app = require("../app");
 
 
 var socketMap = {}; //maps from socketId to playerId
@@ -114,57 +114,55 @@ function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather
   game.raise(playerId, finalAmount);
 }
 
-var HULobbySocket;
+
+
+
+
+
+port = process.env.PORT || 8081;
+var server = http.createServer(app);
+var io = socketIO(server);
+var HULobbySocket = io.of("/HULobby");
+
+HULobbySocket.on("connection", function(socket) {
+  console.log("connection in HU lobby");
+  socket.on("NEW HU MATCH", async function(name, numPlayers) {
+    console.log("received request for making a new match");
+    addHUMatch(name, name, numPlayers);
+  })
+})
+
+
+io.on("connection", function(socket) {
+  console.log("New client connected");
+  socket.on("JOIN LOBBY", async function(seatNumber) {
+    addPlayer(socket.id, "1234");//how to get player ID?
+  });
+
+  socket.on("JOIN GAME", async function(gameId) {
+    joinGame(socketMap[socket.id], gameId);//how to get player ID?
+  });
+  socket.on("SEAT", async function(seatNumber) {
+    pickSeat(socketMap[socket.id], seatNumber);
+  })
+  socket.on("FOLD", async function() {
+    fold(socketMap[socket.id]);
+  });
+  socket.on("CALL", async function() {
+    console.log("received a call action");
+    call(socketMap[socket.id]);
+  });
+  socket.on("RAISE", async function(finalAmount) {
+    raise(socketMap[socket.id], finalAmount);
+  });
+  socket.on("EXIT", async function() {
+    leaveGame(socketMap[socket.id]);
+    //logic for handling ranking
+  });
+})
 
 module.exports = {
-	start: app => {
-		port = process.env.PORT || 8081;
-		var server = http.createServer(app);
-		var io = socketIO(server);
-    HULobbySocket = io.of("/HULobby");
-
-    HULobbySocket.on("connection", function(socket) {
-      console.log("connection in HU lobby");
-      socket.on("NEW HU MATCH", async function(name, numPlayers) {
-        console.log("received request for making a new match");
-        addHUMatch(name, name, numPlayers);
-      })
-    })
-
-
-		io.on("connection", function(socket) {
-		  console.log("New client connected");
-		  socket.on("JOIN LOBBY", async function(seatNumber) {
-		    addPlayer(socket.id, "1234");//how to get player ID?
-		  });
-
-		  socket.on("JOIN GAME", async function(gameId) {
-		    joinGame(socketMap[socket.id], gameId);//how to get player ID?
-		  });
-		  socket.on("SEAT", async function(seatNumber) {
-		    pickSeat(socketMap[socket.id], seatNumber);
-		  })
-		  socket.on("FOLD", async function() {
-		    fold(socketMap[socket.id]);
-		  });
-		  socket.on("CALL", async function() {
-		    console.log("received a call action");
-		    call(socketMap[socket.id]);
-		  });
-		  socket.on("RAISE", async function(finalAmount) {
-		    raise(socketMap[socket.id], finalAmount);
-		  });
-		  socket.on("EXIT", async function() {
-		    leaveGame(socketMap[socket.id]);
-		    //logic for handling ranking
-		  });
-		})
-
-
-
-
-
-
+	start: () => {
 		server.listen(port, () => {
 			console.log('Express server listening on port ' + server.address().port);
 		});

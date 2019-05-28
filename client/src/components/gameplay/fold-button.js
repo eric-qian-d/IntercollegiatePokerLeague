@@ -6,14 +6,11 @@ import {fold} from "../../js/gameplay";
 class FoldButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      socket : props.socket,
-    }
   }
 
   render() {
     return (
-      <button className = "FoldButton" onClick = {() => {fold(this.state.socket)}}>
+      <button className = "FoldButton" onClick = {() => {fold(this.props.socket)}}>
         {"Fold"}
       </button>
     )

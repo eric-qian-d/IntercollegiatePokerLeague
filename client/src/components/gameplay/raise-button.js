@@ -9,7 +9,6 @@ class RaiseButton extends React.Component {
     super(props);
     this.state = {
       value : '',
-      socket : props.socket,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
