@@ -1,19 +1,22 @@
 var http = require("http");
 var socketIO = require("socket.io");
-var game = require("../common/game-logic/game");
+const uuidv4 = require('uuid/v4');
+var Game = require("../common/game-logic/game");
 var gameType = require("../common/game-logic/gameType");
 var Match = require("../common/match-logic/match");
 var MatchSocket = require("../common/match-logic/match-socket");
 var app = require("../app");
 
 
-var socketMap = {}; //maps from socketId to playerId
-var playerGameMap = {}; //maps from playerId to gameId
-var gameMap = {}; //maps from gameId to Game
+const socketMap = {}; //maps from socketId to playerId
+const playerGameMap = {}; //maps from playerId to gameId
 
-var socketToRoom = {};
 
-var customMatchMap = {};
+const socketToRoom = {};
+const socketToStatus = {};
+
+const customMatchMap = {}; //maps from matchId to Match object
+const gameMap = {}; //maps from gameId to Game object
 
 
 
@@ -35,6 +38,9 @@ function addGame(gameId, type) {
 
 }
 
+
+
+
 /**
  * TO SPECCCC
  * @param {[type]} matchId    [description]
@@ -45,11 +51,11 @@ function addGame(gameId, type) {
 function addCustomMatch(matchId, name, numPlayers) {
   var newMatch = new Match(matchId, name, numPlayers);
   customMatchMap[matchId] = newMatch;
-  notifyHULobby();
+  notifyCustomMatchLobby();
 }
 
-function notifyHULobby() {
-  var matches = Object.values(customMatchMap).map(m => {
+function getCustomMatches() {
+  var customMatches = Object.values(customMatchMap).map(m => {
     return (
       {
         id : m.id,
@@ -58,11 +64,36 @@ function notifyHULobby() {
       }
     )
   });
-  io.to("HU LISTINGS").emit("HU MATCHES", matches);
+  return customMatches
 }
 
+function notifyCustomMatchLobby() {
+  io.to("CUSTOM LISTINGS").emit("CUSTOM MATCHES", getCustomMatches());
+}
+
+//currently only works for heads up matches
 function startMatch(matchId) {
-  var match = customMatchMap[matchId];
+  const match = customMatchMap[matchId];
+  const team1 = match.team1;
+  const team2 = match.team2;
+  const games = match.games;
+  if (team1.length === team2.length) {
+    for(var i = 0; i < team1.length; i++) {
+      const newGameId = uuidv4();
+      const newGame = new Game(newGameId, "", 2, matchId);
+      newGame.addPlayer(team1[i], 0);
+      newGame.addPlayer(team2[i], 1);
+      games[i] = {
+        team1Player : team1[i],
+        team2Player : team2[i],
+        gameId : newGameId,
+        winner : "none"
+      }
+      gameMap[newGameId] = newGame;
+      io.to(team1[i]).emit("GAME");
+      io.to(team2[i]).emit("GAME");
+    }
+  }
 
 }
 
@@ -140,12 +171,12 @@ io.on("connection", function(socket) {
   //HU Lobby Logic
   socket.on("GET CUSTOM MATCHES", async () => {
     socket.join("CUSTOM LISTINGS");
-    socket.emit("CUSTOM MATCHES", Object.values(customMatchMap));
+    socket.emit("CUSTOM MATCHES", getCustomMatches());
   });
 
   socket.on("NEW CUSTOM MATCH", async (name, numPlayers) => {
     addCustomMatch(name, name, numPlayers); //toChange with UUID
-    io.to("CUSTOM LISTINGS").emit("CUSTOM MATCHES", Object.values(customMatchMap));
+
   });
   socket.on("JOIN CUSTOM MATCH", async (matchId) => {
     socketToRoom[socket.id] = matchId;
@@ -171,7 +202,6 @@ io.on("connection", function(socket) {
     match.team1 = match.team1.filter(id => {return !(id === socket.id)});
     match.team2 = match.team2.filter(id => {return !(id === socket.id)});
     match.team2.push(socket.id);
-
     io.to(matchId).emit("TEAM 1", match.team1);
     io.to(matchId).emit("TEAM 2", match.team2);
   });
@@ -186,6 +216,8 @@ io.on("connection", function(socket) {
   socket.on("START MATCH", async () => {
     const matchId = socketToRoom[socket.id];
     startMatch(matchId);
+    // console.log(gameMap);
+    // console.log(customMatchMap);
   })
 
 

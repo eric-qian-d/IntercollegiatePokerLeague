@@ -4,15 +4,22 @@ var player = require("./player");
 var gameType = require("./gameType");
 var hand = require("./hand");
 
-class Game { // maybe rename this to be Table
+module.exports = class Game { // maybe rename this to be Table
   /**
    * Creates a new poker game
    * @param {String} gameId UUID of the game
    * @param {gameType} type   type of game
    */
-  constructor(gameId, type) {
+  constructor(gameId, type, numPlayers, parentMatchId) {
     this.id = gameId;
     this.type = type;
+    this.numPlayers = numPlayers;
+    this.parentMatchId = parentMatchId;
+    this.seatMap = {};
+
+    for(var i = 0; i < numPlayers; i++) {
+      this.seatMap[i] = "";
+    };
     //create other datatypes as necessary for type of game
   }
 
@@ -23,7 +30,9 @@ class Game { // maybe rename this to be Table
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
   addPlayer(playerId, seatNumber) {
-
+    if (seatNumber < this.numPlayers && (this.seatMap[seatNumber] === "")) {
+      this.seatMap[seatNumber] = playerId;
+    }
   }
 
   /**
