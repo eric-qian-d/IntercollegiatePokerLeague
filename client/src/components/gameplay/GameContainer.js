@@ -1,18 +1,16 @@
 import React from "react";
+import Table from "./Table";
 import ButtonBox from "./ButtonBox";
-// import {socket} from "../../js/socket";
 
 class GameContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      stackSize : 0,
-    }
   }
 
   render() {
     return (
       <div>
+        <Table />
         <ButtonBox socket = {this.props.socket} />
       </div>
     )
