@@ -1,5 +1,5 @@
 import React from "react";
-import GameContainer from "./gameplay/game-container";
+import GameContainer from "./gameplay/GameContainer";
 import CustomMatchListingsContainer from "./custom-match-listings/CustomMatchListingsContainer";
 import CustomMatchLobbyContainer from "./custom-match-lobby/CustomMatchLobbyContainer";
 import {makeSocket} from "../js/socket";

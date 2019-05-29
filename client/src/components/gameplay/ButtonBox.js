@@ -1,8 +1,8 @@
 import React from 'react';
 
-import CallButton from "./call-button";
-import FoldButton from "./fold-button";
-import RaiseButton from "./raise-button";
+import CallButton from "./CallButton";
+import FoldButton from "./FoldButton";
+import RaiseButton from "./RaiseButton";
 
 class ButtonBox extends React.Component {
   constructor(props) {

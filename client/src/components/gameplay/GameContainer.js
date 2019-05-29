@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonBox from "./button-box";
+import ButtonBox from "./ButtonBox";
 // import {socket} from "../../js/socket";
 
 class GameContainer extends React.Component {
