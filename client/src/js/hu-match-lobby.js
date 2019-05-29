@@ -17,3 +17,7 @@ export const getTeam2 = (socket, matchId) => {
   console.log("requesting to get 2");
   socket.emit("GET TEAM 2", matchId);
 }
+
+export const beginMatch = (socket, matchId) => {
+  socket.emit("BEGIN MATCH");
+}

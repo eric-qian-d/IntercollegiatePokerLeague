@@ -61,6 +61,11 @@ function notifyHULobby() {
   io.to("HU LISTINGS").emit("HU MATCHES", matches);
 }
 
+function startMatch(matchId) {
+  var match = HUMatchMap[matchId];
+  
+}
+
 /**
  * Joins an existing game
  * @param  {String} playerId the UUID of the player
@@ -150,7 +155,7 @@ io.on("connection", function(socket) {
   //HU Match Lobby Logic
   //IMPORTANT: TO MAKE THIS ALL ASSOCIATED WITH COOKIES
   socket.on("JOIN TEAM 1", async (matchId) => {
-    socket.join(matchId);
+    socket.join(matchId); //maybe not necessary
     var match = HUMatchMap[matchId];
     match.team1 = match.team1.filter(id => {return !(id === socket.id)});
     match.team2 = match.team2.filter(id => {return !(id === socket.id)});
@@ -159,7 +164,7 @@ io.on("connection", function(socket) {
     io.to(matchId).emit("TEAM 2", match.team2);
   });
   socket.on("JOIN TEAM 2", async (matchId) => {
-    socket.join(matchId);
+    socket.join(matchId); //maybe not necessary
     var match = HUMatchMap[matchId];
     match.team1 = match.team1.filter(id => {return !(id === socket.id)});
     match.team2 = match.team2.filter(id => {return !(id === socket.id)});
@@ -177,7 +182,8 @@ io.on("connection", function(socket) {
     io.to(socket.id).emit("TEAM 2", HUMatchMap[matchId].team2);
   });
   socket.on("START MATCH", async (matchId) => {
-    socket.join(matchId);
+    socket.join(matchId); //maybe not necessary
+    startMatch(matchId);
   })
 
 
