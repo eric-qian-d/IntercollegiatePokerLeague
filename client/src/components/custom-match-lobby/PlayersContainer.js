@@ -8,7 +8,7 @@ class PlayersContainer extends React.Component {
 
   joinTeamLogic() {
     console.log("in join team logic");
-    this.props.updateTeamFunction(this.props.socket, this.props.matchId);
+    this.props.updateTeamFunction(this.props.socket);
   }
 
   render() {

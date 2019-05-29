@@ -15,7 +15,9 @@ class GamePagesContainer extends React.Component {
       this.setState({page : "GAME"});
     });
     socket.on("CUSTOM MATCH LOBBY", () => {
-      this.setState({page : "CUSTOM MATCH LOBBY"});
+      this.setState({
+        page : "CUSTOM MATCH LOBBY",
+      });
     });
 
     this.state = {
@@ -25,7 +27,7 @@ class GamePagesContainer extends React.Component {
   }
 
   render() {
-    const {page, socket} = this.state;
+    const {page, socket, matchId} = this.state;
     console.log(page);
     if (page === "CUSTOM LISTINGS") {
       return (
@@ -37,7 +39,7 @@ class GamePagesContainer extends React.Component {
       )
     } else if (page === "CUSTOM MATCH LOBBY") {
       return (
-        <CustomMatchLobbyContainer socket = {socket} />
+        <CustomMatchLobbyContainer socket = {socket}/>
       )
     }
   }

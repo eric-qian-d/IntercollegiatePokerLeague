@@ -1,5 +1,5 @@
 import React from 'react';
-import {joinMatch} from "../../js/hu-match-listings";
+import {joinMatch} from "../../js/custom-match-listings";
 import { Redirect } from 'react-router-dom'
 
 class Listing extends React.Component {
@@ -26,11 +26,9 @@ class Listing extends React.Component {
       <div>
         {this.props.name}
         {this.props.numPlayers}
-        <a href= {"/match/" +  this.props.matchId }>
-          <button className = "JoinMatchButton" onClick = {() => {this.joinMatchButtonLogic()}}>
-            {"Join"}
-          </button>
-        </a>
+        <button className = "JoinMatchButton" onClick = {() => {this.joinMatchButtonLogic()}}>
+          {"Join"}
+        </button>
 
       </div>
     );

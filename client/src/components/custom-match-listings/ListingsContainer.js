@@ -30,8 +30,8 @@ class ListingsContainer extends React.Component {
 
 
   componentDidMount() {
-    this.props.socket.emit("GET HU MATCHES");
-    this.props.socket.on("HU MATCHES", matchesList => {
+    this.props.socket.emit("GET CUSTOM MATCHES");
+    this.props.socket.on("CUSTOM MATCHES", matchesList => {
       // var matchesList = data.split(/\n/);
       console.log(matchesList);
       var tempMatches = [];

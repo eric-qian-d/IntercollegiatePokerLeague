@@ -13,7 +13,7 @@ var gameMap = {}; //maps from gameId to Game
 
 var socketToRoom = {};
 
-var HUMatchMap = {};
+var customMatchMap = {};
 
 
 
@@ -42,14 +42,14 @@ function addGame(gameId, type) {
  * @param {[type]} type       [description]
  * @param {[type]} numPlayers [description]
  */
-function addHUMatch(matchId, name, numPlayers) {
+function addCustomMatch(matchId, name, numPlayers) {
   var newMatch = new Match(matchId, name, numPlayers);
-  HUMatchMap[matchId] = newMatch;
+  customMatchMap[matchId] = newMatch;
   notifyHULobby();
 }
 
 function notifyHULobby() {
-  var matches = Object.values(HUMatchMap).map(m => {
+  var matches = Object.values(customMatchMap).map(m => {
     return (
       {
         id : m.id,
@@ -62,8 +62,8 @@ function notifyHULobby() {
 }
 
 function startMatch(matchId) {
-  var match = HUMatchMap[matchId];
-  
+  var match = customMatchMap[matchId];
+
 }
 
 /**
@@ -138,34 +138,36 @@ io.on("connection", function(socket) {
   console.log("New client connected");
 
   //HU Lobby Logic
-  socket.on("GET HU MATCHES", async () => {
-    socket.join("HU LISTINGS");
-    socket.emit("HU MATCHES", Object.values(HUMatchMap));
+  socket.on("GET CUSTOM MATCHES", async () => {
+    socket.join("CUSTOM LISTINGS");
+    socket.emit("CUSTOM MATCHES", Object.values(customMatchMap));
   });
 
-  socket.on("NEW HU MATCH", async (name, numPlayers) => {
-    addHUMatch(name, name, numPlayers); //toChange with UUID
+  socket.on("NEW CUSTOM MATCH", async (name, numPlayers) => {
+    addCustomMatch(name, name, numPlayers); //toChange with UUID
+    io.to("CUSTOM LISTINGS").emit("CUSTOM MATCHES", Object.values(customMatchMap));
   });
-  socket.on("JOIN HU MATCH", async (matchId) => {
+  socket.on("JOIN CUSTOM MATCH", async (matchId) => {
     socketToRoom[socket.id] = matchId;
     socket.join(matchId);
+    socket.emit("CUSTOM MATCH LOBBY");
   });
 
 
-  //HU Match Lobby Logic
+  //Custom Match Lobby Logic
   //IMPORTANT: TO MAKE THIS ALL ASSOCIATED WITH COOKIES
-  socket.on("JOIN TEAM 1", async (matchId) => {
-    socket.join(matchId); //maybe not necessary
-    var match = HUMatchMap[matchId];
+  socket.on("JOIN TEAM 1", async () => {
+    const matchId = socketToRoom[socket.id];
+    const match = customMatchMap[matchId];
     match.team1 = match.team1.filter(id => {return !(id === socket.id)});
     match.team2 = match.team2.filter(id => {return !(id === socket.id)});
     match.team1.push(socket.id);
     io.to(matchId).emit("TEAM 1", match.team1);
     io.to(matchId).emit("TEAM 2", match.team2);
   });
-  socket.on("JOIN TEAM 2", async (matchId) => {
-    socket.join(matchId); //maybe not necessary
-    var match = HUMatchMap[matchId];
+  socket.on("JOIN TEAM 2", async () => {
+    const matchId = socketToRoom[socket.id];
+    const match = customMatchMap[matchId];
     match.team1 = match.team1.filter(id => {return !(id === socket.id)});
     match.team2 = match.team2.filter(id => {return !(id === socket.id)});
     match.team2.push(socket.id);
@@ -173,16 +175,16 @@ io.on("connection", function(socket) {
     io.to(matchId).emit("TEAM 1", match.team1);
     io.to(matchId).emit("TEAM 2", match.team2);
   });
-  socket.on("GET TEAM 1", async (matchId) => {
-    socket.join(matchId);
-    io.to(socket.id).emit("TEAM 1", HUMatchMap[matchId].team1);
+  socket.on("GET TEAM 1", async () => {
+    const matchId = socketToRoom[socket.id];
+    io.to(socket.id).emit("TEAM 1", customMatchMap[matchId].team1);
   });
-  socket.on("GET TEAM 2", async (matchId) => {
-    socket.join(matchId);
-    io.to(socket.id).emit("TEAM 2", HUMatchMap[matchId].team2);
+  socket.on("GET TEAM 2", async () => {
+    const matchId = socketToRoom[socket.id];
+    io.to(socket.id).emit("TEAM 2", customMatchMap[matchId].team2);
   });
-  socket.on("START MATCH", async (matchId) => {
-    socket.join(matchId); //maybe not necessary
+  socket.on("START MATCH", async () => {
+    const matchId = socketToRoom[socket.id];
     startMatch(matchId);
   })
 

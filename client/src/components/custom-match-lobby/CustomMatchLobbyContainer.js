@@ -12,7 +12,7 @@ class CustomMatchLobbyContainer extends React.Component {
     return (
       <div>
       {this.props.matchId}
-        <TeamsContainer socket = {socket} matchId = {matchId}/>
+        <TeamsContainer socket = {socket}/>
       </div>
     )
   }

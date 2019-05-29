@@ -1,6 +1,6 @@
 import React from "react";
 import PlayersContainer from "./PlayersContainer";
-import {getTeam1, getTeam2, joinTeam1, joinTeam2} from "../../js/hu-match-lobby";
+import {getTeam1, getTeam2, joinTeam1, joinTeam2} from "../../js/custom-match-lobby";
 
 class TeamsContainer extends React.Component {
   constructor(props) {
@@ -14,16 +14,16 @@ class TeamsContainer extends React.Component {
   render() {
     return(
       <div>
-        <PlayersContainer players = {this.state.team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1} matchId = {this.props.matchId}/>
-        <PlayersContainer players = {this.state.team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2} matchId = {this.props.matchId}/>
+        <PlayersContainer players = {this.state.team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1}/>
+        <PlayersContainer players = {this.state.team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2}/>
       </div>
     )
   }
 
   componentDidMount() {
     console.log("Mounting");
-    getTeam1(this.props.socket, this.props.matchId);
-    getTeam2(this.props.socket, this.props.matchId);
+    getTeam1(this.props.socket);
+    getTeam2(this.props.socket);
     this.props.socket.on("TEAM 1", updatedTeam1 => {
       console.log('received team 1');
       console.log(updatedTeam1);
