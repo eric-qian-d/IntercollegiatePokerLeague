@@ -43,11 +43,8 @@ function addGame(gameId, type) {
  * @param {[type]} numPlayers [description]
  */
 function addHUMatch(matchId, name, numPlayers) {
-  console.log("New game being added");
   var newMatch = new Match(matchId, name, numPlayers);
   HUMatchMap[matchId] = newMatch;
-  // HUMatchSocketMap[matchId] = newMatchSocket;
-  console.log("finished adding");
   notifyHULobby();
 }
 
@@ -61,9 +58,7 @@ function notifyHULobby() {
       }
     )
   });
-  console.log(matches);
   io.to("HU LISTINGS").emit("HU MATCHES", matches);
-  console.log("done");
 }
 
 /**
@@ -135,6 +130,9 @@ var io = socketIO(server);
 
 
 io.on("connection", function(socket) {
+  console.log("New client connected");
+
+  //HU Lobby Logic
   socket.on("GET HU MATCHES", async () => {
     socket.join("HU LISTINGS");
     socket.emit("HU MATCHES", Object.values(HUMatchMap));
@@ -144,26 +142,15 @@ io.on("connection", function(socket) {
     addHUMatch(name, name, numPlayers); //toChange with UUID
   });
   socket.on("JOIN HU MATCH", async (matchId) => {
-    console.log("joining");
     socketToRoom[socket.id] = matchId;
-    console.log(socket.id);
-    // console.log(matchId);
-    // console.log(socketToRoom);
-    // console.log(HUMatchMap[socketToRoom[socket.id]]);
     socket.join(matchId);
   });
 
+
+  //HU Match Lobby Logic
   //IMPORTANT: TO MAKE THIS ALL ASSOCIATED WITH COOKIES
   socket.on("JOIN TEAM 1", async (matchId) => {
     socket.join(matchId);
-    console.log("join team 1 req");
-    console.log(socket.id);
-    // console.log(socketToRoom);
-    console.log(matchId);
-    console.log(HUMatchMap);
-    //
-    // console.log(socketToRoom[socket.id]);
-    // console.log(HUMatchMap[socketToRoom[socket.id]])
     var match = HUMatchMap[matchId];
     match.team1 = match.team1.filter(id => {return !(id === socket.id)});
     match.team2 = match.team2.filter(id => {return !(id === socket.id)});
@@ -173,7 +160,6 @@ io.on("connection", function(socket) {
   });
   socket.on("JOIN TEAM 2", async (matchId) => {
     socket.join(matchId);
-    console.log("join team 2 req");
     var match = HUMatchMap[matchId];
     match.team1 = match.team1.filter(id => {return !(id === socket.id)});
     match.team2 = match.team2.filter(id => {return !(id === socket.id)});
@@ -184,18 +170,18 @@ io.on("connection", function(socket) {
   });
   socket.on("GET TEAM 1", async (matchId) => {
     socket.join(matchId);
-    console.log("get team 1 req");
-    console.log(matchId);
     io.to(socket.id).emit("TEAM 1", HUMatchMap[matchId].team1);
   });
   socket.on("GET TEAM 2", async (matchId) => {
     socket.join(matchId);
-    console.log("get team 2 req");
     io.to(socket.id).emit("TEAM 2", HUMatchMap[matchId].team2);
   });
+  socket.on("START MATCH", async (matchId) => {
+    socket.join(matchId);
+  })
 
 
-  console.log("New client connected");
+
   socket.on("JOIN LOBBY", async function(seatNumber) {
     addPlayer(socket.id, "1234");//how to get player ID?
   });
