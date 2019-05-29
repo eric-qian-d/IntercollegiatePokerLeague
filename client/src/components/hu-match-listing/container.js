@@ -1,10 +1,14 @@
 import React from "react";
 import ListingContainer from "./listing-container";
 import NewMatchButton from "./new-match-button";
-import {socket} from "../../js/socket";
+// import {socket} from "../../js/socket";
 
-class HULobby extends React.Component {
+class CustomMatchListingsContainer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
+    const {socket} = this.props;
     return(
       <div>
         <NewMatchButton socket = {socket}/>
@@ -14,4 +18,4 @@ class HULobby extends React.Component {
   }
 }
 
-export default HULobby;
+export default CustomMatchListingsContainer;
