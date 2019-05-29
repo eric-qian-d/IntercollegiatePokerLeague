@@ -16,3 +16,5 @@ class Hand extends React.Component {
     );
   }
 }
+
+export default Hand;

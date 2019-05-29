@@ -18,3 +18,5 @@ class PlayerContainer extends React.Component {
     )
   }
 }
+
+export default PlayerContainer;

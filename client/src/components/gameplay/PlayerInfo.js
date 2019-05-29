@@ -19,3 +19,5 @@ class PlayerInfo extends React.Component {
     )
   }
 }
+
+export default PlayerInfo;
