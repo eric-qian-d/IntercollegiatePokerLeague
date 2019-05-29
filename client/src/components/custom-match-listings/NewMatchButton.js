@@ -5,7 +5,7 @@ class newHUMatchButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      name: 'a',
       numPlayers: '0',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -17,11 +17,7 @@ class newHUMatchButton extends React.Component {
     const target = event.target;
     const name = target.name;
     const value = target.value;
-    console.log(target);
-    console.log(name);
-    console.log(value);
     this.setState({[name]: value});
-    console.log(this.state.name);
   }
 
   handleSubmit(event) {

@@ -7,7 +7,9 @@ class BeginMatchButton extends React.Component {
 
   render() {
     return(
-      
+
     )
   }
 }
+
+export default BeginMatchButton;

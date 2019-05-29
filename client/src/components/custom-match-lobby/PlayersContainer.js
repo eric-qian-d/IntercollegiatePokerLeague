@@ -1,7 +1,7 @@
 import React from "react";
-import PlayerListing from "./lobby-player-listing";
+import PlayerListing from "./PlayerListing";
 
-class PlayerContainer extends React.Component {
+class PlayersContainer extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -35,4 +35,4 @@ class PlayerContainer extends React.Component {
   }
 }
 
-export default PlayerContainer;
+export default PlayersContainer;

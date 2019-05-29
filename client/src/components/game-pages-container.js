@@ -1,7 +1,7 @@
 import React from "react";
 import GameContainer from "./gameplay/game-container";
-import CustomMatchListingsContainer from "./hu-match-listing/container";
-import LobbyContainer from "./hu-match-lobby/lobby-container";
+import CustomMatchListingsContainer from "./custom-match-listings/CustomMatchListingsContainer";
+import CustomMatchLobbyContainer from "./custom-match-lobby/CustomMatchLobbyContainer";
 import {makeSocket} from "../js/socket";
 
 class GamePagesContainer extends React.Component {
@@ -37,7 +37,7 @@ class GamePagesContainer extends React.Component {
       )
     } else if (page === "CUSTOM MATCH LOBBY") {
       return (
-        <LobbyContainer socket = {socket} />
+        <CustomMatchLobbyContainer socket = {socket} />
       )
     }
   }

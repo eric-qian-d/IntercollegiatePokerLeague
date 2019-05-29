@@ -1,8 +1,8 @@
 import React from "react";
-import PlayerContainer from "./lobby-player-container";
+import PlayersContainer from "./PlayersContainer";
 import {getTeam1, getTeam2, joinTeam1, joinTeam2} from "../../js/hu-match-lobby";
 
-class TeamContainer extends React.Component {
+class TeamsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,8 +14,8 @@ class TeamContainer extends React.Component {
   render() {
     return(
       <div>
-        <PlayerContainer players = {this.state.team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1} matchId = {this.props.matchId}/>
-        <PlayerContainer players = {this.state.team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2} matchId = {this.props.matchId}/>
+        <PlayersContainer players = {this.state.team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1} matchId = {this.props.matchId}/>
+        <PlayersContainer players = {this.state.team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2} matchId = {this.props.matchId}/>
       </div>
     )
   }
@@ -37,4 +37,4 @@ class TeamContainer extends React.Component {
   }
 }
 
-export default TeamContainer;
+export default TeamsContainer;

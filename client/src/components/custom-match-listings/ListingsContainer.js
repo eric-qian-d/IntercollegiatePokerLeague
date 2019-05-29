@@ -1,8 +1,7 @@
 import React from 'react';
+import Listing from "./Listing";
 
-import Listing from "./listing";
-
-class HUListingContainer extends React.Component {
+class ListingsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,4 +50,4 @@ class HUListingContainer extends React.Component {
 
 }
 
-export default HUListingContainer;
+export default ListingsContainer;
