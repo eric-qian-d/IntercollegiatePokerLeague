@@ -25,17 +25,28 @@ class RegistrationForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("submitting")
-    console.log(JSON.stringify(this.state));
-    // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
-    fetch("http://localhost:8081/api/registration", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(this.state)
-    })
+    const {email, password, reenteredPassword} = this.state;
+    console.log(typeof(email));
+    if (email.length < 4 || email.slice(-4) !== ".edu") {
+      alert("must use a .edu email!")
+    }
+    else if (password !== reenteredPassword) {
+      alert("passwords don't match!")
+    } else {
+      console.log("submitting")
+      console.log(JSON.stringify(this.state));
+      // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
+      fetch("http://localhost:8081/api/registration", {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.state)
+      })
+    }
+
+
 
   }
 

@@ -14,5 +14,14 @@ module.exports = {
       user.password = hash;
       models.User.create(user);
     });
+  },
+
+  getUserByEmail : async (email) => {
+    console.log(email);
+    const match = { email: email };
+    // const where = { [Op.or]: attributes };
+    return await models.User.findOne({ where: match, attributes: { exclude: ['password'] } });
   }
+
+
 }

@@ -6,14 +6,20 @@ const userLogic = require("../common/userLogic");
 
 // console.log("testing");
 
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
     console.log('received req');
-    console.log(req);
-
+    // console.log()
+    const existingUser = await userLogic.getUserByEmail(req.body.email);
+    console.log("existing user");
+    console.log(existingUser);
     const newUser = req.body;
+    // console.log()
+    if (!existingUser) {
+      userLogic.createUser(newUser);
+    }
     //check if email already exists
-    
-    userLogic.createUser(newUser);
+
+
   });
 
 router.get('/test', (req,res, next) => {
