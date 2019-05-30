@@ -30,14 +30,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         field: 'created_at'
       },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at'
+      },
       emailIsVerified: {
         type: DataTypes.BOOLEAN,
         field: 'email_is_verified',
         defaultValue: false
       },
-
-
+    },
+    {
+      tableName: 'users',
     }
+
   )
   return User;
 }

@@ -1,6 +1,6 @@
-const dbUser = process.env.DB_USER || '';
+const dbUser = process.env.DB_USER || 'postgres';
 const dbPassword = process.env.DB_PASSWORD || '';
-const dbEndpoint = process.env.DB_ENDPOINT || 'localhost:8081';
+const dbEndpoint = process.env.DB_ENDPOINT || '127.0.0.1';
 
 const fs = require('fs');
 const path = require('path');

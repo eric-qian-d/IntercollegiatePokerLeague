@@ -1,6 +1,7 @@
-var express = require("express");
-var cors = require("cors");
-var registration = require("./routes/registration");
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require('body-parser');
+const registration = require("./routes/registration");
 
 
 const app = express();
@@ -8,6 +9,8 @@ const app = express();
 app.set('port', 8081);
 
 app.use(cors());
+app.use(bodyParser());
+
 console.log("in here");
 app.use("/api/registration", registration);
 

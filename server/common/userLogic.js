@@ -4,7 +4,7 @@ const Op = models.Sequelize.Op;
 const bcrypt = require('bcrypt');
 
 module.exports = {
-  createNewUser : async (user) => {
+  createUser : async (user) => {
     console.log("trying to create this user");
     console.log(user);
     models.User.create(user);

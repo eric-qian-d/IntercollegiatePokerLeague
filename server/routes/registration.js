@@ -8,12 +8,13 @@ const userLogic = require("../common/userLogic");
 
 router.post('/', (req, res, next) => {
     console.log('received req');
+    console.log(req);
     const newUser = req.body;
     userLogic.createUser(newUser);
   });
 
 router.get('/test', (req,res, next) => {
-  
+
   console.log("success");
 });
 

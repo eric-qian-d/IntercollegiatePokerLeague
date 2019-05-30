@@ -26,6 +26,7 @@ class RegistrationForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log("submitting")
+    console.log(JSON.stringify(this.state));
     // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
     fetch("http://localhost:8081/api/registration", {
       method: 'POST',
