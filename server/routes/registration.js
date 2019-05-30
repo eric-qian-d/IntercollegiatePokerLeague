@@ -13,6 +13,7 @@ router.post('/', (req, res, next) => {
   });
 
 router.get('/test', (req,res, next) => {
+  
   console.log("success");
 });
 

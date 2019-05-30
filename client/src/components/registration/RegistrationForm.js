@@ -25,7 +25,9 @@ class RegistrationForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    fetch("localhost:8081/api/registration/", {
+    console.log("submitting")
+    // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
+    fetch("http://localhost:8081/api/registration", {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -38,7 +40,7 @@ class RegistrationForm extends React.Component {
 
   render() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <label>
           First Name:
           <input type="text" name = "firstName" value={this.state.firstName} onChange={this.handleChange} />

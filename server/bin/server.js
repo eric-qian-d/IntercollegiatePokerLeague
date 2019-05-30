@@ -1,4 +1,5 @@
 var http = require("http");
+var express = require("express");
 var socketIO = require("socket.io");
 const uuidv4 = require('uuid/v4');
 var Game = require("../common/game-logic/game");
@@ -6,6 +7,12 @@ var gameType = require("../common/game-logic/gameType");
 var Match = require("../common/match-logic/match");
 var MatchSocket = require("../common/match-logic/match-socket");
 var app = require("../app");
+// console.log(app);
+// var app = express();
+// app.get("/", (req, res) => {
+//   res.send("works");
+// })
+// console.log(app);
 
 
 const socketMap = {}; //maps from socketId to playerId
@@ -156,7 +163,6 @@ function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather
   var game = gameMap[playerGameMap[playerId]];
   game.raise(playerId, finalAmount);
 }
-
 
 
 
