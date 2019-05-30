@@ -9,7 +9,10 @@ const userLogic = require("../common/userLogic");
 router.post('/', (req, res, next) => {
     console.log('received req');
     console.log(req);
+
     const newUser = req.body;
+    //check if email already exists
+    
     userLogic.createUser(newUser);
   });
 
