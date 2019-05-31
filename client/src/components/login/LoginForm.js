@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from 'react-router-dom'
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -37,6 +38,18 @@ class LoginForm extends React.Component {
         },
         body: JSON.stringify(this.state)
       })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          console.log(this.props);
+          // return <Redirect to='/games' />
+          this.props.history.push("/games");
+        } else {
+          alert("Login failed");
+        }
+      });
+
     }
 
 

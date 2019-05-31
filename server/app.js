@@ -30,11 +30,33 @@ app.use(passport.session());
 
 
 app.use("/api/registration", registration);
-app.post('/login',
-  passport.authenticate('local', { successRedirect: '/asdf',
-                                   failureRedirect: '/login',
-                                   })
-);
+// app.post('/login', (req, res) => {
+//   passport.authenticate('local', (err, user, info) => {
+//     if (err) {
+//       res.send(err)
+//     }
+//   })
+// }
+//
+// );
+//
+app.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
+      return next(err); // will generate a 500 error
+    }
+    // Generate a JSON response reflecting authentication status
+    if (! user) {
+      return res.status(401).send({ success : false, message : 'authentication failed' });
+    }
+    req.login(user, function(err){
+      if(err){
+        return next(err);
+      }
+      return res.status(200).send({ success : true, message : 'authentication succeeded' });
+    });
+  })(req, res, next);
+});
 
 
 
