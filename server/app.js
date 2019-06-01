@@ -12,16 +12,21 @@ passportConfigure.configure(passport);
 const app = express();
 app.set('port', 8081);
 
-app.use(cors());
+app.use(cors({
+  allowedHeaders: ['sessionId', 'Content-Type'],
+  exposedHeader: ['sessionId'],
+  origin: ['http://localhost:3000'],
+  credentials: true
+}));
+
 app.use(bodyParser());
 
 app.use(session({
-    key: 'user_sid',
     secret: 'somerandonstuffs',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
-        expires: 600000
+        expires: 24*60*60*1000
     }
 }));
 
@@ -30,18 +35,26 @@ app.use(passport.session());
 
 
 app.use("/api/registration", registration);
-// app.post('/login', (req, res) => {
-//   passport.authenticate('local', (err, user, info) => {
-//     if (err) {
-//       res.send(err)
-//     }
-//   })
-// }
-//
-// );
-//
+
+app.get('/login', function(req, res, next) {
+  console.log(req.session);
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    return res.status(200).send({loggedIn: true});
+  } else {
+    return res.status(200).send({loggedIn: false});
+  }
+});
+
+// app.post('/login', passport.authenticate('local', {failureRedirect: "http://localhost:3000/games/login"}), (req, res) => {
+//   res.redirect("/games")
+// });
+
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
+    console.log("RS start");
+    console.log(res);
+    console.log("RS END");
     if (err) {
       return next(err); // will generate a 500 error
     }
@@ -50,9 +63,14 @@ app.post('/login', function(req, res, next) {
       return res.status(401).send({ success : false, message : 'authentication failed' });
     }
     req.login(user, function(err){
+
+      // console.log(user);
       if(err){
         return next(err);
       }
+      // console.log(req.user);
+      // console.log(req.session);
+      req.session.cookie.playerId = req.user.dataValues.id;
       return res.status(200).send({ success : true, message : 'authentication succeeded' });
     });
   })(req, res, next);

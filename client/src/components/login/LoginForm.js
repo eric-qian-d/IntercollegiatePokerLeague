@@ -36,7 +36,9 @@ class LoginForm extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.state)
+        body: JSON.stringify(this.state),
+        credentials : 'include',
+        withCredentials : true,
       })
       .then(response => response.json())
       .then(data => {

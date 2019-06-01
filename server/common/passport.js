@@ -8,14 +8,20 @@ module.exports = {
     passport.serializeUser(function(user, done) {
       const userCopy = user.toJSON();
       delete userCopy.password;
+      console.log("USER COPY from serialize");
+      console.log(userCopy);
       done(null, userCopy);
     });
     passport.deserializeUser(function(user, done) {
+      console.log("USER COPY from deserialize");
+      console.log(user);
       done(null, user);
     });
 
     passport.use(
       new LocalStrategy({usernameField: 'email'}, async function(email, password, done) {
+        console.log(email);
+        console.log(password);
         const user = await models.User.findOne({ where: { email: email } });
         if (!user) {
           console.log("user doesnt exist");
