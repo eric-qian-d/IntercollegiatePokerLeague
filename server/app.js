@@ -22,7 +22,7 @@ app.use(cors({
 
 app.use(bodyParser());
 
-app.use(session);
+app.use(session.session);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -31,8 +31,8 @@ app.use(passport.session());
 app.use("/api/registration", registration);
 
 app.get('/login', function(req, res, next) {
-  console.log(req.session);
-  console.log(req.user);
+  // console.log(req.session);
+  // console.log(req.user);
   if (req.isAuthenticated()) {
     return res.status(200).send({loggedIn: true});
   } else {
@@ -46,9 +46,9 @@ app.get('/login', function(req, res, next) {
 
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    console.log("RS start");
-    console.log(res);
-    console.log("RS END");
+    // console.log("RS start");
+    // console.log(res);
+    // console.log("RS END");
     if (err) {
       return next(err); // will generate a 500 error
     }

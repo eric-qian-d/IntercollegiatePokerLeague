@@ -2,26 +2,18 @@ var http = require("http");
 var express = require("express");
 var socketIO = require("socket.io");
 const uuidv4 = require('uuid/v4');
+const passportSocket = require("passport.socketio");
+const cookieParser = require('cookie-parser');
 var Game = require("../common/game-logic/game");
 var gameType = require("../common/game-logic/gameType");
 var Match = require("../common/match-logic/match");
 var MatchSocket = require("../common/match-logic/match-socket");
 var app = require("../app");
 var session = require("../config/session");
-// console.log(app);
-// var app = express();
-// app.get("/", (req, res) => {
-//   res.send("works");
-// })
-// console.log(app);
 
-
-const socketMap = {}; //maps from socketId to playerId
 const playerGameMap = {}; //maps from playerId to gameId
-
-
-const socketToRoom = {};
-const socketToStatus = {};
+const playerMatchMap = {}; //maps from playerId to matchId
+const playerStatusMap = {};
 
 const customMatchMap = {}; //maps from matchId to Match object
 const gameMap = {}; //maps from gameId to Game object
@@ -172,9 +164,22 @@ var server = http.createServer(app);
 var io = socketIO(server);
 
 io.use(function(socket, next) {
-    session(socket.request, socket.request.res, next);
+    session.session(socket.request, socket.request.res, next);
+    console.log("socket request start");
     console.log(socket.request);
+    console.log("socket request end");
 });
+
+io.use(passportSocket.authorize({
+  cookieParser: cookieParser,
+  store: session.MemoryStore,
+  secret: 'somerandonstuffs',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+      expires: 24*60*60*1000
+  }
+}));
 
 io.on("connection", function(socket) {
   console.log("New client connected");
