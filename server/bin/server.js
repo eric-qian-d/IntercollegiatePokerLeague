@@ -7,6 +7,7 @@ var gameType = require("../common/game-logic/gameType");
 var Match = require("../common/match-logic/match");
 var MatchSocket = require("../common/match-logic/match-socket");
 var app = require("../app");
+var session = require("../config/session");
 // console.log(app);
 // var app = express();
 // app.get("/", (req, res) => {
@@ -170,6 +171,10 @@ port = process.env.PORT || 8081;
 var server = http.createServer(app);
 var io = socketIO(server);
 
+io.use(function(socket, next) {
+    session(socket.request, socket.request.res, next);
+    console.log(socket.request);
+});
 
 io.on("connection", function(socket) {
   console.log("New client connected");
@@ -181,6 +186,7 @@ io.on("connection", function(socket) {
   });
 
   socket.on("NEW CUSTOM MATCH", async (name, numPlayers) => {
+    console.log(socket.request);
     addCustomMatch(name, name, numPlayers); //toChange with UUID
 
   });

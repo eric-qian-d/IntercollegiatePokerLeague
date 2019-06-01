@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const session = require("express-session");
+// const session = require("express-session");
+const session = require("./config/session");
 const bodyParser = require('body-parser');
 const passport = require("passport");
 
@@ -21,14 +22,7 @@ app.use(cors({
 
 app.use(bodyParser());
 
-app.use(session({
-    secret: 'somerandonstuffs',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        expires: 24*60*60*1000
-    }
-}));
+app.use(session);
 
 app.use(passport.initialize());
 app.use(passport.session());
