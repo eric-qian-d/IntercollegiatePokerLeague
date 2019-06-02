@@ -10,8 +10,6 @@ class ListingsContainer extends React.Component {
   }
 
   render() {
-    console.log("in render");
-    console.log(this.state.matches);
     var lines = this.state.matches.map(function (match, i) {
       return (
         <div key = {i}>
@@ -19,7 +17,6 @@ class ListingsContainer extends React.Component {
         </div>
       )
     });
-    console.log(lines);
     return (
 
       <div id = "LobbyWrapper">
@@ -30,10 +27,9 @@ class ListingsContainer extends React.Component {
 
 
   componentDidMount() {
+    console.log("Listings Container is mounting");
     this.props.socket.emit("GET CUSTOM MATCHES");
     this.props.socket.on("CUSTOM MATCHES", matchesList => {
-      // var matchesList = data.split(/\n/);
-      console.log(matchesList);
       var tempMatches = [];
       for(var i = 0; i < matchesList.length; i++) {
           var name =  matchesList[i].name;
@@ -43,8 +39,6 @@ class ListingsContainer extends React.Component {
         }
       this.setState({matches: tempMatches});
     })
-
-    console.log(this.state.matches);
   }
 
 

@@ -26,7 +26,6 @@ class RegistrationForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {email, password, reenteredPassword} = this.state;
-    console.log(typeof(email));
     if (email.length < 4 || email.slice(-4) !== ".edu") {
       alert("must use a .edu email!")
     }

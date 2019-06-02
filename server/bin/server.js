@@ -91,6 +91,10 @@ function startMatch(matchId) {
         winner : "none"
       }
       gameMap[newGameId] = newGame;
+      playerStatusMap[team1[i]] = "GAME";
+      playerStatusMap[team2[i]] = "GAME";
+      playerGameMap[team1[i]] = newGameId;
+      playerGameMap[team2[i]] = newGameId;
       io.to(playerSocketMap[team1[i]]).emit("GAME");
       io.to(playerSocketMap[team2[i]]).emit("GAME");
     }

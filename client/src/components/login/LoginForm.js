@@ -27,8 +27,6 @@ class LoginForm extends React.Component {
     if (email.length < 4 || email.slice(-4) !== ".edu") {
       alert("must use a .edu email!")
     } else {
-      console.log("submitting")
-      console.log(JSON.stringify(this.state));
       // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
       fetch("http://localhost:8081/login", {
         method: 'POST',
@@ -42,20 +40,13 @@ class LoginForm extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         if (data.success) {
-          console.log(this.props);
-          // return <Redirect to='/games' />
           this.props.history.push("/games");
         } else {
           alert("Login failed");
         }
       });
-
     }
-
-
-
   }
 
   render() {

@@ -5,20 +5,14 @@ import { Redirect } from 'react-router-dom'
 class Listing extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   name: props.name,
-    //   numPlayers: props.numPlayers,
-    // }
   }
 
   joinMatchButtonLogic() {
-    console.log("we are pressed");
     joinMatch(this.props.socket, this.props.matchId);
   }
 
 
   render() {
-
     return (
       <div>
         {this.props.name}
