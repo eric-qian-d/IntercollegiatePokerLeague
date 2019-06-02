@@ -13,31 +13,12 @@ var session = require("../config/session");
 
 const playerGameMap = {}; //maps from playerId to gameId
 const playerMatchMap = {}; //maps from playerId to matchId
-const playerStatusMap = {}; //maps from playerId to
+const playerStatusMap = {}; //maps from playerId to //CUSTOM LISTINGS, CUSTOM MATCH LOBBY, GAME
 const playerSocketMap = {}; //maps from playerId to socket
-
+const playerAvailable = {}; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE
+//
 const customMatchMap = {}; //maps from matchId to Match object
 const gameMap = {}; //maps from gameId to Game object
-
-
-
-/**
- * Map a socket to a playerId
- * @param {String} socketId the UUID of the player's socket
- * @param {String} playerId the UUID of the player
- */
-function addPlayer(socketId, playerId) {
-  socketMap[socketId] = playerId;
-}
-
-/**
- * Adds a new game to the lobby
- * @param {String} gameId the ID of the new game
- * @param {gameType} type   the type of the game, as defined in the enum gameType.js
- */
-function addGame(gameId, type) {
-
-}
 
 
 
@@ -49,8 +30,8 @@ function addGame(gameId, type) {
  * @param {[type]} type       [description]
  * @param {[type]} numPlayers [description]
  */
-function addCustomMatch(matchId, name, numPlayers) {
-  var newMatch = new Match(matchId, name, numPlayers);
+function addCustomMatch(matchId, name, numPlayers, ownerId) {
+  var newMatch = new Match(matchId, name, numPlayers, ownerId);
   customMatchMap[matchId] = newMatch;
   notifyCustomMatchLobby();
 }
@@ -196,13 +177,23 @@ io.on("connection", function(socket) {
   if(socket.request.isAuthenticated()) {
     const userId = socket.request.user.id;
     playerSocketMap[userId] = socket.id;
-  }
 
+    if (!playerStatusMap.hasOwnProperty(userId)) {
+      //client joining for the first time
+      playerAvailable[userId] = "AVAILABLE";
+      playerStatusMap[userId] = "CUSTOM LISTINGS";
+      socket.join("CUSTOM LISTINGS");
+    } else if (playerStatusMap[userId] === "CUSTOM LISTINGS") {
+      //client refreshed while in custom listings
+      socket.join("CUSTOM LISTINGS");
+    } else if (playerStatusMap[userId] === "CUSTOM MATCH LOBBY") {
+      //client refreshed while in a match lobby
+      socket.join(playerMatchMap[userId]);
+    }
+  }
   //Sends user the correct page when they refresh
   socket.on("WHICH PAGE", async () => {
-    console.log("checking page");
     const state = playerStatusMap[socket.request.user.id];
-    console.log(state);
     if (state === undefined || state === "CUSTOM LISTINGS") {
       io.to(socket.id).emit("CUSTOM LISTINGS");
     } else if (state === "CUSTOM MATCH LOBBY") {
@@ -214,29 +205,43 @@ io.on("connection", function(socket) {
 
   //Custom Match Lobby Logic
   socket.on("GET CUSTOM MATCHES", async () => {
-    console.log("hitting custom matches");
     const userId = socket.request.user.id;
     playerStatusMap[userId] = "CUSTOM LISTINGS";
     socket.join("CUSTOM LISTINGS");
     io.to(socket.id).emit("CUSTOM MATCHES", getCustomMatches());
   });
 
+  //a user cannot be queued in anything else before they request to create a custom game
   socket.on("NEW CUSTOM MATCH", async (name, numPlayers) => {
-    addCustomMatch(name, name, numPlayers); //toChange with UUID
-
+    const userId = socket.request.user.id;
+    if (playerAvailable[userId] !== "AVAILABLE") {
+      io.to(socket.id).emit("CREATE FAILED", playerAvailable[userId]);
+    } else {
+      playerAvailable[userId] = "CUSTOM MATCH OWNER";
+      const newMatchId = uuidv4();
+      addCustomMatch(newMatchId, name, numPlayers, userId);
+      playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
+      playerMatchMap[userId] = newMatchId;
+      socket.join(newMatchId);
+      socket.emit("CUSTOM MATCH LOBBY");
+    }
   });
+
+  //a user cannot be queued in anything else before they request to create a custom game
   socket.on("JOIN CUSTOM MATCH", async (matchId) => {
     const userId = socket.request.user.id;
-    playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
-    playerMatchMap[userId] = matchId;
-    socket.join(matchId);
-    socket.emit("CUSTOM MATCH LOBBY");
+    if (playerAvailable[userId] !== "AVAILABLE") {
+      io.to(socket.id).emit("JOIN FAILED", playerAvailable[userId]);
+    } else {
+      playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
+      playerMatchMap[userId] = matchId;
+      socket.join(matchId);
+      socket.emit("CUSTOM MATCH LOBBY");
+    }
   });
 
 
   //Custom Match Lobby Logic
-  //IMPORTANT: TO MAKE THIS ALL ASSOCIATED WITH COOKIES
-  //what happens when a user refreshes? where does that socket go?
   socket.on("JOIN TEAM 1", async () => {
     const userId = socket.request.user.id;
     const userEmail = socket.request.user.email;
@@ -276,6 +281,17 @@ io.on("connection", function(socket) {
     const matchId = playerMatchMap[userId];
     startMatch(matchId);
   })
+  socket.on("RETURN TO LISTINGS", async () => {
+    const userId = socket.request.user.id;
+    const userEmail = socket.request.user.email;
+    const matchId = playerMatchMap[userId];
+    const match = customMatchMap[matchId];
+    match.team1 = match.team1.filter(id => {return !(id === userId)});
+    match.team2 = match.team2.filter(id => {return !(id === userId)});
+    io.to(matchId).emit("TEAM 1", match.team1);
+    io.to(matchId).emit("TEAM 2", match.team2);
+
+  });
 
 
 
