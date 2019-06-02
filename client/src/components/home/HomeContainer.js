@@ -6,7 +6,7 @@ class HomeContainer extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8081/login", {withCredentials: true, credentials: 'include'}, {
+    fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {

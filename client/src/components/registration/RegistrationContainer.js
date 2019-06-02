@@ -1,5 +1,6 @@
 import React from "react";
 import RegistrationForm from "./RegistrationForm";
+import ToLoginButton from "./ToLoginButton";
 
 class RegistrationContainer extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class RegistrationContainer extends React.Component {
     return (
       <div className = "RegistrationContainer">
         <RegistrationForm/>
+        <ToLoginButton {...this.props}/>
       </div>
     )
   }
