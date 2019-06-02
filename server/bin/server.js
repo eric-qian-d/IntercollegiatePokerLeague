@@ -45,6 +45,8 @@ function getCustomMatches() {
         numPlayers : m.numPlayers,
       }
     )
+  }).filter(m => {
+    return !m.inProgress;
   });
   return customMatches
 }
@@ -60,6 +62,8 @@ function startMatch(matchId) {
   const team2 = match.team2;
   const games = match.games;
   if (team1.length === team2.length) {
+    match.inProgress = true;
+    notifyCustomMatchLobby();
     for(var i = 0; i < team1.length; i++) {
       const newGameId = uuidv4();
       const newGame = new Game(newGameId, "", 2, matchId);
@@ -279,7 +283,10 @@ io.on("connection", function(socket) {
   socket.on("START MATCH", async () => {
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
-    startMatch(matchId);
+    const match = customMatchMap[matchId];
+    if (match.ownerId === userId) {
+      startMatch(matchId);
+    }
   })
   socket.on("RETURN TO LISTINGS", async () => {
     const userId = socket.request.user.id;
@@ -290,7 +297,10 @@ io.on("connection", function(socket) {
     match.team2 = match.team2.filter(id => {return !(id === userId)});
     io.to(matchId).emit("TEAM 1", match.team1);
     io.to(matchId).emit("TEAM 2", match.team2);
-
+    playerAvailable[userId] = "AVAILABLE";
+    playerStatusMap[userId] = "CUSTOM LISTINGS";
+    socket.join("CUSTOM LISTINGS");
+    io.to(socket.id).emit("CUSTOM LISTINGS");
   });
 
 

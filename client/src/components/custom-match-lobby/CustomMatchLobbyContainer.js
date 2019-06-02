@@ -1,6 +1,7 @@
 import React from "react";
 import TeamsContainer from "./TeamsContainer";
 import BeginMatchButton from "./BeginMatchButton";
+import ReturnToListingsButton from "./ReturnToListingsButton";
 
 class CustomMatchLobbyContainer extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class CustomMatchLobbyContainer extends React.Component {
       {this.props.matchId}
         <TeamsContainer socket = {socket}/>
         <BeginMatchButton socket = {socket}/>
+        <ReturnToListingsButton socket = {socket}/>
       </div>
     )
   }

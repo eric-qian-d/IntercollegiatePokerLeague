@@ -11,7 +11,9 @@ module.exports = class Match {
     this.numPlayers = numPlayers;
     this.team1 = [];
     this.team2 = [];
+    this.listeners = {};
     this.games = {};
+    this.inProgress = false;
   }
 
 

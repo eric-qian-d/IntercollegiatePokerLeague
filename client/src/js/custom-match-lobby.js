@@ -21,3 +21,7 @@ export const getTeam2 = (socket) => {
 export const startMatch = (socket) => {
   socket.emit("START MATCH");
 }
+
+export const returnToListings = (socket) => {
+  socket.emit("RETURN TO LISTINGS");
+}
