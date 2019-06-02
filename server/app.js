@@ -44,7 +44,7 @@ app.get('/login', function(req, res, next) {
 //   res.redirect("/games")
 // });
 
-app.post('/login', function(req, res, next) {
+app.post('/loggedin', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     // console.log("RS start");
     // console.log(res);

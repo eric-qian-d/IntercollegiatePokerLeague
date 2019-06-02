@@ -16,7 +16,7 @@ class RegistrationContainer extends React.Component {
 
   componentDidMount() {
     //can change this to not share the same endpoint
-    fetch("http://localhost:8081/login", {withCredentials: true, credentials: 'include'}, {
+    fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {
