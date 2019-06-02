@@ -44,10 +44,11 @@ class GamePagesContainer extends React.Component {
     }
   }
 
-  // componentDidMount() {
-  //   const {socket} = this.state;
-  //
-  // }
+  componentDidMount() {
+    const {socket} = this.state;
+    socket.emit("WHICH PAGE");
+
+  }
 
 }
 

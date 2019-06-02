@@ -14,9 +14,6 @@ class Listing extends React.Component {
   joinMatchButtonLogic() {
     console.log("we are pressed");
     joinMatch(this.props.socket, this.props.matchId);
-    // var endPoint = "/game".concat(this.props.matchId);
-    console.log("/match/" + this.props.matchId);
-    // return <Redirect to= {"/match/" + this.props.matchId} />
   }
 
 
