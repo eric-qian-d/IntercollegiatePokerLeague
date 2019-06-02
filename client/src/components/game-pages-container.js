@@ -19,10 +19,11 @@ class GamePagesContainer extends React.Component {
         page : "CUSTOM MATCH LOBBY",
       });
     });
+    socket.emit("WHICH PAGE");
 
     this.state = {
       socket : socket,
-      page : "CUSTOM LISTINGS",
+      page : null,
     }
   }
 
@@ -41,14 +42,20 @@ class GamePagesContainer extends React.Component {
       return (
         <CustomMatchLobbyContainer socket = {socket}/>
       )
+    } else {
+      return (
+        <div>
+          Loading
+        </div>
+      )
     }
   }
 
-  componentDidMount() {
-    const {socket} = this.state;
-    socket.emit("WHICH PAGE");
-
-  }
+  // componentDidMount() {
+  //   const {socket} = this.state;
+  //
+  //
+  // }
 
 }
 
