@@ -23,10 +23,10 @@ class TeamsContainer extends React.Component {
   componentDidMount() {
     getTeam1(this.props.socket);
     getTeam2(this.props.socket);
-    this.props.socket.on("TEAM 1", updatedTeam1 => {
+    this.props.socket.on("TEAM 1", (updatedTeam1, isOwner) => {
       this.setState({team1 : updatedTeam1});
     });
-    this.props.socket.on("TEAM 2", updatedTeam2 => {
+    this.props.socket.on("TEAM 2", (updatedTeam2, isOwner) => {
       this.setState({team2 : updatedTeam2});
     });
   }

@@ -226,7 +226,6 @@ io.on("connection", function(socket) {
       addCustomMatch(newMatchId, name, numPlayers, userId);
       playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
       playerMatchMap[userId] = newMatchId;
-      socket.join(newMatchId);
       socket.emit("CUSTOM MATCH LOBBY");
     }
   });
@@ -239,14 +238,16 @@ io.on("connection", function(socket) {
     } else {
       playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
       playerMatchMap[userId] = matchId;
-      socket.join(matchId);
-      socket.emit("CUSTOM MATCH LOBBY");
+      const match = customMatchMap[matchId];
+      match.listeners[userId] = true;
+      io.to(socket.id).emit("CUSTOM MATCH LOBBY");
     }
   });
 
 
   //Custom Match Lobby Logic
   socket.on("JOIN TEAM 1", async () => {
+    console.log('join team 1 req');
     const userId = socket.request.user.id;
     const userEmail = socket.request.user.email;
     const matchId = playerMatchMap[userId];
@@ -254,10 +255,16 @@ io.on("connection", function(socket) {
     match.team1 = match.team1.filter(id => {return !(id === userId)});
     match.team2 = match.team2.filter(id => {return !(id === userId)});
     match.team1.push(userId);
-    io.to(matchId).emit("TEAM 1", match.team1);
-    io.to(matchId).emit("TEAM 2", match.team2);
+    Object.keys(match.listeners).forEach(playerId => {
+      io.to(playerSocketMap[playerId]).emit("TEAM 1", match.team1, false);
+      io.to(playerSocketMap[playerId]).emit("TEAM 2", match.team2, false);
+    })
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
+
   });
   socket.on("JOIN TEAM 2", async () => {
+    console.log('join team 2 req');
     const userId = socket.request.user.id;
     const userEmail = socket.request.user.email;
     const matchId = playerMatchMap[userId];
@@ -265,8 +272,12 @@ io.on("connection", function(socket) {
     match.team1 = match.team1.filter(id => {return !(id === userId)});
     match.team2 = match.team2.filter(id => {return !(id === userId)});
     match.team2.push(userId);
-    io.to(matchId).emit("TEAM 1", match.team1);
-    io.to(matchId).emit("TEAM 2", match.team2);
+    Object.keys(match.listeners).forEach(playerId => {
+      io.to(playerSocketMap[playerId]).emit("TEAM 1", match.team1, false);
+      io.to(playerSocketMap[playerId]).emit("TEAM 2", match.team2, false);
+    })
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
   });
   socket.on("GET TEAM 1", async () => {
     const userId = socket.request.user.id;
@@ -295,8 +306,13 @@ io.on("connection", function(socket) {
     const match = customMatchMap[matchId];
     match.team1 = match.team1.filter(id => {return !(id === userId)});
     match.team2 = match.team2.filter(id => {return !(id === userId)});
-    io.to(matchId).emit("TEAM 1", match.team1);
-    io.to(matchId).emit("TEAM 2", match.team2);
+    delete match.listeners[userId];
+    Object.keys(match.listeners).forEach(playerId => {
+      io.to(playerSocketMap[playerId]).emit("TEAM 1", match.team1, false);
+      io.to(playerSocketMap[playerId]).emit("TEAM 2", match.team2, false);
+    })
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
     playerAvailable[userId] = "AVAILABLE";
     playerStatusMap[userId] = "CUSTOM LISTINGS";
     socket.join("CUSTOM LISTINGS");
