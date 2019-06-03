@@ -30,7 +30,7 @@ app.use(passport.session());
 
 app.use("/api/registration", registration);
 
-app.get('/login', function(req, res, next) {
+app.get('/loggedin', function(req, res, next) {
   // console.log(req.session);
   // console.log(req.user);
   if (req.isAuthenticated()) {
@@ -44,7 +44,7 @@ app.get('/login', function(req, res, next) {
 //   res.redirect("/games")
 // });
 
-app.post('/loggedin', function(req, res, next) {
+app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     // console.log("RS start");
     // console.log(res);

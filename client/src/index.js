@@ -6,11 +6,11 @@ import RegistrationContainer from "./components/registration/RegistrationContain
 import LoginContainer from "./components/login/LoginContainer";
 import HomeContainer from "./components/home/HomeContainer";
 
-// <Route path = "/" component = {HomeContainer}/>
+
 const routing = (
   <Router>
     <div>
-
+      <Route exact path = "/" component = {HomeContainer}/>
       <Route path = "/registration" component = {RegistrationContainer}/>
       <Route path = "/login" component = {LoginContainer}/>
       <Route path = "/games" component = {GamePagesContainer} />
