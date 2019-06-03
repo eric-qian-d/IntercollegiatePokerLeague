@@ -246,6 +246,13 @@ io.on("connection", function(socket) {
 
 
   //Custom Match Lobby Logic
+  socket.on("IS OWNER", async() => {
+    console.log("is owner req");
+    const userId = socket.request.user.id;
+    const matchId = playerMatchMap[userId];
+    const match = customMatchMap[matchId];
+    io.to(socket.id).emit("IS OWNER", match.ownerId === userId);
+  })
   socket.on("JOIN TEAM 1", async () => {
     console.log('join team 1 req');
     const userId = socket.request.user.id;
