@@ -66,7 +66,7 @@ function startMatch(matchId) {
     notifyCustomMatchLobby();
     for(var i = 0; i < team1.length; i++) {
       const newGameId = uuidv4();
-      const newGame = new Game(newGameId, "", 2, matchId);
+      const newGame = new Game(newGameId, "", 2, 10000, matchId);
       newGame.addPlayer(team1[i], 0);
       newGame.addPlayer(team2[i], 1);
       games[i] = {
@@ -124,8 +124,13 @@ function leaveGame(playerId) {
  * @param  {String} playerId the UUID of the player
  */
 function fold(playerId) {
-  var game = gameMap[playerGameMap[playerId]];
-  game.fold(playerId);
+  const game = gameMap[playerGameMap[playerId]];
+  const playerIds = game.getPlayerIds;
+  const gamePlayerSocketMap = {}
+  playerIds.forEach(playerId => {
+    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+  })
+  game.fold(playerId, gamePlayerSocketMap);
 }
 
 /**
@@ -133,8 +138,13 @@ function fold(playerId) {
  * @param  {String} playerId the UUID of the player
  */
 function call(playerId) {
-  var game = gameMap[playerGameMap[playerId]];
-  game.call(playerId);
+  const game = gameMap[playerGameMap[playerId]];
+  const playerIds = game.getPlayerIds;
+  const gamePlayerSocketMap = {}
+  playerIds.forEach(playerId => {
+    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+  })
+  game.call(playerId, gamePlayerSocketMap);
 }
 
 /**
@@ -143,8 +153,13 @@ function call(playerId) {
  * @param  {Integer} finalAmount the final amount that the player is raising to
  */
 function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
-  var game = gameMap[playerGameMap[playerId]];
-  game.raise(playerId, finalAmount);
+  const game = gameMap[playerGameMap[playerId]];
+  const playerIds = game.getPlayerIds;
+  const gamePlayerSocketMap = {}
+  playerIds.forEach(playerId => {
+    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+  })
+  game.raise(playerId, gamePlayerSocketMap);
 }
 
 
@@ -155,12 +170,6 @@ var io = socketIO(server);
 
 io.use(function(socket, next) {
     session.session(socket.request, socket.request.res, next);
-    // console.log("socket request start");
-    // console.log(socket.request);
-    // console.log("socket request end");
-    // console.log("socket user start");
-    // console.log(socket.request.user);
-    // console.log("socket user end");
 });
 
 io.use(passportSocket.authorize({

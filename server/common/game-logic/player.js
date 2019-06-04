@@ -6,12 +6,13 @@ class Player {
 	 * maybe make position not a part of the Player class, just Game
 	 * @param {Integer} initStack the amount of chips the player starts with
 	 */
-	constructor(playerId, position, initStack) {
+	constructor(playerId, seatNumber, initStack) {
 		this.id = playerId;
-		this.position = position;
+		this.seatNumber = seatNumber;
 		this.hand = [];
 		this.stackSize = initStack;
-		this.inHand = false;
+		this.investedStack = 0;
+		this.inHand = true; //defaulted for HU matches where there's no posting
 	}
 
 	/**
