@@ -1,4 +1,4 @@
-class Player {
+module.exports = class Player {
 	/**
 	 * Creates a new player to be used in a game
 	 * @param {String} playerId  UUID of the player

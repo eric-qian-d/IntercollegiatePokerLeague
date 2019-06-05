@@ -1,6 +1,6 @@
 var deck = require("./deck");
 var card = require("./card");
-var player = require("./player");
+var Player = require("./player");
 var gameType = require("./gameType");
 var hand = require("./hand");
 
@@ -67,7 +67,7 @@ module.exports = class Game { // maybe rename this to be Table
    */
   call(playerId, playerSocketMap) {
     if (isPlayersTurn(playerId)) {
-      const player = Object.keys.(this.seatMap).filter(player => {
+      const player = Object.keys(this.seatMap).filter(player => {
         return player.id === playerId;
       });
       const needToCall = this.currentTotalRaise - player.investedStack;
@@ -98,18 +98,23 @@ module.exports = class Game { // maybe rename this to be Table
    * @param  {Integer} finalAmount the final amount to be raised to
    * @return {Boolean}             True if the raise is legal (correct turn and valid raise size) and False otherwise.
    */
-  raise(playerId, finalAmount, playerSocketMap) {
+  raise(playerId, finalAmount, playerSocketMap, io) {
     //make sure raise is legal
-    if (isPlayersTurn(playerId)) {
-      const player = Object.keys.(this.seatMap).filter(player => {
+    if (this.isPlayersTurn(playerId)) {
+      const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
-      });
-      const raiseDelta = this.finalAmount - player.investedStack;
-      if (raiseDelta > stackSize || raiseDelta > this.lastRaiseSize) {
+      })[0];
+      const raiseDelta = finalAmount - player.investedStack;
+      console.log(player);
+      console.log(finalAmount);
+      console.log(raiseDelta);
+      console.log(raiseDelta > player.stackSize || raiseDelta > this.lastRaiseSize);
+      if (raiseDelta > player.stackSize || raiseDelta > this.lastRaiseSize) {
+        console.log("LEGAL RAISE");
         //legal raise
-        if (raiseDelta > stackSize) {
+        if (raiseDelta > player.stackSize) {
           player.investedStack += player.stackSize;
-          this.stackSize = 0;
+          player.stackSize = 0;
         } else {//legal raise
           player.investedStack += raiseDelta;
           this.stackSize -= raiseDelta;
@@ -117,13 +122,23 @@ module.exports = class Game { // maybe rename this to be Table
         var advanced = false;
         while (!advanced) {
           this.action = (this.action + 1) % this.numPlayers;
-          if (seatMap[this.action] !== "" && seatMap[this.action].inHand) {
+          if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
             advanced = true;
           }
         }
         if (this.action === this.lastRaiser) {
-          nextStreet();
+          this.nextStreet();
         }
+        const gameInfo = [this.numPlayers, this.bigBlindValue, this.buttonLocation, this.pot];
+        Object.values(this.seatMap).forEach(basePlayer => {
+          const allPlayerInfo = [];
+          Object.values(this.seatMap).forEach(secondaryPlayer => {
+            allPlayerInfo.push(secondaryPlayer);
+          })
+          console.log("emitting");
+          console.log(playerSocketMap[basePlayer.id]);
+          io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, allPlayerInfo);
+        })
       } else {
         //illegal raise logic
       }
@@ -138,7 +153,7 @@ module.exports = class Game { // maybe rename this to be Table
    */
   fold(playerId, playerSocketMap) {
     if (isPlayersTurn(playerId)) {
-      const player = Object.keys.(this.seatMap).filter(player => {
+      const player = Object.keys(this.seatMap).filter(player => {
         return player.id === playerId;
       });
       this.inHand = false;
@@ -167,7 +182,14 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {Boolean}          True if it's the player's turn and False otherwise
    */
   isPlayersTurn(playerId) {
-    return this.seatMap[playerId].seatNumber === this.action;
+    var thisPlayerSeatNumber;
+    Object.values(this.seatMap).forEach(player => {
+      if (player.id === playerId) {
+        console.log(player.seatNumber);
+        thisPlayerSeatNumber = player.seatNumber;
+      }
+    })
+    return thisPlayerSeatNumber === this.action;
   }
 
   /**

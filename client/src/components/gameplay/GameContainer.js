@@ -5,6 +5,15 @@ import ButtonBox from "./ButtonBox";
 class GameContainer extends React.Component {
   constructor(props) {
     super(props);
+    const {socket} = this.props;
+    socket.on("GAME STATE", (gameInfo, allPlayerInfo) => {
+      console.log(gameInfo);
+      console.log(allPlayerInfo);
+    })
+  }
+
+  componentDidMount() {
+
   }
 
   render() {

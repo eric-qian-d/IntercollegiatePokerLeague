@@ -66,9 +66,9 @@ function startMatch(matchId) {
     notifyCustomMatchLobby();
     for(var i = 0; i < team1.length; i++) {
       const newGameId = uuidv4();
-      const newGame = new Game(newGameId, "", 2, 10000, matchId);
-      newGame.addPlayer(team1[i], 0);
-      newGame.addPlayer(team2[i], 1);
+      const newGame = new Game(newGameId, "", 2, 10, matchId);
+      newGame.addPlayer(team1[i], 0, 10000);
+      newGame.addPlayer(team2[i], 1, 10000);
       games[i] = {
         team1Player : team1[i],
         team2Player : team2[i],
@@ -153,13 +153,16 @@ function call(playerId) {
  * @param  {Integer} finalAmount the final amount that the player is raising to
  */
 function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
+  console.log(gameMap);
+  console.log(playerGameMap);
+  console.log(playerId);
   const game = gameMap[playerGameMap[playerId]];
-  const playerIds = game.getPlayerIds;
+  const playerIds = game.getPlayerIds();
   const gamePlayerSocketMap = {}
   playerIds.forEach(playerId => {
     gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
   })
-  game.raise(playerId, gamePlayerSocketMap);
+  game.raise(playerId, finalAmount, gamePlayerSocketMap, io);
 }
 
 
@@ -342,23 +345,23 @@ io.on("connection", function(socket) {
   });
 
   socket.on("JOIN GAME", async function(gameId) {
-    joinGame(socketMap[socket.id], gameId);//how to get player ID?
+    joinGame(socket.request.user.id, gameId);//how to get player ID?
   });
   socket.on("SEAT", async function(seatNumber) {
-    pickSeat(socketMap[socket.id], seatNumber);
+    pickSeat(socket.request.user.id, seatNumber);
   })
   socket.on("FOLD", async function() {
-    fold(socketMap[socket.id]);
+    fold(socket.request.user.id);
   });
   socket.on("CALL", async function() {
     console.log("received a call action");
-    call(socketMap[socket.id]);
+    call(socket.request.user.id);
   });
   socket.on("RAISE", async function(finalAmount) {
-    raise(socketMap[socket.id], finalAmount);
+    raise(socket.request.user.id, finalAmount);
   });
   socket.on("EXIT", async function() {
-    leaveGame(socketMap[socket.id]);
+    leaveGame(socket.request.user.id);
     //logic for handling ranking
   });
 })
