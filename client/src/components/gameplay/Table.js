@@ -9,7 +9,9 @@ class Table extends React.Component {
 
   render() {
     //How do I render a table lol
-    const {numPlayers, buttonLocation, action, pot, players} = this.props;
+    const {numPlayers, buttonLocation, action, pot, players, board} = this.props;
+    console.log("BOARD");
+    console.log(board);
     const playersList = players.map(player => {
       return (
         <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.id} stackSize = {player.stackSize} action = {action}/>
@@ -19,6 +21,7 @@ class Table extends React.Component {
       <div>
       Pot: {pot}
       buttonLocation: {buttonLocation}
+      board: {board}
       {playersList}
       </div>
     )

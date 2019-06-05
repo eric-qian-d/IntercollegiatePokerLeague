@@ -10,7 +10,7 @@ class Card extends React.Component {
     const {card} = this.props;
     return (
       <div className = "Card">
-
+        {card}
       </div>
     )
   }

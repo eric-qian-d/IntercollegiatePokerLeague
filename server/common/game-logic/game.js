@@ -172,15 +172,32 @@ module.exports = class Game { // maybe rename this to be Table
       if (this.action === this.lastRaiser) {
         this.nextStreet();
       }
-      const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot];
+      const adaptedBoard = this.board.map(card => {
+        return [card.suit, card.rank];
+      });
+      const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
       Object.values(this.seatMap).forEach(basePlayer => {
-        const allPlayerInfo = [];
-        Object.values(this.seatMap).forEach(secondaryPlayer => {
-          allPlayerInfo.push(secondaryPlayer);
+        // const allPlayerInfo = [];
+        const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
+          // allPlayerInfo.push(secondaryPlayer);
+          var hand = ["none", "none"];
+          if (secondaryPlayer.id === basePlayer.id) {
+            hand = [secondaryPlayer.hand[0].toString(), secondaryPlayer.hand[1].toString()];
+          }
+          return (
+            {
+              id: secondaryPlayer.id,
+              hand: hand,
+              stackSize: secondaryPlayer.stackSize,
+              investedStack: secondaryPlayer.investedStack,
+              inHand: secondaryPlayer.inHand
+
+            }
+          )
         })
-        io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, allPlayerInfo);
+
+        io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, adjustedPlayersList);
       })
-      console.log(this);
     }
 
   }
@@ -217,14 +234,31 @@ module.exports = class Game { // maybe rename this to be Table
             advanced = true;
           }
         }
-
-        const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot];
+        const adaptedBoard = this.board.map(card => {
+          return [card.suit, card.rank];
+        });
+        const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
         Object.values(this.seatMap).forEach(basePlayer => {
-          const allPlayerInfo = [];
-          Object.values(this.seatMap).forEach(secondaryPlayer => {
-            allPlayerInfo.push(secondaryPlayer);
+          // const allPlayerInfo = [];
+          const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
+            // allPlayerInfo.push(secondaryPlayer);
+            var hand = ["none", "none"];
+            if (secondaryPlayer.id === basePlayer.id) {
+              hand = [secondaryPlayer.hand[0].toString(), secondaryPlayer.hand[1].toString()];
+            }
+            return (
+              {
+                id: secondaryPlayer.id,
+                hand: hand,
+                stackSize: secondaryPlayer.stackSize,
+                investedStack: secondaryPlayer.investedStack,
+                inHand: secondaryPlayer.inHand
+
+              }
+            )
           })
-          io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, allPlayerInfo);
+
+          io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, adjustedPlayersList);
         })
       } else {
         //illegal raise logic
@@ -254,13 +288,31 @@ module.exports = class Game { // maybe rename this to be Table
       if (this.action === this.lastRaiser) {
         this.nextStreet();
       }
-      const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot];
+      const adaptedBoard = this.board.map(card => {
+        return [card.suit, card.rank];
+      });
+      const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
       Object.values(this.seatMap).forEach(basePlayer => {
-        const allPlayerInfo = [];
-        Object.values(this.seatMap).forEach(secondaryPlayer => {
-          allPlayerInfo.push(secondaryPlayer);
+        // const allPlayerInfo = [];
+        const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
+          // allPlayerInfo.push(secondaryPlayer);
+          var hand = ["none", "none"];
+          if (secondaryPlayer.id === basePlayer.id) {
+            hand = [secondaryPlayer.hand[0].toString(), secondaryPlayer.hand[1].toString()];
+          }
+          return (
+            {
+              id: secondaryPlayer.id,
+              hand: hand,
+              stackSize: secondaryPlayer.stackSize,
+              investedStack: secondaryPlayer.investedStack,
+              inHand: secondaryPlayer.inHand
+
+            }
+          )
         })
-        io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, allPlayerInfo);
+
+        io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, adjustedPlayersList);
       })
     }
 
@@ -343,12 +395,29 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {String}          a representation of the game state for the SPECIFIC PLAYER as defined in wire-protocol.txt
    */
   getGameState(playerId){
-    const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot];
+    const adaptedBoard = this.board.map(card => {
+      return [card.suit, card.rank];
+    });
+    const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
     const allPlayerInfo = [];
-    Object.values(this.seatMap).forEach(secondaryPlayer => {
-      allPlayerInfo.push(secondaryPlayer);
+    const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
+      // allPlayerInfo.push(secondaryPlayer);
+      var hand = ["none", "none"];
+      if (secondaryPlayer.id === playerId) {
+        hand = [secondaryPlayer.hand[0].toString(), secondaryPlayer.hand[1].toString()];
+      }
+      return (
+        {
+          id: secondaryPlayer.id,
+          hand: hand,
+          stackSize: secondaryPlayer.stackSize,
+          investedStack: secondaryPlayer.investedStack,
+          inHand: secondaryPlayer.inHand
+
+        }
+      )
     })
-    return [gameInfo, allPlayerInfo];
+    return [gameInfo, adjustedPlayersList];
   }
 
 
