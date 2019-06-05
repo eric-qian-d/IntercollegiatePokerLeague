@@ -10,10 +10,10 @@ class PlayerInfo extends React.Component {
     return (
       <div className = "PlayerInfoBox" >
         <div className = "PlayerName">
-          name
+          {name}
         </div>
         <div className = "PlayerStackSize">
-          stackSize
+          {stackSize}
         </div>
       </div>
     )

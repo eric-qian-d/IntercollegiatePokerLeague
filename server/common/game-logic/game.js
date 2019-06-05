@@ -1,5 +1,4 @@
-var deck = require("./deck");
-var card = require("./card");
+var Deck = require("./deck");
 var Player = require("./player");
 var gameType = require("./gameType");
 var hand = require("./hand");
@@ -23,11 +22,15 @@ module.exports = class Game { // maybe rename this to be Table
     this.lastRaiser = 1; //default for HU, needs to be changed
     this.action = 0 //default for HU, needs to be changed
     this.pot = 0;
+    this.deck = new Deck();
+    this.board = [];
     for(var i = 0; i < numPlayers; i++) {
       this.seatMap[i] = "";
     };
-    //create other datatypes as necessary for type of game
   }
+
+
+
 
   /**
    * Adds a player to the poker game
@@ -38,6 +41,13 @@ module.exports = class Game { // maybe rename this to be Table
   addPlayer(playerId, seatNumber, stackSize) {
     if (seatNumber < this.numPlayers && (this.seatMap[seatNumber] === "")) {
       this.seatMap[seatNumber] = new Player(playerId, seatNumber, stackSize);
+    }
+    const numPlayersJoined = Object.values(this.seatMap).filter(player => {
+      return player !== "";
+    }).length;
+    if (numPlayersJoined >= 2) {
+      console.log(this.seatMap);
+      this.startHand();
     }
   }
 
@@ -51,43 +61,126 @@ module.exports = class Game { // maybe rename this to be Table
   }
 
   //game logic
+  //
 
   /**
    * Begins new hand. Moves the button and deals cards to everyone that was present at the Table
    * when this function was first called
    */
   startHand() {
-
+    Object.values(this.seatMap).forEach(player => {
+      if (player !== "") {
+        player.hand = [];
+        player.hand.push(this.deck.getNextCard());
+        player.hand.push(this.deck.getNextCard());
+      }
+    });
+    var advanced = false;
+    while (!advanced) {
+      this.buttonLocation = (this.buttonLocation + 1) % this.numPlayers;
+      if (this.seatMap[this.action] !== "") {
+        advanced = true;
+      }
+    }
+    const numPlayersJoined = Object.keys(this.seatMap).filter(player => {
+      return player !== "";
+    }).length;
+    if (numPlayersJoined == 2) {
+      this.action = this.buttonLocation;
+      console.log(this.seatMap);
+      this.seatMap[this.action].stackSize -= this.bigBlindValue/2;
+      this.seatMap[this.action].investedStack += this.bigBlindValue/2;
+      advanced = false;
+      var nextPlayer = this.buttonLocation;
+      while (!advanced) {
+        nextPlayer = (nextPlayer + 1) % this.numPlayers;
+        if (this.seatMap[nextPlayer] !== "") {
+          console.log(nextPlayer);
+          console.log(this.seatMap[nextPlayer]);
+          this.seatMap[nextPlayer].stackSize -= this.bigBlindValue;
+          this.seatMap[nextPlayer].investedStack += this.bigBlindValue;
+          advanced = true;
+        }
+      }
+    } else {
+      this.action = this.buttonLocation;
+      var advanced = 0;
+      var nextPlayer = this.buttonLocation;
+      while (advanced < 2) {
+        this.nextPlayer = (this.nextPlayer + 1) % this.numPlayers;
+        if (this.seatMap[nextPlayer] !== "") {
+          if (advanced === 0) {
+            this.seatMap[nextPlayer].stackSize -= this.bigBlindValue/2;
+            this.seatMap[nextPlayer].investedStack += this.bigBlindValue/2;
+          } else {
+            this.seatMap[nextPlayer].stackSize -= this.bigBlindValue;
+            this.seatMap[nextPlayer].investedStack += this.bigBlindValue;
+          }
+          nextPlayer++;
+        }
+      }
+    }
   }
+
+  // /**
+  //  * Begins new hand. Moves the button and deals cards to everyone that was present at the Table
+  //  * when this function was first called
+  //  */
+  // startHand() {
+  //   var advanced = false;
+  //   while (!advanced) {
+  //     this.button = (this.button + 1) % this.numPlayers;
+  //     if (seatMap[this.action] !== "") {
+  //       advanced = true;
+  //     }
+  //   }
+  //   this.deck = new Deck();
+  //   Object.values(this.seatMap).forEach(player => {
+  //     if (player !== "") {
+  //       player.hand = [];
+  //       player.hand.push(this.deck.getNextCard());
+  //       player.hand.push(this.deck.getNextCard());
+  //     }
+  //   })
+  // }
 
   /**
    * Logic for having the player call the previous bet. If the player is requesting this when it is not his/her turn, nothing happens
    * @param  {String} playerId the UUID of the player
    * @return {Boolean}         True if the call is legal (correct turn) and went through, False otherwise
    */
-  call(playerId, playerSocketMap) {
-    if (isPlayersTurn(playerId)) {
-      const player = Object.keys(this.seatMap).filter(player => {
+  call(playerId, playerSocketMap, io) {
+    if (this.isPlayersTurn(playerId)) {
+      const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
-      });
+      })[0];
       const needToCall = this.currentTotalRaise - player.investedStack;
       if (player.stackSize - (needToCall) < 0) {
         player.investedStack += player.stackSize;
         this.stackSize = 0;
       } else {
         player.investedStack += needToCall;
-        this.stackSize -= needToCall;
+        player.stackSize -= needToCall;
       }
       var advanced = false;
       while (!advanced) {
         this.action = (this.action + 1) % this.numPlayers;
-        if (seatMap[this.action] !== "" && seatMap[this.action].inHand) {
+        if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
           advanced = true;
         }
       }
       if (this.action === this.lastRaiser) {
-        nextStreet();
+        this.nextStreet();
       }
+      const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot];
+      Object.values(this.seatMap).forEach(basePlayer => {
+        const allPlayerInfo = [];
+        Object.values(this.seatMap).forEach(secondaryPlayer => {
+          allPlayerInfo.push(secondaryPlayer);
+        })
+        io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, allPlayerInfo);
+      })
+      console.log(this);
     }
 
   }
@@ -105,20 +198,18 @@ module.exports = class Game { // maybe rename this to be Table
         return player.id === playerId;
       })[0];
       const raiseDelta = finalAmount - player.investedStack;
-      console.log(player);
-      console.log(finalAmount);
-      console.log(raiseDelta);
-      console.log(raiseDelta > player.stackSize || raiseDelta > this.lastRaiseSize);
       if (raiseDelta > player.stackSize || raiseDelta > this.lastRaiseSize) {
         console.log("LEGAL RAISE");
         //legal raise
         if (raiseDelta > player.stackSize) {
           player.investedStack += player.stackSize;
           player.stackSize = 0;
-        } else {//legal raise
+        } else {
           player.investedStack += raiseDelta;
-          this.stackSize -= raiseDelta;
+          player.stackSize -= raiseDelta;
         }
+        this.lastRaiser = this.action;
+        this.currentTotalRaise = finalAmount;
         var advanced = false;
         while (!advanced) {
           this.action = (this.action + 1) % this.numPlayers;
@@ -126,17 +217,13 @@ module.exports = class Game { // maybe rename this to be Table
             advanced = true;
           }
         }
-        if (this.action === this.lastRaiser) {
-          this.nextStreet();
-        }
-        const gameInfo = [this.numPlayers, this.bigBlindValue, this.buttonLocation, this.pot];
+
+        const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot];
         Object.values(this.seatMap).forEach(basePlayer => {
           const allPlayerInfo = [];
           Object.values(this.seatMap).forEach(secondaryPlayer => {
             allPlayerInfo.push(secondaryPlayer);
           })
-          console.log("emitting");
-          console.log(playerSocketMap[basePlayer.id]);
           io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, allPlayerInfo);
         })
       } else {
@@ -152,26 +239,84 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {Boolean}         True if the fold is legal (correct turn) and went through, False otherwise
    */
   fold(playerId, playerSocketMap) {
-    if (isPlayersTurn(playerId)) {
-      const player = Object.keys(this.seatMap).filter(player => {
+    if (this.isPlayersTurn(playerId)) {
+      const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
-      });
+      })[0];
       this.inHand = false;
       var advanced = false;
       while (!advanced) {
         this.action = (this.action + 1) % this.numPlayers;
-        if (seatMap[this.action] !== "" && seatMap[this.action].inHand) {
+        if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
           advanced = true;
         }
       }
       if (this.action === this.lastRaiser) {
-        nextStreet();
+        this.nextStreet();
       }
+      const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot];
+      Object.values(this.seatMap).forEach(basePlayer => {
+        const allPlayerInfo = [];
+        Object.values(this.seatMap).forEach(secondaryPlayer => {
+          allPlayerInfo.push(secondaryPlayer);
+        })
+        io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, allPlayerInfo);
+      })
     }
 
   }
 
   nextStreet() {
+    const playersInHandList = Object.values(this.seatMap).filter(player => {
+      return player.inHand;
+    });
+    const numPlayersInHand = playersInHandList.length;
+    if (numPlayersInHand === 1) {
+      //one player won
+      Object.values(this.seatMap).forEach(player => {
+        if (player.investedStack > 0) {
+          this.pot += player.investedStack;
+          player.investedStack = 0;
+        }
+      })
+      playersInHandList[0].stackSize += this.pot;
+      this.startHand();
+    } else {
+      Object.values(this.seatMap).forEach(player => {
+        if (player.investedStack > 0) {
+          this.pot += player.investedStack;
+          player.investedStack = 0;
+        }
+      })
+      if (this.board.length === 0) {
+        //preflop finish
+        for(var i = 0; i < 3; i++) {
+          this.board.push(this.deck.getNextCard())
+        }
+        var advanced = false;
+        this.action = this.buttonLocation;
+        while (!advanced) {
+          this.action = (this.action + 1) % this.numPlayers;
+          if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
+            advanced = true;
+          }
+        }
+      } else if (this.board.length === 3 || this.board.length === 4) {
+        //flop finish
+        this.board.push(this.deck.getNextCard())
+        var advanced = false;
+        this.action = this.buttonLocation;
+        while (!advanced) {
+          this.action = (this.action + 1) % this.numPlayers;
+          if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
+            advanced = true;
+          }
+        }
+      } else if (this.board.length === 5) {
+        //river finish
+
+      }
+    }
 
   }
 
@@ -198,7 +343,12 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {String}          a representation of the game state for the SPECIFIC PLAYER as defined in wire-protocol.txt
    */
   getGameState(playerId){
-
+    const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot];
+    const allPlayerInfo = [];
+    Object.values(this.seatMap).forEach(secondaryPlayer => {
+      allPlayerInfo.push(secondaryPlayer);
+    })
+    return [gameInfo, allPlayerInfo];
   }
 
 

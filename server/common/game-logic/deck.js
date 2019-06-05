@@ -1,4 +1,4 @@
-card = require('./card');
+const Card = require('./card');
 
 suitsMap = {};
 suitsMap[0] = 'Heart';
@@ -6,18 +6,19 @@ suitsMap[1] = 'Spade';
 suitsMap[2] = 'Diamond';
 suitsMap[3] = 'Club';
 
-class Deck{
+module.exports = class Deck{
 	/**
-	 * Creates a new, ordered deck
+	 * Creates a new, shuffled deck
 	 */
 	constructor() {
 		this.currentCardIndex = 0;
 		this.cards = [];
 		for(var i = 1; i < 14; i++) {
 			for(var j = 0; j < 4; j++) {
-				this.deck.cards(new Card(suitsMap[j], i));
+				this.cards.push(new Card(suitsMap[j], i));
 			}
 		}
+		this.shuffleDeck();
 	}
 
 	/**
@@ -34,7 +35,7 @@ class Deck{
 			currentIndex -= 1;
 			// And swap it with the current element.
 			temporaryValue = this.cards[currentIndex];
-			this.cards[currentIndex] = deck[randomIndex];
+			this.cards[currentIndex] = this.cards[randomIndex];
 			this.cards[randomIndex] = temporaryValue;
 		}
 	}
@@ -44,6 +45,8 @@ class Deck{
 	 * @return {Card} The next card
 	 */
 	getNextCard() {
-
+		const nextCard = this.cards[this.currentCardIndex];
+		this.currentCardIndex++;
+		return nextCard;
 	}
 };

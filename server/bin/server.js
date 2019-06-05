@@ -125,12 +125,12 @@ function leaveGame(playerId) {
  */
 function fold(playerId) {
   const game = gameMap[playerGameMap[playerId]];
-  const playerIds = game.getPlayerIds;
+  const playerIds = game.getPlayerIds();
   const gamePlayerSocketMap = {}
   playerIds.forEach(playerId => {
     gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
   })
-  game.fold(playerId, gamePlayerSocketMap);
+  game.fold(playerId, gamePlayerSocketMap, io);
 }
 
 /**
@@ -139,12 +139,12 @@ function fold(playerId) {
  */
 function call(playerId) {
   const game = gameMap[playerGameMap[playerId]];
-  const playerIds = game.getPlayerIds;
+  const playerIds = game.getPlayerIds();
   const gamePlayerSocketMap = {}
   playerIds.forEach(playerId => {
     gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
   })
-  game.call(playerId, gamePlayerSocketMap);
+  game.call(playerId, gamePlayerSocketMap, io);
 }
 
 /**
@@ -153,9 +153,6 @@ function call(playerId) {
  * @param  {Integer} finalAmount the final amount that the player is raising to
  */
 function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
-  console.log(gameMap);
-  console.log(playerGameMap);
-  console.log(playerId);
   const game = gameMap[playerGameMap[playerId]];
   const playerIds = game.getPlayerIds();
   const gamePlayerSocketMap = {}
@@ -338,7 +335,12 @@ io.on("connection", function(socket) {
     io.to(socket.id).emit("CUSTOM LISTINGS");
   });
 
-
+  socket.on("GET GAME STATE", async function() {
+    const userId = socket.request.user.id;
+    const game = gameMap[playerGameMap[userId]];
+    const gameState = game.getGameState(userId);
+    io.to(socket.id).emit("GAME STATE", gameState[0], gameState[1]);
+  })
 
   socket.on("JOIN LOBBY", async function(seatNumber) {
     addPlayer(socket.id, "1234");//how to get player ID?
