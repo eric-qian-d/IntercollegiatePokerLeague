@@ -12,10 +12,8 @@ class Table extends React.Component {
     const {numPlayers, buttonLocation, action, pot, players, board} = this.props;
 
     const playersList = players.map(player => {
-      console.log("PLAYER");
-      console.log(player);
       return (
-        <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.id} stackSize = {player.stackSize} action = {action}/>
+        <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.id} stackSize = {player.stackSize} action = {action} inHand = {player.inHand}/>
       )
     })
     return (
