@@ -402,9 +402,9 @@ module.exports = class Game { // maybe rename this to be Table
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
       // allPlayerInfo.push(secondaryPlayer);
-      var hand = ["none", "none"];
+      var hand = [["none", "none"], ["none", "none"]];
       if (secondaryPlayer.id === playerId) {
-        hand = [secondaryPlayer.hand[0].toString(), secondaryPlayer.hand[1].toString()];
+        hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
       }
       return (
         {
@@ -417,6 +417,7 @@ module.exports = class Game { // maybe rename this to be Table
         }
       )
     })
+    console.log(adjustedPlayersList);
     return [gameInfo, adjustedPlayersList];
   }
 

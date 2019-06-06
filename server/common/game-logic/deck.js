@@ -1,10 +1,10 @@
 const Card = require('./card');
 
 suitsMap = {};
-suitsMap[0] = 'Heart';
-suitsMap[1] = 'Spade';
-suitsMap[2] = 'Diamond';
-suitsMap[3] = 'Club';
+suitsMap[0] = 'Hearts';
+suitsMap[1] = 'Spades';
+suitsMap[2] = 'Diamonds';
+suitsMap[3] = 'Clubs';
 
 module.exports = class Deck{
 	/**
