@@ -131,6 +131,28 @@ module.exports = class Game { // maybe rename this to be Table
     }
   }
 
+  check(playerId, playerSocketMap, io) {
+    if (this.isPlayersTurn(playerId)) {
+      if (this.currentTotalRaise == 0) {
+        //legal check
+        var advanced = false;
+        while (!advanced) {
+          this.action = (this.action + 1) % this.numPlayers;
+          if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
+            advanced = true;
+          }
+        }
+        if (this.action === this.lastRaiser) {
+          this.nextStreet();
+        }
+        const adaptedBoard = this.board.map(card => {
+          return [card.suit, card.rank];
+        });
+        this.emitAll(playerSocketMap, io);
+      }
+    }
+  }
+
   /**
    * Logic for having the player call the previous bet. If the player is requesting this when it is not his/her turn, nothing happens
    * @param  {String} playerId the UUID of the player
@@ -273,6 +295,8 @@ module.exports = class Game { // maybe rename this to be Table
     } else {
       //moves to next street
       //adds bets to pot
+      this.lastRaiseSize = 0;
+      this.currentTotalRaise = 0;
       Object.values(this.seatMap).forEach(player => {
         if (player.investedStack > 0) {
           this.pot += player.investedStack;
