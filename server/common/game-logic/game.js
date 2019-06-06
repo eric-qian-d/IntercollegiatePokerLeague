@@ -46,7 +46,7 @@ module.exports = class Game { // maybe rename this to be Table
       return player !== "";
     }).length;
     if (numPlayersJoined >= 2) {
-      console.log(this.seatMap);
+      // console.log(this.seatMap);
       this.startHand();
     }
   }
@@ -69,11 +69,14 @@ module.exports = class Game { // maybe rename this to be Table
    */
   startHand() {
     //deals players hands
+    this.pot = 0;
+    this.board = [];
     Object.values(this.seatMap).forEach(player => {
       if (player !== "") {
         player.hand = [];
         player.hand.push(this.deck.getNextCard());
         player.hand.push(this.deck.getNextCard());
+        player.inHand = true;
       }
     });
     //moves button
@@ -90,7 +93,6 @@ module.exports = class Game { // maybe rename this to be Table
     if (numPlayersJoined == 2) {
       //heads up setup logic
       this.action = this.buttonLocation;
-      console.log(this.seatMap);
       this.seatMap[this.action].stackSize -= this.bigBlindValue/2;
       this.seatMap[this.action].investedStack += this.bigBlindValue/2;
       this.lastRaiser = this.action;
@@ -135,6 +137,8 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {Boolean}         True if the call is legal (correct turn) and went through, False otherwise
    */
   call(playerId, playerSocketMap, io) {
+    console.log("call request begin state");
+    console.log(this);
     if (this.isPlayersTurn(playerId)) {
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
@@ -163,7 +167,8 @@ module.exports = class Game { // maybe rename this to be Table
 
       this.emitAll(playerSocketMap, io);
     }
-
+    console.log("call request end state");
+    console.log(this);
   }
 
   /**
@@ -173,6 +178,8 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {Boolean}             True if the raise is legal (correct turn and valid raise size) and False otherwise.
    */
   raise(playerId, finalAmount, playerSocketMap, io) {
+    console.log("raise request begin state");
+    console.log(this);
     //make sure raise is legal
     if (this.isPlayersTurn(playerId)) {
       const player = Object.values(this.seatMap).filter(player => {
@@ -180,7 +187,6 @@ module.exports = class Game { // maybe rename this to be Table
       })[0];
       const raiseDelta = finalAmount - player.investedStack;
       if (raiseDelta > player.stackSize || raiseDelta > this.lastRaiseSize) {
-        console.log("LEGAL RAISE");
         //legal raise
         if (raiseDelta > player.stackSize) {
           player.investedStack += player.stackSize;
@@ -190,10 +196,12 @@ module.exports = class Game { // maybe rename this to be Table
           player.stackSize -= raiseDelta;
         }
         this.lastRaiser = this.action;
+        this.lastRaiseSize = raiseDelta;
         this.currentTotalRaise = finalAmount;
         var advanced = false;
         while (!advanced) {
           this.action = (this.action + 1) % this.numPlayers;
+          console.log(this.action);
           if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
             advanced = true;
           }
@@ -205,8 +213,9 @@ module.exports = class Game { // maybe rename this to be Table
       } else {
         //illegal raise logic
       }
-
     }
+    console.log("raise request end state");
+    console.log(this);
   }
 
   /**
@@ -214,12 +223,12 @@ module.exports = class Game { // maybe rename this to be Table
    * @param  {String} playerId the UUID of the player
    * @return {Boolean}         True if the fold is legal (correct turn) and went through, False otherwise
    */
-  fold(playerId, playerSocketMap) {
+  fold(playerId, playerSocketMap, io) {
     if (this.isPlayersTurn(playerId)) {
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
       })[0];
-      this.inHand = false;
+      player.inHand = false;
       var advanced = false;
       while (!advanced) {
         this.action = (this.action + 1) % this.numPlayers;
@@ -227,7 +236,11 @@ module.exports = class Game { // maybe rename this to be Table
           advanced = true;
         }
       }
-      if (this.action === this.lastRaiser) {
+      const playersInHandList = Object.values(this.seatMap).filter(player => {
+        return player.inHand;
+      });
+      const numPlayersInHand = playersInHandList.length;
+      if (this.action === this.lastRaiser || numPlayersInHand == 1) {
         this.nextStreet();
       }
       const adaptedBoard = this.board.map(card => {
@@ -236,16 +249,18 @@ module.exports = class Game { // maybe rename this to be Table
       const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
       this.emitAll(playerSocketMap, io);
     }
-
   }
 
   nextStreet() {
+    //gets a list of all the players still in the hand
     const playersInHandList = Object.values(this.seatMap).filter(player => {
       return player.inHand;
     });
     const numPlayersInHand = playersInHandList.length;
     if (numPlayersInHand === 1) {
       //one player won
+      console.log("only one player left");
+      //gives player the pot
       Object.values(this.seatMap).forEach(player => {
         if (player.investedStack > 0) {
           this.pot += player.investedStack;
@@ -253,8 +268,11 @@ module.exports = class Game { // maybe rename this to be Table
         }
       })
       playersInHandList[0].stackSize += this.pot;
+      //starts new hand
       this.startHand();
     } else {
+      //moves to next street
+      //adds bets to pot
       Object.values(this.seatMap).forEach(player => {
         if (player.investedStack > 0) {
           this.pot += player.investedStack;
@@ -263,25 +281,33 @@ module.exports = class Game { // maybe rename this to be Table
       })
       if (this.board.length === 0) {
         //preflop finish
+        //deal flop
         for(var i = 0; i < 3; i++) {
           this.board.push(this.deck.getNextCard())
         }
         var advanced = false;
         this.action = this.buttonLocation;
+        //finds the player who is going first on the flop
         while (!advanced) {
           this.action = (this.action + 1) % this.numPlayers;
           if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
+            //sets lastRaiser so that when it gets back to this player, nextStreet() is called
+            this.lastRaiser = this.action;
             advanced = true;
           }
         }
       } else if (this.board.length === 3 || this.board.length === 4) {
         //flop finish
-        this.board.push(this.deck.getNextCard())
+        //deal turn
+        this.board.push(this.deck.getNextCard());
         var advanced = false;
         this.action = this.buttonLocation;
+        //finds the player who is going first on the turn
         while (!advanced) {
           this.action = (this.action + 1) % this.numPlayers;
           if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
+            //sets lastRaiser so that when it gets back to this player, nextStreet() is called
+            this.lastRaiser = this.action;
             advanced = true;
           }
         }
@@ -303,7 +329,7 @@ module.exports = class Game { // maybe rename this to be Table
     var thisPlayerSeatNumber;
     Object.values(this.seatMap).forEach(player => {
       if (player.id === playerId) {
-        console.log(player.seatNumber);
+        // console.log(player.seatNumber);
         thisPlayerSeatNumber = player.seatNumber;
       }
     })
@@ -346,7 +372,7 @@ module.exports = class Game { // maybe rename this to be Table
         }
       )
     })
-    console.log(adjustedPlayersList);
+    // console.log(adjustedPlayersList);
     return [gameInfo, adjustedPlayersList];
   }
 
