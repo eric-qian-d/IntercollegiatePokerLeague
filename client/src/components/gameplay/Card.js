@@ -1,5 +1,5 @@
 import React from "react";
-const cards = "../../../public/cards";
+import './Card.css';
 
 class Card extends React.Component {
   constructor(props) {
@@ -7,13 +7,9 @@ class Card extends React.Component {
   }
 
   render() {
-    //to fill in once we get card images
     const {card} = this.props;
-    console.log(cards + "/" + card[0] + '-' + card[1] + '.png');
     return (
-      <div className = "Card">
-        <img src = {'/cards' + "/" + card[0] + '-' + card[1] + '.png'}/>
-      </div>
+        <img src = {'/cards/' + card[0] + '-' + card[1] + '.png'} className = "Card"/>
     )
   }
 }

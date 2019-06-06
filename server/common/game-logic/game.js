@@ -68,6 +68,7 @@ module.exports = class Game { // maybe rename this to be Table
    * when this function was first called
    */
   startHand() {
+    //deals players hands
     Object.values(this.seatMap).forEach(player => {
       if (player !== "") {
         player.hand = [];
@@ -75,6 +76,7 @@ module.exports = class Game { // maybe rename this to be Table
         player.hand.push(this.deck.getNextCard());
       }
     });
+    //moves button
     var advanced = false;
     while (!advanced) {
       this.buttonLocation = (this.buttonLocation + 1) % this.numPlayers;
@@ -86,23 +88,26 @@ module.exports = class Game { // maybe rename this to be Table
       return player !== "";
     }).length;
     if (numPlayersJoined == 2) {
+      //heads up setup logic
       this.action = this.buttonLocation;
       console.log(this.seatMap);
       this.seatMap[this.action].stackSize -= this.bigBlindValue/2;
       this.seatMap[this.action].investedStack += this.bigBlindValue/2;
+      this.lastRaiser = this.action;
       advanced = false;
       var nextPlayer = this.buttonLocation;
       while (!advanced) {
         nextPlayer = (nextPlayer + 1) % this.numPlayers;
         if (this.seatMap[nextPlayer] !== "") {
-          console.log(nextPlayer);
-          console.log(this.seatMap[nextPlayer]);
           this.seatMap[nextPlayer].stackSize -= this.bigBlindValue;
           this.seatMap[nextPlayer].investedStack += this.bigBlindValue;
+
+          this.currentTotalRaise = this.bigBlindValue;
           advanced = true;
         }
       }
     } else {
+      //>2 people logic
       this.action = this.buttonLocation;
       var advanced = 0;
       var nextPlayer = this.buttonLocation;
@@ -115,34 +120,14 @@ module.exports = class Game { // maybe rename this to be Table
           } else {
             this.seatMap[nextPlayer].stackSize -= this.bigBlindValue;
             this.seatMap[nextPlayer].investedStack += this.bigBlindValue;
+            this.lastRaiser = nextPlayer;
+            this.currentTotalRaise = this.bigBlindValue;
           }
           nextPlayer++;
         }
       }
     }
   }
-
-  // /**
-  //  * Begins new hand. Moves the button and deals cards to everyone that was present at the Table
-  //  * when this function was first called
-  //  */
-  // startHand() {
-  //   var advanced = false;
-  //   while (!advanced) {
-  //     this.button = (this.button + 1) % this.numPlayers;
-  //     if (seatMap[this.action] !== "") {
-  //       advanced = true;
-  //     }
-  //   }
-  //   this.deck = new Deck();
-  //   Object.values(this.seatMap).forEach(player => {
-  //     if (player !== "") {
-  //       player.hand = [];
-  //       player.hand.push(this.deck.getNextCard());
-  //       player.hand.push(this.deck.getNextCard());
-  //     }
-  //   })
-  // }
 
   /**
    * Logic for having the player call the previous bet. If the player is requesting this when it is not his/her turn, nothing happens
@@ -175,29 +160,8 @@ module.exports = class Game { // maybe rename this to be Table
       const adaptedBoard = this.board.map(card => {
         return [card.suit, card.rank];
       });
-      const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
-      Object.values(this.seatMap).forEach(basePlayer => {
-        // const allPlayerInfo = [];
-        const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
-          // allPlayerInfo.push(secondaryPlayer);
-          var hand = ["none", "none"];
-          if (secondaryPlayer.id === basePlayer.id) {
-            hand = [secondaryPlayer.hand[0].toString(), secondaryPlayer.hand[1].toString()];
-          }
-          return (
-            {
-              id: secondaryPlayer.id,
-              hand: hand,
-              stackSize: secondaryPlayer.stackSize,
-              investedStack: secondaryPlayer.investedStack,
-              inHand: secondaryPlayer.inHand
 
-            }
-          )
-        })
-
-        io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, adjustedPlayersList);
-      })
+      this.emitAll(playerSocketMap, io);
     }
 
   }
@@ -237,29 +201,7 @@ module.exports = class Game { // maybe rename this to be Table
         const adaptedBoard = this.board.map(card => {
           return [card.suit, card.rank];
         });
-        const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
-        Object.values(this.seatMap).forEach(basePlayer => {
-          // const allPlayerInfo = [];
-          const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
-            // allPlayerInfo.push(secondaryPlayer);
-            var hand = ["none", "none"];
-            if (secondaryPlayer.id === basePlayer.id) {
-              hand = [secondaryPlayer.hand[0].toString(), secondaryPlayer.hand[1].toString()];
-            }
-            return (
-              {
-                id: secondaryPlayer.id,
-                hand: hand,
-                stackSize: secondaryPlayer.stackSize,
-                investedStack: secondaryPlayer.investedStack,
-                inHand: secondaryPlayer.inHand
-
-              }
-            )
-          })
-
-          io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, adjustedPlayersList);
-        })
+        this.emitAll(playerSocketMap, io);
       } else {
         //illegal raise logic
       }
@@ -292,28 +234,7 @@ module.exports = class Game { // maybe rename this to be Table
         return [card.suit, card.rank];
       });
       const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
-      Object.values(this.seatMap).forEach(basePlayer => {
-        // const allPlayerInfo = [];
-        const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
-          // allPlayerInfo.push(secondaryPlayer);
-          var hand = ["none", "none"];
-          if (secondaryPlayer.id === basePlayer.id) {
-            hand = [secondaryPlayer.hand[0].toString(), secondaryPlayer.hand[1].toString()];
-          }
-          return (
-            {
-              id: secondaryPlayer.id,
-              hand: hand,
-              stackSize: secondaryPlayer.stackSize,
-              investedStack: secondaryPlayer.investedStack,
-              inHand: secondaryPlayer.inHand
-
-            }
-          )
-        })
-
-        io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", gameInfo, adjustedPlayersList);
-      })
+      this.emitAll(playerSocketMap, io);
     }
 
   }
@@ -389,6 +310,15 @@ module.exports = class Game { // maybe rename this to be Table
     return thisPlayerSeatNumber === this.action;
   }
 
+  emitAll(playerSocketMap, io) {
+    Object.values(this.seatMap).forEach(basePlayer => {
+      // const allPlayerInfo = [];
+      const info = this.getGameState(basePlayer.id);
+
+      io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+    })
+  }
+
   /**
    * Returns a String representing the game state as defined in wire-protocol.txt
    * @param  {String} playerId the UUID of the player
@@ -396,12 +326,11 @@ module.exports = class Game { // maybe rename this to be Table
    */
   getGameState(playerId){
     const adaptedBoard = this.board.map(card => {
-      return [card.suit, card.rank];
+      return [card.rank, card.suit];
     });
     const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
-      // allPlayerInfo.push(secondaryPlayer);
       var hand = [["none", "none"], ["none", "none"]];
       if (secondaryPlayer.id === playerId) {
         hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];

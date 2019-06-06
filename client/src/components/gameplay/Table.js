@@ -22,7 +22,7 @@ class Table extends React.Component {
       <div>
       Pot: {pot}
       buttonLocation: {buttonLocation}
-      board: {board}
+      board: <Board cardList = {board}/>
       {playersList}
       </div>
     )
