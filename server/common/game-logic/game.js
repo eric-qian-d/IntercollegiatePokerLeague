@@ -33,11 +33,14 @@ module.exports = class Game { // maybe rename this to be Table
   }
 
 
-  // timerLogic() {
-  //   this.time--;
-  //   //logic for out of time
-  //
-  // }
+  timerLogic(obj) {
+    obj.time--;
+    //logic for out of time
+    console.log('in here');
+    // console.log(obj);
+    obj.emitAll();
+
+  }
 
 
   /**
@@ -54,7 +57,7 @@ module.exports = class Game { // maybe rename this to be Table
       return player !== "";
     }).length;
     if (numPlayersJoined >= 2) {
-      // setInterval()
+      setInterval(this.timerLogic, 1000, this);
       this.startHand();
     }
   }
@@ -192,7 +195,7 @@ module.exports = class Game { // maybe rename this to be Table
       const adaptedBoard = this.board.map(card => {
         return [card.suit, card.rank];
       });
-
+      this.time = 30;
       this.emitAll();
     }
   }
@@ -233,6 +236,7 @@ module.exports = class Game { // maybe rename this to be Table
         const adaptedBoard = this.board.map(card => {
           return [card.suit, card.rank];
         });
+        this.time = 30;
         this.emitAll();
       } else {
         //illegal raise logic
@@ -269,6 +273,7 @@ module.exports = class Game { // maybe rename this to be Table
         return [card.suit, card.rank];
       });
       const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
+      this.time = 30;
       this.emitAll();
     }
   }
@@ -361,6 +366,8 @@ module.exports = class Game { // maybe rename this to be Table
   }
 
   emitAll() {
+    console.log('emitting');
+    console.log(this.time);
     Object.values(this.seatMap).forEach(basePlayer => {
       // const allPlayerInfo = [];
       const info = this.getGameState(basePlayer.id);
@@ -378,7 +385,7 @@ module.exports = class Game { // maybe rename this to be Table
     const adaptedBoard = this.board.map(card => {
       return [card.rank, card.suit];
     });
-    const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
+    const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard, this.time];
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
       var hand = [["none", "none"], ["none", "none"]];
