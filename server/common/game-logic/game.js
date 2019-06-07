@@ -9,7 +9,7 @@ module.exports = class Game { // maybe rename this to be Table
    * @param {String} gameId UUID of the game
    * @param {gameType} type   type of game
    */
-  constructor(gameId, type, numPlayers, bigBlindValue, parentMatchId) {
+  constructor(gameId, type, numPlayers, bigBlindValue, parentMatchId, playerSocketMap, io) {
     this.id = gameId;
     this.type = type;
     this.numPlayers = numPlayers;
@@ -24,12 +24,20 @@ module.exports = class Game { // maybe rename this to be Table
     this.pot = 0;
     this.deck = new Deck();
     this.board = [];
+    this.time = 30;
+    this.playerSocketMap = playerSocketMap;
+    this.io = io;
     for(var i = 0; i < numPlayers; i++) {
       this.seatMap[i] = "";
     };
   }
 
 
+  // timerLogic() {
+  //   this.time--;
+  //   //logic for out of time
+  //
+  // }
 
 
   /**
@@ -46,7 +54,7 @@ module.exports = class Game { // maybe rename this to be Table
       return player !== "";
     }).length;
     if (numPlayersJoined >= 2) {
-      // console.log(this.seatMap);
+      // setInterval()
       this.startHand();
     }
   }
@@ -131,7 +139,7 @@ module.exports = class Game { // maybe rename this to be Table
     }
   }
 
-  check(playerId, playerSocketMap, io) {
+  check(playerId) {
     if (this.isPlayersTurn(playerId)) {
       if (this.currentTotalRaise == 0) {
         //legal check
@@ -148,7 +156,7 @@ module.exports = class Game { // maybe rename this to be Table
         const adaptedBoard = this.board.map(card => {
           return [card.suit, card.rank];
         });
-        this.emitAll(playerSocketMap, io);
+        this.emitAll();
       }
     }
   }
@@ -158,9 +166,7 @@ module.exports = class Game { // maybe rename this to be Table
    * @param  {String} playerId the UUID of the player
    * @return {Boolean}         True if the call is legal (correct turn) and went through, False otherwise
    */
-  call(playerId, playerSocketMap, io) {
-    console.log("call request begin state");
-    console.log(this);
+  call(playerId) {
     if (this.isPlayersTurn(playerId)) {
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
@@ -187,10 +193,8 @@ module.exports = class Game { // maybe rename this to be Table
         return [card.suit, card.rank];
       });
 
-      this.emitAll(playerSocketMap, io);
+      this.emitAll();
     }
-    console.log("call request end state");
-    console.log(this);
   }
 
   /**
@@ -199,9 +203,7 @@ module.exports = class Game { // maybe rename this to be Table
    * @param  {Integer} finalAmount the final amount to be raised to
    * @return {Boolean}             True if the raise is legal (correct turn and valid raise size) and False otherwise.
    */
-  raise(playerId, finalAmount, playerSocketMap, io) {
-    console.log("raise request begin state");
-    console.log(this);
+  raise(playerId, finalAmount) {
     //make sure raise is legal
     if (this.isPlayersTurn(playerId)) {
       const player = Object.values(this.seatMap).filter(player => {
@@ -231,13 +233,11 @@ module.exports = class Game { // maybe rename this to be Table
         const adaptedBoard = this.board.map(card => {
           return [card.suit, card.rank];
         });
-        this.emitAll(playerSocketMap, io);
+        this.emitAll();
       } else {
         //illegal raise logic
       }
     }
-    console.log("raise request end state");
-    console.log(this);
   }
 
   /**
@@ -245,7 +245,7 @@ module.exports = class Game { // maybe rename this to be Table
    * @param  {String} playerId the UUID of the player
    * @return {Boolean}         True if the fold is legal (correct turn) and went through, False otherwise
    */
-  fold(playerId, playerSocketMap, io) {
+  fold(playerId) {
     if (this.isPlayersTurn(playerId)) {
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
@@ -269,7 +269,7 @@ module.exports = class Game { // maybe rename this to be Table
         return [card.suit, card.rank];
       });
       const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
-      this.emitAll(playerSocketMap, io);
+      this.emitAll();
     }
   }
 
@@ -360,12 +360,12 @@ module.exports = class Game { // maybe rename this to be Table
     return thisPlayerSeatNumber === this.action;
   }
 
-  emitAll(playerSocketMap, io) {
+  emitAll() {
     Object.values(this.seatMap).forEach(basePlayer => {
       // const allPlayerInfo = [];
       const info = this.getGameState(basePlayer.id);
 
-      io.to(playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+      this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
     })
   }
 
@@ -395,8 +395,7 @@ module.exports = class Game { // maybe rename this to be Table
 
         }
       )
-    })
-    console.log(adjustedPlayersList);
+    });
     return [gameInfo, adjustedPlayersList];
   }
 

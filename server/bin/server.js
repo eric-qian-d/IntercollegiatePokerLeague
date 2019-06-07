@@ -67,7 +67,7 @@ function startMatch(matchId) {
     notifyCustomMatchLobby();
     for(var i = 0; i < team1.length; i++) {
       const newGameId = uuidv4();
-      const newGame = new Game(newGameId, "", 2, 10, matchId);
+      const newGame = new Game(newGameId, "", 2, 10, matchId, playerSocketMap, io);
       newGame.addPlayer(team1[i].id, 0, 10000, team1[i].firstName + ' ' + team1[i].lastName);
       newGame.addPlayer(team2[i].id, 1, 10000, team2[i].firstName + ' ' + team2[i].lastName);
       games[i] = {
@@ -131,7 +131,7 @@ function fold(playerId) {
   playerIds.forEach(playerId => {
     gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
   })
-  game.fold(playerId, gamePlayerSocketMap, io);
+  game.fold(playerId);
 }
 
 /**
@@ -145,7 +145,7 @@ function call(playerId) {
   playerIds.forEach(playerId => {
     gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
   })
-  game.call(playerId, gamePlayerSocketMap, io);
+  game.call(playerId);
 }
 
 /**
@@ -160,7 +160,7 @@ function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather
   playerIds.forEach(playerId => {
     gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
   })
-  game.raise(playerId, finalAmount, gamePlayerSocketMap, io);
+  game.raise(playerId, finalAmount);
 }
 
 
