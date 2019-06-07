@@ -19,7 +19,9 @@ class RaiseButton extends React.Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     raise(this.props.socket, this.state.value);
+    this.setState({value: ''});
   }
 
   render() {
