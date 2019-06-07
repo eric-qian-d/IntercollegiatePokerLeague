@@ -1,4 +1,5 @@
 import React from "react";
+import './PlayerInfo.css';
 
 class PlayerInfo extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class PlayerInfo extends React.Component {
   render() {
     const {name, stackSize} = this.props;
     return (
-      <div className = "PlayerInfoBox" >
+      <div className = "PlayerInfo" >
         <div className = "PlayerName">
           {name}
         </div>
