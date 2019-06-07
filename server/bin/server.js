@@ -58,6 +58,7 @@ function notifyCustomMatchLobby() {
 //currently only works for heads up matches
 function startMatch(matchId) {
   const match = customMatchMap[matchId];
+  console.log(match);
   const team1 = match.team1;
   const team2 = match.team2;
   const games = match.games;
@@ -67,8 +68,8 @@ function startMatch(matchId) {
     for(var i = 0; i < team1.length; i++) {
       const newGameId = uuidv4();
       const newGame = new Game(newGameId, "", 2, 10, matchId);
-      newGame.addPlayer(team1[i], 0, 10000);
-      newGame.addPlayer(team2[i], 1, 10000);
+      newGame.addPlayer(team1[i].id, 0, 10000, team1[i].firstName + ' ' + team1[i].lastName);
+      newGame.addPlayer(team2[i].id, 1, 10000, team2[i].firstName + ' ' + team2[i].lastName);
       games[i] = {
         team1Player : team1[i],
         team2Player : team2[i],
@@ -76,12 +77,12 @@ function startMatch(matchId) {
         winner : "none"
       }
       gameMap[newGameId] = newGame;
-      playerStatusMap[team1[i]] = "GAME";
-      playerStatusMap[team2[i]] = "GAME";
-      playerGameMap[team1[i]] = newGameId;
-      playerGameMap[team2[i]] = newGameId;
-      io.to(playerSocketMap[team1[i]]).emit("GAME");
-      io.to(playerSocketMap[team2[i]]).emit("GAME");
+      playerStatusMap[team1[i].id] = "GAME";
+      playerStatusMap[team2[i].id] = "GAME";
+      playerGameMap[team1[i].id] = newGameId;
+      playerGameMap[team2[i].id] = newGameId;
+      io.to(playerSocketMap[team1[i].id]).emit("GAME");
+      io.to(playerSocketMap[team2[i].id]).emit("GAME");
     }
   }
 
@@ -263,51 +264,69 @@ io.on("connection", function(socket) {
     io.to(socket.id).emit("IS OWNER", match.ownerId === userId);
   })
   socket.on("JOIN TEAM 1", async () => {
-    console.log('join team 1 req');
     const userId = socket.request.user.id;
-    const userEmail = socket.request.user.email;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
-    match.team1 = match.team1.filter(id => {return !(id === userId)});
-    match.team2 = match.team2.filter(id => {return !(id === userId)});
-    match.team1.push(userId);
-    Object.keys(match.listeners).forEach(playerId => {
-      io.to(playerSocketMap[playerId]).emit("TEAM 1", match.team1, false);
-      io.to(playerSocketMap[playerId]).emit("TEAM 2", match.team2, false);
+    match.team1 = match.team1.filter(secondaryUser => {return (secondaryUser.id !== userId)});
+    match.team2 = match.team2.filter(secondaryUser => {return (secondaryUser.id !== userId)});
+    match.team1.push(socket.request.user);
+    const team1names = match.team1.map(user => {
+      return (user.firstName + ' ' + user.lastName);
+    });
+    const team2names = match.team2.map(user => {
+      return (user.firstName + ' ' + user.lastName);
     })
-    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
-    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
+    console.log(team1names);
+    console.log(team2names);
+    Object.keys(match.listeners).forEach(playerId => {
+      io.to(playerSocketMap[playerId]).emit("TEAM 1", team1names, false);
+      io.to(playerSocketMap[playerId]).emit("TEAM 2", team2names, false);
+    })
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", team1names, true);
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", team2names, true);
+  });
 
-  });
   socket.on("JOIN TEAM 2", async () => {
-    console.log('join team 2 req');
     const userId = socket.request.user.id;
-    const userEmail = socket.request.user.email;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
-    match.team1 = match.team1.filter(id => {return !(id === userId)});
-    match.team2 = match.team2.filter(id => {return !(id === userId)});
-    match.team2.push(userId);
-    Object.keys(match.listeners).forEach(playerId => {
-      io.to(playerSocketMap[playerId]).emit("TEAM 1", match.team1, false);
-      io.to(playerSocketMap[playerId]).emit("TEAM 2", match.team2, false);
+    match.team1 = match.team1.filter(secondaryUser => {return (secondaryUser.id !== userId)});
+    match.team2 = match.team2.filter(secondaryUser => {return (secondaryUser.id !== userId)});
+    match.team2.push(socket.request.user);
+    const team1names = match.team1.map(user => {
+      return (user.firstName + ' ' + user.lastName);
+    });
+    const team2names = match.team2.map(user => {
+      return (user.firstName + ' ' + user.lastName);
     })
-    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
-    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
+    Object.keys(match.listeners).forEach(playerId => {
+      io.to(playerSocketMap[playerId]).emit("TEAM 1", team1names, false);
+      io.to(playerSocketMap[playerId]).emit("TEAM 2", team2names, false);
+    })
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", team1names, true);
+    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", team2names, true);
   });
+
   socket.on("GET TEAM 1", async () => {
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
-    io.to(socket.id).emit("TEAM 1", match.team1);
+    const team1names = match.team1.map(user => {
+      return (user.firstName + ' ' + user.lastName);
+    });
+    io.to(socket.id).emit("TEAM 1", team1names);
   });
   socket.on("GET TEAM 2", async () => {
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
-    io.to(socket.id).emit("TEAM 2", match.team2);
+    const team2names = match.team2.map(user => {
+      return (user.firstName + ' ' + user.lastName);
+    })
+    io.to(socket.id).emit("TEAM 2", team2names);
   });
   socket.on("START MATCH", async () => {
+    console.log('start match request');
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];

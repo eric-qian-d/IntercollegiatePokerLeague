@@ -26,7 +26,7 @@ class Table extends React.Component {
       return (
         // <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.id} stackSize = {player.stackSize} action = {action} inHand = {player.inHand}/>
         <div className = "test" style = {style}>
-         <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.id} stackSize = {player.stackSize} action = {action} inHand = {player.inHand}/>
+         <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.name} stackSize = {player.stackSize} action = {action} inHand = {player.inHand}/>
          </div>
       )
     })
@@ -48,8 +48,7 @@ class Table extends React.Component {
     const button = <div className = "test" style = {{position: 'absolute', top: 340 - Math.round(150 * (Math.cos(theta[buttonLocation]))) + 'px', 'left': 250 + Math.round(200 * (Math.sin(theta[buttonLocation]))) + 'px'}}> B </div>
     return (
       <div className = 'Table'>
-      Pot: {pot}
-      buttonLocation: {buttonLocation}
+      <div className = 'Pot' style = {{position: 'absolute', top: '280px', left: '250px'}}>{pot}</div>
       {playersList}
       {playerInvestmentsList}
       {button}

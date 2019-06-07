@@ -38,9 +38,9 @@ module.exports = class Game { // maybe rename this to be Table
    * @param {Integer} seatNumber seat position of the player
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
-  addPlayer(playerId, seatNumber, stackSize) {
+  addPlayer(playerId, seatNumber, stackSize, playerName) {
     if (seatNumber < this.numPlayers && (this.seatMap[seatNumber] === "")) {
-      this.seatMap[seatNumber] = new Player(playerId, seatNumber, stackSize);
+      this.seatMap[seatNumber] = new Player(playerId, seatNumber, stackSize, playerName);
     }
     const numPlayersJoined = Object.values(this.seatMap).filter(player => {
       return player !== "";
@@ -387,7 +387,7 @@ module.exports = class Game { // maybe rename this to be Table
       }
       return (
         {
-          id: secondaryPlayer.id,
+          name: secondaryPlayer.playerName,
           hand: hand,
           stackSize: secondaryPlayer.stackSize,
           investedStack: secondaryPlayer.investedStack,
@@ -396,7 +396,7 @@ module.exports = class Game { // maybe rename this to be Table
         }
       )
     })
-    // console.log(adjustedPlayersList);
+    console.log(adjustedPlayersList);
     return [gameInfo, adjustedPlayersList];
   }
 
