@@ -26,6 +26,9 @@ module.exports = class Game { // maybe rename this to be Table
     this.board = [];
     this.time = 30;
     this.playerSocketMap = playerSocketMap;
+    this.animateNextStreet = false;
+    this.animateWin = false;
+    this.animateCtr = 1;
     this.io = io;
     for(var i = 0; i < numPlayers; i++) {
       this.seatMap[i] = "";
@@ -34,11 +37,38 @@ module.exports = class Game { // maybe rename this to be Table
 
 
   timerLogic(obj) {
-    obj.time--;
-    //logic for out of time
-    console.log('in here');
-    // console.log(obj);
-    obj.emitAll();
+    if (obj.animateNextStreet) {
+      console.log('in animate next street');
+      //need to animate the next street
+      obj.animateNextStreet = false;
+      obj.aniamteCtr = 1;
+      // console.log(obj);
+    } else if (obj.animateWin) {
+      //need to animate a player winning the pot
+      obj.animateWin = false;
+      obj.animateCtr = 2;
+      obj.startHand();
+    } else {
+      if (obj.animateCtr > 0) {
+        //waiting for animation to finish
+        obj.animateCtr--;
+        // console.log('ticking down');
+        // console.log(obj);
+      } else {
+        //just ticking waiting for player to act
+        obj.time--;
+        //logic for out of time
+        console.log('in here');
+        // console.log(obj);
+        obj.emitAll();
+      }
+
+    }
+
+
+  }
+
+  animate() {
 
   }
 
@@ -189,14 +219,12 @@ module.exports = class Game { // maybe rename this to be Table
           advanced = true;
         }
       }
+      this.time = 30;
+      this.emitAll();
       if (this.action === this.lastRaiser) {
         this.nextStreet();
       }
-      const adaptedBoard = this.board.map(card => {
-        return [card.suit, card.rank];
-      });
-      this.time = 30;
-      this.emitAll();
+
     }
   }
 
@@ -265,16 +293,13 @@ module.exports = class Game { // maybe rename this to be Table
       const playersInHandList = Object.values(this.seatMap).filter(player => {
         return player.inHand;
       });
+      this.time = 30;
+      this.emitAll();
       const numPlayersInHand = playersInHandList.length;
       if (this.action === this.lastRaiser || numPlayersInHand == 1) {
         this.nextStreet();
       }
-      const adaptedBoard = this.board.map(card => {
-        return [card.suit, card.rank];
-      });
-      const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard];
-      this.time = 30;
-      this.emitAll();
+
     }
   }
 
@@ -285,6 +310,7 @@ module.exports = class Game { // maybe rename this to be Table
     });
     const numPlayersInHand = playersInHandList.length;
     if (numPlayersInHand === 1) {
+      this.animateWin = true;
       //one player won
       console.log("only one player left");
       //gives player the pot
@@ -296,9 +322,10 @@ module.exports = class Game { // maybe rename this to be Table
       })
       playersInHandList[0].stackSize += this.pot;
       //starts new hand
-      this.startHand();
+      // this.startHand();
     } else {
       //moves to next street
+      this.animateNextStreet = true;
       //adds bets to pot
       this.lastRaiseSize = 0;
       this.currentTotalRaise = 0;
@@ -366,8 +393,8 @@ module.exports = class Game { // maybe rename this to be Table
   }
 
   emitAll() {
-    console.log('emitting');
-    console.log(this.time);
+    // console.log('emitting');
+    // console.log(this.time);
     Object.values(this.seatMap).forEach(basePlayer => {
       // const allPlayerInfo = [];
       const info = this.getGameState(basePlayer.id);
