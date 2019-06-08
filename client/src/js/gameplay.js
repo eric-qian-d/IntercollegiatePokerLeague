@@ -16,6 +16,10 @@ export const raise = (socket, finalAmount) => {
   socket.emit("RAISE", finalAmount);
 }
 
+export const lobby = (socket) => {
+  socket.emit("GO TO LOBBY");
+}
+
 export const exit = (socket) => {
   socket.emit("EXIT");
 }

@@ -9,12 +9,13 @@ module.exports = class Game { // maybe rename this to be Table
    * @param {String} gameId UUID of the game
    * @param {gameType} type   type of game
    */
-  constructor(gameId, type, numPlayers, bigBlindValue, parentMatchId, playerSocketMap, io) {
+  constructor(gameId, type, numPlayers, bigBlindValue, parentMatchId, playerSocketMap, io, parentMatch) {
     this.id = gameId;
     this.type = type;
     this.numPlayers = numPlayers;
     this.bigBlindValue = bigBlindValue;
     this.parentMatchId = parentMatchId;
+    this.parentMatch = parentMatch;
     this.buttonLocation = 0;
     this.seatMap = {};
     this.currentTotalRaise = 0;
@@ -30,6 +31,7 @@ module.exports = class Game { // maybe rename this to be Table
     this.animateWin = false;
     this.animateCtr = 1;
     this.io = io;
+    this.finished = false;
     for(var i = 0; i < numPlayers; i++) {
       this.seatMap[i] = "";
     };
@@ -47,7 +49,13 @@ module.exports = class Game { // maybe rename this to be Table
       //need to animate a player winning the pot
       obj.animateWin = false;
       obj.animateCtr = 2;
-      obj.startHand();
+
+      if (obj.finished) {
+
+      } else {
+        obj.startHand();
+      }
+
     } else {
       if (obj.animateCtr > 0) {
         //waiting for animation to finish
@@ -55,12 +63,18 @@ module.exports = class Game { // maybe rename this to be Table
         // console.log('ticking down');
         // console.log(obj);
       } else {
-        //just ticking waiting for player to act
-        obj.time--;
-        //logic for out of time
-        console.log('in here');
-        // console.log(obj);
-        obj.emitAll();
+        if (obj.finished) {
+          console.log('in timer but this is finished');
+        } else {
+          //just ticking waiting for player to act
+          obj.time--;
+          //logic for out of time
+
+
+
+          obj.emitAll();
+        }
+
       }
 
     }
@@ -208,7 +222,7 @@ module.exports = class Game { // maybe rename this to be Table
       if (player.stackSize - (needToCall) < 0) {
         //player goes all in to call: need to take care of side pots later on. Also need to take care of the case of all-ins
         player.investedStack += player.stackSize;
-        this.stackSize = 0;
+        player.stackSize = 0;
       } else {
         player.investedStack += needToCall;
         player.stackSize -= needToCall;
@@ -370,7 +384,7 @@ module.exports = class Game { // maybe rename this to be Table
         //river finish
 
         //display both hands
-        this.animateWin = true;
+
         var currentStrongestHandStrength = 0;
         var winners = [];
         console.log('getting hand strengths');
@@ -386,7 +400,8 @@ module.exports = class Game { // maybe rename this to be Table
           }
         })
 
-
+        console.log('winners');
+        console.log(winners);
 
         Object.values(this.seatMap).forEach(player => {
           if (player.investedStack > 0) {
@@ -399,6 +414,9 @@ module.exports = class Game { // maybe rename this to be Table
           player.stackSize += Math.round(this.pot/winners.length);
         })
 
+        console.log('updated')
+        console.log(winners)
+
         const info = this.getGameState(null, true);
         Object.values(this.seatMap).forEach(basePlayer => {
           // const allPlayerInfo = [];
@@ -406,6 +424,36 @@ module.exports = class Game { // maybe rename this to be Table
 
           this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
         })
+
+
+        const listOfLivePlayers = Object.values(this.seatMap).filter(player => {
+          return player.stackSize > 0;
+        })
+        console.log('live players');
+        console.log(listOfLivePlayers);
+        if (listOfLivePlayers.length === 1) {
+          //we have a winner
+          console.log('we have a winner');
+          this.finished = true;
+          const winnerId = listOfLivePlayers[0].id;
+          if (this.parentMatch !== null) {
+            //this game is part of a team match
+            this.parentMatch.games[this.id].winner = winnerId;
+            const numRemainingMatches = Object.values(this.parentMatch.games).filter(game => {
+              return game.winner === 'none';
+            }).length;
+            if (numRemainingMatches === 0) {
+              console.log('the match has finished');
+              this.parentMatch.status = 'finished';
+
+              this.io.to(this.parentMatchId).emit("MATCH ENDED");
+            }
+          }
+
+        }
+
+
+        this.animateWin = true;
 
         // winner.stackSize += this.pot;
       }
@@ -436,7 +484,7 @@ module.exports = class Game { // maybe rename this to be Table
     Object.values(this.seatMap).forEach(basePlayer => {
       // const allPlayerInfo = [];
       const info = this.getGameState(basePlayer.id);
-
+      console.log(info[1]);
       this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
     })
   }

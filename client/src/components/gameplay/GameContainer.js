@@ -1,6 +1,7 @@
 import React from "react";
 import Table from "./Table";
 import ButtonBox from "./ButtonBox";
+import ReturnToLobbyButton from "./ReturnToLobbyButton";
 
 class GameContainer extends React.Component {
   constructor(props) {
@@ -8,6 +9,9 @@ class GameContainer extends React.Component {
     const {socket} = this.props;
     socket.on("GAME STATE", (gameInfo, allPlayerInfo) => {
       this.setState({numPlayers: gameInfo[0], buttonLocation: gameInfo[1], action: gameInfo[2], pot: gameInfo[3], board: gameInfo[4], time: gameInfo[5], players: allPlayerInfo});
+    })
+    socket.on("MATCH ENDED", () => {
+      this.setState({finish: true});
     })
     this.state = {
       numPlayers: 0,
@@ -17,6 +21,7 @@ class GameContainer extends React.Component {
       board: [],
       players: [],
       time: 0,
+      finished: false,
     }
   }
 
@@ -32,6 +37,7 @@ class GameContainer extends React.Component {
         <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation} action = {action} pot = {pot} board = {board} players = {players}/>
         <ButtonBox socket = {this.props.socket} />
         {time}
+        <ReturnToLobbyButton socket = {this.props.socket} />
       </div>
     )
   }

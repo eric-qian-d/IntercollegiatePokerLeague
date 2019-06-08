@@ -10,35 +10,55 @@ class CustomMatchLobbyContainer extends React.Component {
     socket.on("IS OWNER", isOwner => {
       this.setState({isOwner: isOwner});
     })
+    socket.on('MATCH STATUS', (status) => {
+      this.setState({matchStatus: status});
+    })
     this.state = {
-      isOwner: false
+      isOwner: false,
+      matchStatus: '',
     }
   }
 
   componentDidMount() {
     const {socket} = this.props;
     socket.emit("IS OWNER");
+    socket.emit('GET MATCH STATUS');
   }
 
   render() {
     const {socket} = this.props;
-    const {isOwner} = this.state;
-    if (isOwner) {
+    const {isOwner, matchStatus} = this.state;
+    if (matchStatus === 'creation') {
+      if (isOwner) {
+        return (
+          <div>
+            <TeamsContainer socket = {socket} isOwner = {isOwner}/>
+            <BeginMatchButton socket = {socket} isOwner = {isOwner}/>
+            <ReturnToListingsButton socket = {socket} isOwner = {isOwner}/>
+          </div>
+        )
+      } else {
+        return (
+          <div>
+            <TeamsContainer socket = {socket} isOwner = {isOwner}/>
+            <ReturnToListingsButton socket = {socket} isOwner = {isOwner}/>
+          </div>
+        )
+      }
+    } else if (matchStatus === 'in progress') {
       return (
-        <div>
-          <TeamsContainer socket = {socket} isOwner = {isOwner}/>
-          <BeginMatchButton socket = {socket} isOwner = {isOwner}/>
-          <ReturnToListingsButton socket = {socket} isOwner = {isOwner}/>
-        </div>
+        <div> in progress </div>
+      )
+    } else if (matchStatus === 'finished') {
+      return (
+        <div> match finished </div>
       )
     } else {
       return (
-        <div>
-          <TeamsContainer socket = {socket} isOwner = {isOwner}/>
-          <ReturnToListingsButton socket = {socket} isOwner = {isOwner}/>
-        </div>
+        <div> Loading </div>
       )
     }
+
 
   }
 }

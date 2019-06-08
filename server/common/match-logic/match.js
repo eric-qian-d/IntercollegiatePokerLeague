@@ -13,7 +13,7 @@ module.exports = class Match {
     this.team2 = [];
     this.listeners = {};
     this.games = {};
-    this.inProgress = false;
+    this.status = 'creation';
   }
 
 
