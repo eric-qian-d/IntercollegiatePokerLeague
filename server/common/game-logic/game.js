@@ -206,6 +206,7 @@ module.exports = class Game { // maybe rename this to be Table
       })[0];
       const needToCall = this.currentTotalRaise - player.investedStack;
       if (player.stackSize - (needToCall) < 0) {
+        //player goes all in to call: need to take care of side pots later on. Also need to take care of the case of all-ins
         player.investedStack += player.stackSize;
         this.stackSize = 0;
       } else {
@@ -244,6 +245,7 @@ module.exports = class Game { // maybe rename this to be Table
       if (raiseDelta > player.stackSize || raiseDelta > this.lastRaiseSize) {
         //legal raise
         if (raiseDelta > player.stackSize) {
+          //player needs to go all in to raise
           player.investedStack += player.stackSize;
           player.stackSize = 0;
         } else {
@@ -312,7 +314,6 @@ module.exports = class Game { // maybe rename this to be Table
     if (numPlayersInHand === 1) {
       this.animateWin = true;
       //one player won
-      console.log("only one player left");
       //gives player the pot
       Object.values(this.seatMap).forEach(player => {
         if (player.investedStack > 0) {
@@ -321,8 +322,6 @@ module.exports = class Game { // maybe rename this to be Table
         }
       })
       playersInHandList[0].stackSize += this.pot;
-      //starts new hand
-      // this.startHand();
     } else {
       //moves to next street
       this.animateNextStreet = true;
@@ -370,6 +369,45 @@ module.exports = class Game { // maybe rename this to be Table
       } else if (this.board.length === 5) {
         //river finish
 
+        //display both hands
+        this.animateWin = true;
+        var currentStrongestHandStrength = 0;
+        var winners = [];
+        console.log('getting hand strengths');
+        playersInHandList.forEach(player => {
+          const playerHandStrength = hand.getRanking(player.hand, this.board);
+          console.log(player);
+          console.log(playerHandStrength);
+          if (playerHandStrength == currentStrongestHandStrength) {
+            winners.push(player);
+          } else if (playerHandStrength > currentStrongestHandStrength) {
+            currentStrongestHandStrength = playerHandStrength;
+            winners = [player];
+          }
+        })
+
+
+
+        Object.values(this.seatMap).forEach(player => {
+          if (player.investedStack > 0) {
+            this.pot += player.investedStack;
+            player.investedStack = 0;
+          }
+        })
+        //todo: split so that not evenly divisible things
+        winners.forEach(player => {
+          player.stackSize += Math.round(this.pot/winners.length);
+        })
+
+        const info = this.getGameState(null, true);
+        Object.values(this.seatMap).forEach(basePlayer => {
+          // const allPlayerInfo = [];
+
+
+          this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+        })
+
+        // winner.stackSize += this.pot;
       }
     }
 
@@ -408,17 +446,25 @@ module.exports = class Game { // maybe rename this to be Table
    * @param  {String} playerId the UUID of the player
    * @return {String}          a representation of the game state for the SPECIFIC PLAYER as defined in wire-protocol.txt
    */
-  getGameState(playerId){
+  getGameState(playerId, all = false){
     const adaptedBoard = this.board.map(card => {
       return [card.rank, card.suit];
     });
     const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard, this.time];
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
-      var hand = [["none", "none"], ["none", "none"]];
-      if (secondaryPlayer.id === playerId) {
+      var hand;
+      if (!all) {
+        if (secondaryPlayer.id === playerId) {
+          hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
+        } else {
+          hand = [["none", "none"], ["none", "none"]];
+        }
+      } else {
         hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
       }
+
+
       return (
         {
           name: secondaryPlayer.playerName,
