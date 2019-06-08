@@ -191,6 +191,7 @@ io.on("connection", function(socket) {
   if(socket.request.isAuthenticated()) {
     const userId = socket.request.user.id;
     playerSocketMap[userId] = socket.id;
+    console.log(playerSocketMap)
 
     if (!playerStatusMap.hasOwnProperty(userId)) {
       //client joining for the first time

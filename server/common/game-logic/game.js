@@ -65,12 +65,17 @@ module.exports = class Game { // maybe rename this to be Table
       } else {
         if (obj.finished) {
           console.log('in timer but this is finished');
+          const info = obj.getGameState(null, true);
+          Object.values(obj.seatMap).forEach(basePlayer => {
+            // const allPlayerInfo = [];
+
+
+            obj.io.to(obj.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+          })
         } else {
           //just ticking waiting for player to act
           obj.time--;
           //logic for out of time
-
-
 
           obj.emitAll();
         }
@@ -384,6 +389,13 @@ module.exports = class Game { // maybe rename this to be Table
         //river finish
 
         //display both hands
+        const info = this.getGameState(null, true);
+        Object.values(this.seatMap).forEach(basePlayer => {
+          // const allPlayerInfo = [];
+
+
+          this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+        })
 
         var currentStrongestHandStrength = 0;
         var winners = [];
@@ -413,24 +425,9 @@ module.exports = class Game { // maybe rename this to be Table
         winners.forEach(player => {
           player.stackSize += Math.round(this.pot/winners.length);
         })
-
-        console.log('updated')
-        console.log(winners)
-
-        const info = this.getGameState(null, true);
-        Object.values(this.seatMap).forEach(basePlayer => {
-          // const allPlayerInfo = [];
-
-
-          this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
-        })
-
-
         const listOfLivePlayers = Object.values(this.seatMap).filter(player => {
           return player.stackSize > 0;
         })
-        console.log('live players');
-        console.log(listOfLivePlayers);
         if (listOfLivePlayers.length === 1) {
           //we have a winner
           console.log('we have a winner');
@@ -452,7 +449,7 @@ module.exports = class Game { // maybe rename this to be Table
 
         }
 
-
+        this.pot = 0;
         this.animateWin = true;
 
         // winner.stackSize += this.pot;
