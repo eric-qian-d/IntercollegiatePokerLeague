@@ -1,9 +1,11 @@
 import React from "react";
+import Navbar from '../navbar/Navbar';
 
 class HomeContainer extends React.Component {
   constructor(props) {
     super(props);
   }
+
 
   componentDidMount() {
     fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
@@ -19,7 +21,7 @@ class HomeContainer extends React.Component {
   render() {
     return(
       <div>
-        Welcome
+        <Navbar/>
       </div>
     )
   }
