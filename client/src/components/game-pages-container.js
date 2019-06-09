@@ -32,7 +32,7 @@ class GamePagesContainer extends React.Component {
     console.log(page);
     if (page === "CUSTOM LISTINGS") {
       return (
-        <CustomMatchListingsContainer socket = {socket} />
+        <CustomMatchListingsContainer socket = {socket} {...this.props}/>
       )
     } else if (page === "GAME") {
       return (

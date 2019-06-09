@@ -2,6 +2,7 @@ import React from 'react';
 import CustomGamesButton from './CustomGamesButton';
 import NormalHUGameButton from './NormalHUGameButton';
 import RankedHUGameButton from './RankedHUGameButton';
+import Navbar from '../navbar/Navbar';
 
 class GamesContainer extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class GamesContainer extends React.Component {
   render() {
     return (
       <div className = 'GamesContainer'>
+        <Navbar />
         <CustomGamesButton {...this.props} />
         <NormalHUGameButton />
         <RankedHUGameButton />
