@@ -39,10 +39,15 @@ module.exports = (sequelize, DataTypes) => {
         field: 'email_is_verified',
         defaultValue: false
       },
-      HURanking : {
+      normalHURanking : {
         type: DataTypes.INTEGER,
-        field: 'hu_ranking',
-        defaultValue: 1200
+        field: 'normal_hu_ranking',
+        defaultValue: 1500
+      },
+      rankedHURanking : {
+        type: DataTypes.INTEGER,
+        field: 'ranked_hu_ranking',
+        defaultValue: 1500
       }
     },
     {

@@ -5,7 +5,7 @@ class Navbar extends React.Component {
     return(
       <ul id="nav">
         <li><a href="/">Home</a></li>
-        <li><a href="/games">Games</a></li>
+        <li><a href="/choose-game">Games</a></li>
         <li><a href="/profile">Profile</a></li>
       </ul>
     )
