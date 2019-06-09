@@ -8,13 +8,9 @@ module.exports = {
     passport.serializeUser(function(user, done) {
       const userCopy = user.toJSON();
       delete userCopy.password;
-      console.log("USER COPY from serialize");
-      console.log(userCopy);
       done(null, userCopy);
     });
     passport.deserializeUser(function(user, done) {
-      console.log("USER COPY from deserialize");
-      console.log(user);
       done(null, user);
     });
 

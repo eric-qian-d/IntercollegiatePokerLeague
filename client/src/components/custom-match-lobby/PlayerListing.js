@@ -17,6 +17,7 @@ class PlayerListing extends React.Component {
     const style = {
       borderStyle: 'solid',
       borderWidth: '3px',
+      width: '200px',
     }
     style.borderColor = statusColorMap[status];
     return (

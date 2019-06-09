@@ -1,5 +1,6 @@
 import React from "react";
 import PlayerListing from "./PlayerListing";
+import './PlayersContainer.css';
 
 class PlayersContainer extends React.Component {
   constructor(props) {
@@ -21,16 +22,12 @@ class PlayersContainer extends React.Component {
 
     })
     return (
-      <div>
-        <div>
+        <div className = 'PlayersContainer'>
           {playersList}
-        </div>
-        <div>
           <button onClick = {() => {this.joinTeamLogic()}}>
             Join Team
           </button>
         </div>
-      </div>
     )
   }
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import PlayersContainer from "./PlayersContainer";
 import {getTeam1, getTeam2, joinTeam1, joinTeam2} from "../../js/custom-match-lobby";
+import './TeamsContainer.css';
 
 class TeamsContainer extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class TeamsContainer extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className = 'TeamsContainer flex-container'>
         <PlayersContainer players = {this.state.team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1}/>
         <PlayersContainer players = {this.state.team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2}/>
       </div>
