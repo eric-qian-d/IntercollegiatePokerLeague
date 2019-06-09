@@ -25,3 +25,7 @@ export const startMatch = (socket) => {
 export const returnToListings = (socket) => {
   socket.emit("RETURN TO LISTINGS");
 }
+
+export const getResults = (socket) => {
+  socket.emit('MATCH RESULTS');
+}

@@ -398,6 +398,38 @@ io.on("connection", function(socket) {
     io.to(playerSocketMap[userId]).emit('MATCH STATUS', match.status);
   })
 
+  socket.on('MATCH RESULTS', async function() {
+    const userId = socket.request.user.id;
+    const matchId = playerMatchMap[userId];
+    const match = customMatchMap[matchId];
+    const results = [];
+    const team1 = match.team1;
+    const team2 = match.team2;
+    Object.values(match.games).forEach((game, gameNumber) => {
+      if (game.winner === 'none') {
+        const gameResults = [];
+        gameResults.push([team1[gameNumber].firstName + ' ' + team1[gameNumber].lastName, 'in progress']);
+        gameResults.push([team2[gameNumber].firstName + ' ' + team2[gameNumber].lastName, 'in progress']);
+        results.push(gameResults);
+      } else {
+        if (game.winner === game.team1Player.id) {
+          const gameResults = [];
+          gameResults.push([team1[gameNumber].firstName + ' ' + team1[gameNumber].lastName, 'won']);
+          gameResults.push([team2[gameNumber].firstName + ' ' + team2[gameNumber].lastName, 'lost']);
+          results.push(gameResults);
+        } else {
+          const gameResults = [];
+          gameResults.push([team1[gameNumber].firstName + ' ' + team1[gameNumber].lastName, 'lost']);
+          gameResults.push([team2[gameNumber].firstName + ' ' + team2[gameNumber].lastName, 'won']);
+          results.push(gameResults);
+        }
+      }
+    })
+    console.log('from match results');
+    console.log(results);
+    io.to(playerSocketMap[userId]).emit('MATCH RESULTS', results);
+  })
+
 
 
   socket.on("EXIT", async function() {

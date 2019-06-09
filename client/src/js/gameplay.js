@@ -7,8 +7,6 @@ export const fold = (socket) => {
 }
 
 export const call = (socket) => {
-  console.log("CALLING");
-  console.log(socket);
   socket.emit("CALL");
 }
 

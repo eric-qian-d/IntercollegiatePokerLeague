@@ -2,6 +2,7 @@ import React from "react";
 import TeamsContainer from "./TeamsContainer";
 import BeginMatchButton from "./BeginMatchButton";
 import ReturnToListingsButton from "./ReturnToListingsButton";
+import ResultsContainer from './ResultsContainer';
 
 class CustomMatchLobbyContainer extends React.Component {
   constructor(props) {
@@ -51,7 +52,9 @@ class CustomMatchLobbyContainer extends React.Component {
       )
     } else if (matchStatus === 'finished') {
       return (
-        <div> match finished </div>
+        <div>
+          <ResultsContainer socket = {socket} />
+        </div>
       )
     } else {
       return (

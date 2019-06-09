@@ -15,7 +15,7 @@ class PlayersContainer extends React.Component {
     var playersList = this.props.players.map((p, i) => {
       return (
         <div key = {i}>
-          <PlayerListing player = {p}/>
+          <PlayerListing player = {p} status = 'lobby'/>
         </div>
       )
 
