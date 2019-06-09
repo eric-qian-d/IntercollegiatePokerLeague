@@ -1,123 +1,44 @@
-var socketIO = require("socket.io");
-var game = require("../common/game-logic/game");
-var gameType = require("../common/game-logic/gameType");
-// var server = require("../bin/server");
-// console.log("socket server initiating");
-// var io = socketIO(server);
+const express = require("express");
+const router = express.Router();
+const models = "./models";
+const states = require('../common/states');
 
-var socketMap = {}; //maps from socketId to playerId
-var playerGameMap = {}; //maps from playerId to gameId
-var gameMap = {}; //maps from gameId to Game
+const playerGameMap = states.playerGameMap; //maps from playerId to gameId
+const playerMatchMap = states.playerMatchMap; //maps from playerId to matchId
+const playerStatusMap = states.playerStatusMap; //maps from playerId to //CUSTOM LISTINGS, CUSTOM MATCH LOBBY, GAME
+const playerSocketMap = states.playerSocketMap; //maps from playerId to socket
+const playerAvailable = states.playerAvailable; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE
+const customMatchMap = states.customMatchMap; //maps from matchId to Match object
+const gameMap = states.gameMap; //maps from gameId to Game object
 
+const normalQueue = [];
+const rankedQueue = [];
 
-// /**
-//  * Routes for handling socket connections
-//  * @param  {Socket} socket Default parameter of Socket.io
-//  */
-// io.on("connection", function(socket) {
-//   console.log("New client connected");
-//
-//   socket.on("JOIN LOBBY", async function(seatNumber) {
-//     addPlayer(socket.id, "1234");//how to get player ID?
-//   });
-//   socket.on("JOIN GAME", async function(gameId) {
-//     joinGame(socketMap[socket.id], gameId);//how to get player ID?
-//   });
-//   socket.on("SEAT", async function(seatNumber) {
-//     pickSeat(socketMap[socket.id], seatNumber);
-//   })
-//   socket.on("FOLD", async function() {
-//     fold(socketMap[socket.id]);
-//   });
-//   socket.on("CALL", async function() {
-//     console.log("received a call action");
-//     call(socketMap[socket.id]);
-//   });
-//   socket.on("RAISE", async function(finalAmount) {
-//     raise(socketMap[socket.id], finalAmount);
-//   });
-//   socket.on("EXIT", async function() {
-//     leaveGame(socketMap[socket.id]);
-//     //logic for handling ranking
-//   });
-// })
+router.post('/join-ranked', async (req, res, next) => {
+  
+  console.log(req.user);
+  const userId = req.user.id;
+  playerAvailable[userId] = 'IN QUEUE';
+});
+
+router.post('/join-normal', async (req, res, next) => {
 
 
+});
 
-/**
- * Map a socket to a playerId
- * @param {String} socketId the UUID of the player's socket
- * @param {String} playerId the UUID of the player
- */
-function addPlayer(socketId, playerId) {
-  socketMap[socketId] = playerId;
-}
+router.post('/cancel-ranked', async (req, res, next) => {
 
-/**
- * Adds a new game to the lobby
- * @param {String} gameId the ID of the new game
- * @param {gameType} type   the type of the game, as defined in the enum gameType.js
- */
-function addGame(gameId, type) {
 
-}
+});
 
-/**
- * Joins an existing game
- * @param  {String} playerId the UUID of the player
- * @param  {String} gameId   the UUID of the game that the player is joining
- *
- */
-function joinGame(playerId, gameId) {
-  playerGameMap[playerId] = gameId;
+router.post('/cancel-normal', async (req, res, next) => {
 
-}
 
-/**
- * Selects a seat at the player's game
- * @param  {String} playerId the UUID of the player
- * @param  {Integer} seatNumber the seatNumber the player is trying to sit at
- * @return {Boolean}         true if the game was joined successfully and false otherwise
- */
-function pickSeat(playerId, seatNumber) {
-  var game = gameMap[playerGameMap[playerId]];
-  game.addPlayer(playerId, seatNumber);
-}
+});
 
-/**
- * Has the player leave the game
- * @param  {String} playerId the UUID of the player
- * @return {Boolean}         true if the game was exited successfully and false otherwise
- */
-function leaveGame(playerId) {
-  var game = gameMap[playerGameMap[playerId]];
-  game.removePlayer(playerId);
-}
+router.get('/test', (req,res, next) => {
 
-/**
- * Forwards the player's fold action to the respective Game.
- * @param  {String} playerId the UUID of the player
- */
-function fold(playerId) {
-  var game = gameMap[playerGameMap[playerId]];
-  game.fold(playerId);
-}
+  console.log("success");
+});
 
-/**
- * Forwards the player's call action to the respective Game.
- * @param  {String} playerId the UUID of the player
- */
-function call(playerId) {
-  var game = gameMap[playerGameMap[playerId]];
-  game.call(playerId);
-}
-
-/**
- * Forwards the player's raise action to the respective Game.
- * @param  {String} playerId    the UUID of the player
- * @param  {Integer} finalAmount the final amount that the player is raising to
- */
-function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
-  var game = gameMap[playerGameMap[playerId]];
-  game.raise(playerId, finalAmount);
-}
+module.exports = router;

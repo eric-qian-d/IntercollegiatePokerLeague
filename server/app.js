@@ -4,6 +4,7 @@ const cors = require("cors");
 const session = require("./config/session");
 const bodyParser = require('body-parser');
 const passport = require("passport");
+const chooseGame = require('./routes/game');
 
 const passportConfigure = require("./common/passport");
 const registration = require("./routes/registration");
@@ -29,6 +30,7 @@ app.use(passport.session());
 
 
 app.use("/api/registration", registration);
+app.use('/api/choose-game', chooseGame);
 
 app.get('/loggedin', function(req, res, next) {
   // console.log(req.session);

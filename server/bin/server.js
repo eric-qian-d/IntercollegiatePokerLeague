@@ -10,15 +10,15 @@ var Match = require("../common/match-logic/match");
 var MatchSocket = require("../common/match-logic/match-socket");
 var app = require("../app");
 var session = require("../config/session");
+const states = require('../common/states');
 
-const playerGameMap = {}; //maps from playerId to gameId
-const playerMatchMap = {}; //maps from playerId to matchId
-const playerStatusMap = {}; //maps from playerId to //CUSTOM LISTINGS, CUSTOM MATCH LOBBY, GAME
-const playerSocketMap = {}; //maps from playerId to socket
-const playerAvailable = {}; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE
-//
-const customMatchMap = {}; //maps from matchId to Match object
-const gameMap = {}; //maps from gameId to Game object
+const playerGameMap = states.playerGameMap; //maps from playerId to gameId
+const playerMatchMap = states.playerMatchMap; //maps from playerId to matchId
+const playerStatusMap = states.playerStatusMap; //maps from playerId to //CUSTOM LISTINGS, CUSTOM MATCH LOBBY, GAME
+const playerSocketMap = states.playerSocketMap; //maps from playerId to socket
+const playerAvailable = states.playerAvailable; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE
+const customMatchMap = states.customMatchMap; //maps from matchId to Match object
+const gameMap = states.gameMap; //maps from gameId to Game object
 
 
 
@@ -187,11 +187,10 @@ io.use(passportSocket.authorize({
 io.on("connection", function(socket) {
   console.log("New client connected");
   //need to implement logic to direct people to home/login if not logged in
-  console.log(socket.request.isAuthenticated());
+  console.log(playerAvailable);
   if(socket.request.isAuthenticated()) {
     const userId = socket.request.user.id;
     playerSocketMap[userId] = socket.id;
-    console.log(playerSocketMap)
 
     if (!playerStatusMap.hasOwnProperty(userId)) {
       //client joining for the first time
@@ -260,7 +259,6 @@ io.on("connection", function(socket) {
 
   //Custom Match Lobby Logic
   socket.on("IS OWNER", async() => {
-    console.log("is owner req");
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
@@ -279,8 +277,6 @@ io.on("connection", function(socket) {
     const team2names = match.team2.map(user => {
       return (user.firstName + ' ' + user.lastName);
     })
-    console.log(team1names);
-    console.log(team2names);
     Object.keys(match.listeners).forEach(playerId => {
       io.to(playerSocketMap[playerId]).emit("TEAM 1", team1names, false);
       io.to(playerSocketMap[playerId]).emit("TEAM 2", team2names, false);
@@ -443,7 +439,8 @@ module.exports = {
 		server.listen(port, () => {
 			console.log('Express server listening on port ' + server.address().port);
 		});
-	}
+	},
+
 }
 
 
