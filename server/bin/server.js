@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser');
 var Game = require("../common/game-logic/game");
 var gameType = require("../common/game-logic/gameType");
 var Match = require("../common/match-logic/match");
-var MatchSocket = require("../common/match-logic/match-socket");
 var app = require("../app");
 var session = require("../config/session");
 const states = require('../common/states');
@@ -20,9 +19,6 @@ const playerAvailable = states.playerAvailable; //maps from playerId to availabi
 const customMatchMap = states.customMatchMap; //maps from matchId to Match object
 const gameMap = states.gameMap; //maps from gameId to Game object
 
-
-
-
 /**
  * TO SPECCCC
  * @param {[type]} matchId    [description]
@@ -31,7 +27,7 @@ const gameMap = states.gameMap; //maps from gameId to Game object
  * @param {[type]} numPlayers [description]
  */
 function addCustomMatch(matchId, name, numPlayers, ownerId) {
-  var newMatch = new Match(matchId, name, numPlayers, ownerId);
+  var newMatch = new Match(matchId, name, numPlayers, ownerId, io);
   customMatchMap[matchId] = newMatch;
   notifyCustomMatchLobby();
 }
@@ -58,56 +54,8 @@ function notifyCustomMatchLobby() {
 //currently only works for heads up matches
 function startMatch(matchId) {
   const match = customMatchMap[matchId];
-  console.log(match);
-  const team1 = match.team1;
-  const team2 = match.team2;
-  const games = match.games;
-  if (team1.length === team2.length) {
-    match.status = 'in progress';
-    notifyCustomMatchLobby();
-    for(var i = 0; i < team1.length; i++) {
-      const newGameId = uuidv4();
-      const newGame = new Game(newGameId, "", 2, 10, matchId, playerSocketMap, io, match);
-      newGame.addPlayer(team1[i].id, 0, 10000, team1[i].firstName + ' ' + team1[i].lastName);
-      newGame.addPlayer(team2[i].id, 1, 10000, team2[i].firstName + ' ' + team2[i].lastName);
-      games[newGameId] = {
-        team1Player : team1[i],
-        team2Player : team2[i],
-        gameId : newGameId,
-        winner : "none"
-      }
-      gameMap[newGameId] = newGame;
-      playerStatusMap[team1[i].id] = "GAME";
-      playerStatusMap[team2[i].id] = "GAME";
-      playerGameMap[team1[i].id] = newGameId;
-      playerGameMap[team2[i].id] = newGameId;
-      io.to(playerSocketMap[team1[i].id]).emit("GAME");
-      io.to(playerSocketMap[team2[i].id]).emit("GAME");
-    }
-  }
-
-}
-
-/**
- * Joins an existing game
- * @param  {String} playerId the UUID of the player
- * @param  {String} gameId   the UUID of the game that the player is joining
- *
- */
-function joinGame(playerId, gameId) {
-  playerGameMap[playerId] = gameId;
-
-}
-
-/**
- * Selects a seat at the player's game
- * @param  {String} playerId the UUID of the player
- * @param  {Integer} seatNumber the seatNumber the player is trying to sit at
- * @return {Boolean}         true if the game was joined successfully and false otherwise
- */
-function pickSeat(playerId, seatNumber) {
-  var game = gameMap[playerGameMap[playerId]];
-  game.addPlayer(playerId, seatNumber);
+  match.start();
+  notifyCustomMatchLobby();
 }
 
 /**
@@ -268,64 +216,31 @@ io.on("connection", function(socket) {
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
-    match.team1 = match.team1.filter(secondaryUser => {return (secondaryUser.id !== userId)});
-    match.team2 = match.team2.filter(secondaryUser => {return (secondaryUser.id !== userId)});
-    match.team1.push(socket.request.user);
-    const team1names = match.team1.map(user => {
-      return (user.firstName + ' ' + user.lastName);
-    });
-    const team2names = match.team2.map(user => {
-      return (user.firstName + ' ' + user.lastName);
-    })
-    Object.keys(match.listeners).forEach(playerId => {
-      io.to(playerSocketMap[playerId]).emit("TEAM 1", team1names, false);
-      io.to(playerSocketMap[playerId]).emit("TEAM 2", team2names, false);
-    })
-    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", team1names, true);
-    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", team2names, true);
+    match.joinTeam1(socket.request.user);
   });
 
   socket.on("JOIN TEAM 2", async () => {
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
-    match.team1 = match.team1.filter(secondaryUser => {return (secondaryUser.id !== userId)});
-    match.team2 = match.team2.filter(secondaryUser => {return (secondaryUser.id !== userId)});
-    match.team2.push(socket.request.user);
-    const team1names = match.team1.map(user => {
-      return (user.firstName + ' ' + user.lastName);
-    });
-    const team2names = match.team2.map(user => {
-      return (user.firstName + ' ' + user.lastName);
-    })
-    Object.keys(match.listeners).forEach(playerId => {
-      io.to(playerSocketMap[playerId]).emit("TEAM 1", team1names, false);
-      io.to(playerSocketMap[playerId]).emit("TEAM 2", team2names, false);
-    })
-    io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", team1names, true);
-    io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", team2names, true);
+    match.joinTeam2(socket.request.user);
   });
 
   socket.on("GET TEAM 1", async () => {
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
-    const team1names = match.team1.map(user => {
-      return (user.firstName + ' ' + user.lastName);
-    });
+    const team1names = match.getTeam1Names();
     io.to(playerSocketMap[userId]).emit("TEAM 1", team1names);
   });
   socket.on("GET TEAM 2", async () => {
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
-    const team2names = match.team2.map(user => {
-      return (user.firstName + ' ' + user.lastName);
-    })
+    const team2names = match.getTeam2Names();
     io.to(playerSocketMap[userId]).emit("TEAM 2", team2names);
   });
   socket.on("START MATCH", async () => {
-    console.log('start match request');
     const userId = socket.request.user.id;
     const matchId = playerMatchMap[userId];
     const match = customMatchMap[matchId];
@@ -364,12 +279,6 @@ io.on("connection", function(socket) {
     addPlayer(socket.id, "1234");//how to get player ID?
   });
 
-  socket.on("JOIN GAME", async function(gameId) {
-    joinGame(socket.request.user.id, gameId);//how to get player ID?
-  });
-  socket.on("SEAT", async function(seatNumber) {
-    pickSeat(socket.request.user.id, seatNumber);
-  })
   socket.on("FOLD", async function() {
     fold(socket.request.user.id);
   });
