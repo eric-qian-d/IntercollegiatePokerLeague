@@ -19,14 +19,103 @@ const customMatchMap = states.customMatchMap; //maps from matchId to Match objec
 const gameMap = states.gameMap; //maps from gameId to Game object
 
 
+var io;
 
+/**
+ * TO SPECCCC
+ * @param {[type]} matchId    [description]
+ * @param {[type]} name       [description]
+ * @param {[type]} type       [description]
+ * @param {[type]} numPlayers [description]
+ */
+function addCustomMatch(matchId, name, numPlayers, ownerId) {
+  var newMatch = new Match(matchId, name, numPlayers, ownerId, io, 'custom');
+  customMatchMap[matchId] = newMatch;
+  notifyCustomMatchLobby();
+}
 
+function getCustomMatches() {
+  var customMatches = Object.values(customMatchMap).map(m => {
+    return (
+      {
+        id : m.id,
+        name : m.name,
+        numPlayers : m.numPlayers,
+      }
+    )
+  }).filter(m => {
+    return !m.inProgress;
+  });
+  return customMatches
+}
 
+function notifyCustomMatchLobby() {
+  io.to("CUSTOM LISTINGS").emit("CUSTOM MATCHES", getCustomMatches());
+}
 
+//currently only works for heads up matches
+function startMatch(matchId) {
+  const match = customMatchMap[matchId];
+  match.start();
+  notifyCustomMatchLobby();
+}
+
+/**
+ * Has the player leave the game
+ * @param  {String} playerId the UUID of the player
+ * @return {Boolean}         true if the game was exited successfully and false otherwise
+ */
+function leaveGame(playerId) {
+  var game = gameMap[playerGameMap[playerId]];
+  game.removePlayer(playerId);
+}
+
+/**
+ * Forwards the player's fold action to the respective Game.
+ * @param  {String} playerId the UUID of the player
+ */
+function fold(playerId) {
+  const game = gameMap[playerGameMap[playerId]];
+  const playerIds = game.getPlayerIds();
+  const gamePlayerSocketMap = {}
+  playerIds.forEach(playerId => {
+    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+  })
+  game.fold(playerId);
+}
+
+/**
+ * Forwards the player's call action to the respective Game.
+ * @param  {String} playerId the UUID of the player
+ */
+function call(playerId) {
+  const game = gameMap[playerGameMap[playerId]];
+  const playerIds = game.getPlayerIds();
+  const gamePlayerSocketMap = {}
+  playerIds.forEach(playerId => {
+    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+  })
+  game.call(playerId);
+}
+
+/**
+ * Forwards the player's raise action to the respective Game.
+ * @param  {String} playerId    the UUID of the player
+ * @param  {Integer} finalAmount the final amount that the player is raising to
+ */
+function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
+  const game = gameMap[playerGameMap[playerId]];
+  const playerIds = game.getPlayerIds();
+  const gamePlayerSocketMap = {}
+  playerIds.forEach(playerId => {
+    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+  })
+  game.raise(playerId, finalAmount);
+}
 
 module.exports = {
   init: (server) => {
-    const io = socketIO(server);
+    io = socketIO(server);
     io.use(function(socket, next) {
         session.session(socket.request, socket.request.res, next);
     });
@@ -243,104 +332,19 @@ module.exports = {
         io.to(playerSocketMap[userId]).emit('MATCH RESULTS', results);
       })
 
-
-
       socket.on("EXIT", async function() {
         leaveGame(socket.request.user.id);
         //logic for handling ranking
       });
     })
+  },
 
-    /**
-     * TO SPECCCC
-     * @param {[type]} matchId    [description]
-     * @param {[type]} name       [description]
-     * @param {[type]} type       [description]
-     * @param {[type]} numPlayers [description]
-     */
-    function addCustomMatch(matchId, name, numPlayers, ownerId) {
-      var newMatch = new Match(matchId, name, numPlayers, ownerId, io, 'custom');
-      customMatchMap[matchId] = newMatch;
-      notifyCustomMatchLobby();
-    }
+  createNewNormalMatch: (player1, player2) => {
 
-    function getCustomMatches() {
-      var customMatches = Object.values(customMatchMap).map(m => {
-        return (
-          {
-            id : m.id,
-            name : m.name,
-            numPlayers : m.numPlayers,
-          }
-        )
-      }).filter(m => {
-        return !m.inProgress;
-      });
-      return customMatches
-    }
+  },
 
-    function notifyCustomMatchLobby() {
-      io.to("CUSTOM LISTINGS").emit("CUSTOM MATCHES", getCustomMatches());
-    }
-
-    //currently only works for heads up matches
-    function startMatch(matchId) {
-      const match = customMatchMap[matchId];
-      match.start();
-      notifyCustomMatchLobby();
-    }
-
-    /**
-     * Has the player leave the game
-     * @param  {String} playerId the UUID of the player
-     * @return {Boolean}         true if the game was exited successfully and false otherwise
-     */
-    function leaveGame(playerId) {
-      var game = gameMap[playerGameMap[playerId]];
-      game.removePlayer(playerId);
-    }
-
-    /**
-     * Forwards the player's fold action to the respective Game.
-     * @param  {String} playerId the UUID of the player
-     */
-    function fold(playerId) {
-      const game = gameMap[playerGameMap[playerId]];
-      const playerIds = game.getPlayerIds();
-      const gamePlayerSocketMap = {}
-      playerIds.forEach(playerId => {
-        gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
-      })
-      game.fold(playerId);
-    }
-
-    /**
-     * Forwards the player's call action to the respective Game.
-     * @param  {String} playerId the UUID of the player
-     */
-    function call(playerId) {
-      const game = gameMap[playerGameMap[playerId]];
-      const playerIds = game.getPlayerIds();
-      const gamePlayerSocketMap = {}
-      playerIds.forEach(playerId => {
-        gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
-      })
-      game.call(playerId);
-    }
-
-    /**
-     * Forwards the player's raise action to the respective Game.
-     * @param  {String} playerId    the UUID of the player
-     * @param  {Integer} finalAmount the final amount that the player is raising to
-     */
-    function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
-      const game = gameMap[playerGameMap[playerId]];
-      const playerIds = game.getPlayerIds();
-      const gamePlayerSocketMap = {}
-      playerIds.forEach(playerId => {
-        gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
-      })
-      game.raise(playerId, finalAmount);
-    }
+  createNewRankedMatch: (player1, player2) => {
+    
   }
+
 }
