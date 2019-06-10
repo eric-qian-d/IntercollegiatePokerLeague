@@ -11,7 +11,7 @@ const playerSocketMap = states.playerSocketMap
 //Use this class later, once Game works
 module.exports = class Match {
 
-  constructor(matchId, name, numPlayers, ownerId, io) {
+  constructor(matchId, name, numPlayers, ownerId, io, type) {
     this.ownerId = ownerId;
     this.id = matchId;
     this.name = name;
@@ -22,6 +22,7 @@ module.exports = class Match {
     this.games = {};
     this.status = 'creation';
     this.io = io;
+    this.type = type;
   }
 
   start() {
