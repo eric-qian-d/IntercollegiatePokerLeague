@@ -40,7 +40,6 @@ module.exports = class Game { // maybe rename this to be Table
 
   timerLogic(obj) {
     if (obj.animateNextStreet) {
-      console.log('in animate next street');
       //need to animate the next street
       obj.animateNextStreet = false;
       obj.aniamteCtr = 1;
@@ -402,8 +401,6 @@ module.exports = class Game { // maybe rename this to be Table
         console.log('getting hand strengths');
         playersInHandList.forEach(player => {
           const playerHandStrength = hand.getRanking(player.hand, this.board);
-          console.log(player);
-          console.log(playerHandStrength);
           if (playerHandStrength == currentStrongestHandStrength) {
             winners.push(player);
           } else if (playerHandStrength > currentStrongestHandStrength) {
@@ -411,9 +408,6 @@ module.exports = class Game { // maybe rename this to be Table
             winners = [player];
           }
         })
-
-        console.log('winners');
-        console.log(winners);
 
         Object.values(this.seatMap).forEach(player => {
           if (player.investedStack > 0) {
@@ -430,7 +424,6 @@ module.exports = class Game { // maybe rename this to be Table
         })
         if (listOfLivePlayers.length === 1) {
           //we have a winner
-          console.log('we have a winner');
           this.finished = true;
           const winnerId = listOfLivePlayers[0].id;
           if (this.parentMatch !== null) {
@@ -440,10 +433,7 @@ module.exports = class Game { // maybe rename this to be Table
               return game.winner === 'none';
             }).length;
             if (numRemainingMatches === 0) {
-              console.log('the match has finished');
-              this.parentMatch.status = 'finished';
-
-              this.io.to(this.parentMatchId).emit("MATCH ENDED");
+              this.parentMatch.end();
             }
           }
 
@@ -476,10 +466,7 @@ module.exports = class Game { // maybe rename this to be Table
   }
 
   emitAll() {
-    // console.log('emitting');
-    // console.log(this.time);
     Object.values(this.seatMap).forEach(basePlayer => {
-      // const allPlayerInfo = [];
       const info = this.getGameState(basePlayer.id);
       console.log(info[1]);
       this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);

@@ -330,8 +330,6 @@ io.on("connection", function(socket) {
         }
       }
     })
-    console.log('from match results');
-    console.log(results);
     io.to(playerSocketMap[userId]).emit('MATCH RESULTS', results);
   })
 

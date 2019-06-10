@@ -97,6 +97,10 @@ module.exports = class Match {
     return team2names;
   }
 
+  end() {
+    this.status = 'finished';
+      // this.io.to(this.parentMatchId).emit("MATCH ENDED");
+  }
 
 
   notifyEnd() {
