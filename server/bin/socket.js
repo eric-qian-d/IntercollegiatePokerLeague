@@ -15,7 +15,7 @@ const playerMatchMap = states.playerMatchMap; //maps from playerId to matchId
 const playerStatusMap = states.playerStatusMap; //maps from playerId to //CUSTOM LISTINGS, CUSTOM MATCH LOBBY, GAME
 const playerSocketMap = states.playerSocketMap; //maps from playerId to socket
 const playerAvailable = states.playerAvailable; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE
-const customMatchMap = states.customMatchMap; //maps from matchId to Match object
+const matchMap = states.matchMap; //maps from matchId to Match object
 const gameMap = states.gameMap; //maps from gameId to Game object
 
 
@@ -29,13 +29,17 @@ var io;
  * @param {[type]} numPlayers [description]
  */
 function addCustomMatch(matchId, name, numPlayers, ownerId) {
-  var newMatch = new Match(matchId, name, numPlayers, ownerId, io, 'custom');
-  customMatchMap[matchId] = newMatch;
+  const newMatch = new Match(matchId, name, numPlayers, ownerId, io, 'custom');
+  matchMap[matchId] = newMatch;
   notifyCustomMatchLobby();
 }
 
 function getCustomMatches() {
-  var customMatches = Object.values(customMatchMap).map(m => {
+  var customMatches = Object.values(matchMap)
+  .filter(m => {
+    return m.type === 'custom';
+  })
+  .map(m => {
     return (
       {
         id : m.id,
@@ -43,7 +47,8 @@ function getCustomMatches() {
         numPlayers : m.numPlayers,
       }
     )
-  }).filter(m => {
+  })
+  .filter(m => {
     return !m.inProgress;
   });
   return customMatches
@@ -53,12 +58,6 @@ function notifyCustomMatchLobby() {
   io.to("CUSTOM LISTINGS").emit("CUSTOM MATCHES", getCustomMatches());
 }
 
-//currently only works for heads up matches
-function startMatch(matchId) {
-  const match = customMatchMap[matchId];
-  match.start();
-  notifyCustomMatchLobby();
-}
 
 /**
  * Has the player leave the game
@@ -197,7 +196,7 @@ module.exports = {
         } else {
           playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
           playerMatchMap[userId] = matchId;
-          const match = customMatchMap[matchId];
+          const match = matchMap[matchId];
           match.listeners[userId] = true;
           io.to(playerSocketMap[userId]).emit("CUSTOM MATCH LOBBY");
         }
@@ -208,50 +207,51 @@ module.exports = {
       socket.on("IS OWNER", async() => {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         io.to(playerSocketMap[userId]).emit("IS OWNER", match.ownerId === userId);
       })
       socket.on("JOIN TEAM 1", async () => {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         match.joinTeam1(socket.request.user);
       });
 
       socket.on("JOIN TEAM 2", async () => {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         match.joinTeam2(socket.request.user);
       });
 
       socket.on("GET TEAM 1", async () => {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         const team1names = match.getTeam1Names();
         io.to(playerSocketMap[userId]).emit("TEAM 1", team1names);
       });
       socket.on("GET TEAM 2", async () => {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         const team2names = match.getTeam2Names();
         io.to(playerSocketMap[userId]).emit("TEAM 2", team2names);
       });
       socket.on("START MATCH", async () => {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         if (match.ownerId === userId) {
-          startMatch(matchId);
+          match.start();
+          notifyCustomMatchLobby();
         }
       })
       socket.on("RETURN TO LISTINGS", async () => {
         const userId = socket.request.user.id;
         const userEmail = socket.request.user.email;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         match.team1 = match.team1.filter(id => {return !(id === userId)});
         match.team2 = match.team2.filter(id => {return !(id === userId)});
         delete match.listeners[userId];
@@ -291,21 +291,21 @@ module.exports = {
       socket.on('GO TO LOBBY', async function() {
         const userId = socket.request.user.id;
         playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
-        // const match = customMatchMap[matchId];
+        // const match = matchMap[matchId];
         io.to(playerSocketMap[userId]).emit("CUSTOM MATCH LOBBY");
       });
 
       socket.on('GET MATCH STATUS', async function () {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         io.to(playerSocketMap[userId]).emit('MATCH STATUS', match.status);
       })
 
       socket.on('MATCH RESULTS', async function() {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
-        const match = customMatchMap[matchId];
+        const match = matchMap[matchId];
         const results = [];
         const team1 = match.team1;
         const team2 = match.team2;
@@ -339,12 +339,22 @@ module.exports = {
     })
   },
 
-  createNewNormalMatch: (player1, player2) => {
-
+  createNewNormalHUMatch: (player1, player2) => {
+    const newMatchId = uuidv4();
+    const newMatch = new Match(newMatchId, newMatchId, 1, '', io, 'normal');
+    matchMap[matchId] = newMatch;
+    newMatch.joinTeam1(player1);
+    newMatch.joinTeam2(player2);
+    newMatch.start();
   },
 
-  createNewRankedMatch: (player1, player2) => {
-    
+  createNewRankedHUMatch: (player1, player2) => {
+    const newMatchId = uuidv4();
+    const newMatch = new Match(newMatchId, newMatchId, 1, '', io, 'ranked');
+    matchMap[matchId] = newMatch;
+    newMatch.joinTeam1(player1);
+    newMatch.joinTeam2(player2);
+    newMatch.start();
   }
 
 }

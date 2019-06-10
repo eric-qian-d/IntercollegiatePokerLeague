@@ -8,6 +8,7 @@ class RankedHUGameButton extends React.Component {
     }
   }
   clickLogic() {
+    //should redirect to /games when loading
     fetch("http://localhost:8081/api/choose-game/join-ranked", {
       method: 'POST',
       headers: {

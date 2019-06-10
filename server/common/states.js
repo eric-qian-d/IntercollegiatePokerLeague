@@ -4,6 +4,6 @@ module.exports = {
   playerStatusMap: {},
   playerSocketMap: {},
   playerAvailable: {},
-  customMatchMap: {},
+  matchMap: {},
   gameMap: {},
 }

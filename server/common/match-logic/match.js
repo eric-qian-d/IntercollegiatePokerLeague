@@ -1,6 +1,7 @@
 var Game = require("../game-logic/game");
 const uuidv4 = require('uuid/v4');
 const states = require('../states');
+const constants = require('../constants');
 
 const gameMap = states.gameMap;
 const playerStatusMap = states.playerStatusMap;
@@ -20,7 +21,7 @@ module.exports = class Match {
     this.team2 = [];
     this.listeners = {};
     this.games = {};
-    this.status = 'creation';
+    this.status = constants.matchStates.CREATION;
     this.io = io;
     this.type = type;
   }
@@ -31,7 +32,7 @@ module.exports = class Match {
     const games = this.games;
     const io = this.io;
     if (team1.length === team2.length) {
-      this.status = 'in progress';
+      this.status = constants.matchStates.IN_PROGRESS;
       for(var i = 0; i < team1.length; i++) {
         const newGameId = uuidv4();
         const newGame = new Game(newGameId, "", 2, 10, this.id, playerSocketMap, io, this);
@@ -99,8 +100,18 @@ module.exports = class Match {
   }
 
   end() {
-    this.status = 'finished';
-      // this.io.to(this.parentMatchId).emit("MATCH ENDED");
+    this.status = constants.matchStates.FINISHED;
+    //handle redirecting players to the end screen
+
+    if (this.type === 'ranked') {
+      //logic to take care of adjusting player ratings
+    } else if (this.type === 'normal') {
+
+    }
+
+
+
+
   }
 
 

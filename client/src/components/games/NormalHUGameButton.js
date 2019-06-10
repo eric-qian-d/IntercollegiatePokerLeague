@@ -2,7 +2,7 @@ import React from 'react';
 
 class NormalHUGameButton extends React.Component {
   clickLogic() {
-
+    //should redirect to /games when loading
   }
 
   render() {
