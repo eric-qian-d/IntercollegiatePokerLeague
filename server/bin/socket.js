@@ -216,6 +216,9 @@ module.exports = {
       })
       //assumes that you are avalable when you are in a match lobby room
       socket.on("JOIN TEAM 1", async () => {
+        console.log('server join team 1 req');
+        console.log(socket.id);
+        console.log(userSocketMap);
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
@@ -223,6 +226,9 @@ module.exports = {
       });
 
       socket.on("JOIN TEAM 2", async () => {
+        console.log('server join team 2 req');
+        console.log(socket.id);
+        console.log(userSocketMap);
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];

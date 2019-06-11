@@ -56,7 +56,7 @@ class GamePagesContainer extends React.Component {
       )
     } else if (page === 'IN QUEUE') {
       return (
-        <QueueContainer socket = {socket} />
+        <QueueContainer socket = {socket} {...this.props} />
       )
     } else if (page === 'MATCH LOBBY') {
       return (

@@ -52,6 +52,7 @@ module.exports = class Match {
         userLocation[team2[i].id] = constants.userLocation.GAME;
         userStatus[team1[i].id] = constants.userStatus.IN_GAME;
         userStatus[team2[i].id] = constants.userStatus.IN_GAME;
+        //for ranked/normal games
         userMatchMap[team1[i].id] = this.id;
         userMatchMap[team2[i].id] = this.id;
         userGameMap[team1[i].id] = newGameId;
@@ -64,6 +65,7 @@ module.exports = class Match {
   }
 
   joinTeam1(newUser) {
+    console.log('match join team 1 req');
     const io = this.io;
     this.team1 = this.team1.filter(secondaryUser => {return (secondaryUser.id !== newUser.id)});
     this.team2 = this.team2.filter(secondaryUser => {return (secondaryUser.id !== newUser.id)});
@@ -79,6 +81,7 @@ module.exports = class Match {
   }
 
   joinTeam2(newUser) {
+    console.log('match join team 2 req');
     const io = this.io;
     this.team1 = this.team1.filter(secondaryUser => {return (secondaryUser.id !== newUser.id)});
     this.team2 = this.team2.filter(secondaryUser => {return (secondaryUser.id !== newUser.id)});

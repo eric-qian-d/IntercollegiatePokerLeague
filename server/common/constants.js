@@ -23,5 +23,6 @@ module.exports = {
     MATCH_LOBBY: 'match lobby',
     GAME: 'game',
     IN_QUEUE: 'in queue',
+    OTHER: 'other',
   })
 }

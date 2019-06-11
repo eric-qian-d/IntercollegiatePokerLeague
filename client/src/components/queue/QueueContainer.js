@@ -1,5 +1,5 @@
 import React from 'react';
-
+import QuitSearchButton from './QuitSearchButton';
 
 class QueueContainer extends React.Component {
   constructor(props) {
@@ -10,6 +10,7 @@ class QueueContainer extends React.Component {
     return (
       <div className = 'QueueContainer'>
         Finding Match
+        <QuitSearchButton {...this.props}/>
       </div>
     )
   }

@@ -17,7 +17,6 @@ const normalQueue = [];
 const rankedQueue = [];
 
 router.post('/join-ranked', async (req, res, next) => {
-  console.log('join ranked req');
   const user = req.user;
   const userId = user.id;
   if (userStatus[userId] === constants.userStatus.AVAILABLE) {
@@ -34,15 +33,11 @@ router.post('/join-ranked', async (req, res, next) => {
 });
 
 router.post('/join-normal', async (req, res, next) => {
-  console.log('join normal req');
   const user = req.user;
   const userId = user.id;
   if (userStatus[userId] === constants.userStatus.AVAILABLE) {
     userStatus[userId] = constants.userStatus.IN_NORMAL_HU_QUEUE;
     userLocation[userId] = constants.userLocation.IN_QUEUE;
-    console.log('from join normal');
-    console.log(userStatus);
-    console.log(userLocation);
     if (normalQueue.length == 1) {
       const otherPlayer = normalQueue.shift();
       socketLogic.createNewNormalHUMatch(user, otherPlayer);
@@ -53,19 +48,26 @@ router.post('/join-normal', async (req, res, next) => {
 
 });
 
-router.post('/cancel-ranked', async (req, res, next) => {
-
+router.post('/cancel-match', async (req, res, next) => {
+  const user = req.user;
+  const userId = user.id;
+  if (userStatus[userId] === constants.userStatus.IN_RANKED_HU_QUEUE) {
+    rankedQueue.shift();
+    // rankedQueue = rankedQueue.filter(u => {
+    //   return u !== user;
+    // });
+    userStatus[userId] = constants.userStatus.AVAILABLE;
+    userLocation[userId] = constants.userLocation.OTHER;
+  } else if (userStatus[userId] === constants.userStatus.IN_NORMAL_HU_QUEUE) {
+    normalQueue.shift();
+    // normalQueue = normalQueue.filter(u => {
+    //   return u !== user;
+    // });
+    userStatus[userId] = constants.userStatus.AVAILABLE;
+    userLocation[userId] = constants.userLocation.OTHER;
+  }
 
 });
 
-router.post('/cancel-normal', async (req, res, next) => {
-
-
-});
-
-router.get('/test', (req,res, next) => {
-
-  console.log("success");
-});
 
 module.exports = router;
