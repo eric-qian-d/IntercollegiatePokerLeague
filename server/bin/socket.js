@@ -157,13 +157,13 @@ module.exports = {
         const state = playerStatusMap[socket.request.user.id];
         const userId = socket.request.user.id;
         if (state === undefined || state === "CUSTOM LISTINGS") {
-          io.to(playerSocketMap[userId]).emit("CUSTOM LISTINGS");
+          io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
         } else if (state === "CUSTOM MATCH LOBBY") {
-          io.to(playerSocketMap[userId]).emit("CUSTOM MATCH LOBBY")
+          io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM MATCH LOBBY")
         } else if (state === "GAME") {
-          io.to(playerSocketMap[userId]).emit("GAME");
+          io.to(playerSocketMap[userId]).emit("PAGE: GAME");
         } else if (state === 'IN QUEUE') {
-          io.to(playerSocketMap[userId]).emit('IN QUEUE');
+          io.to(playerSocketMap[userId]).emit('PAGE: IN QUEUE');
         }
       });
 
@@ -186,7 +186,7 @@ module.exports = {
           addCustomMatch(newMatchId, name, numPlayers, userId);
           playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
           playerMatchMap[userId] = newMatchId;
-          socket.emit("CUSTOM MATCH LOBBY");
+          socket.emit("PAGE: CUSTOM MATCH LOBBY");
         }
       });
 
@@ -200,7 +200,7 @@ module.exports = {
           playerMatchMap[userId] = matchId;
           const match = matchMap[matchId];
           match.listeners[userId] = true;
-          io.to(playerSocketMap[userId]).emit("CUSTOM MATCH LOBBY");
+          io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM MATCH LOBBY");
         }
       });
 
@@ -266,7 +266,7 @@ module.exports = {
         playerAvailable[userId] = "AVAILABLE";
         playerStatusMap[userId] = "CUSTOM LISTINGS";
         socket.join("CUSTOM LISTINGS");
-        io.to(playerSocketMap[userId]).emit("CUSTOM LISTINGS");
+        io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
       });
 
       socket.on("GET GAME STATE", async function() {

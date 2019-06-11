@@ -9,18 +9,18 @@ class GamePagesContainer extends React.Component {
   constructor(props) {
     super(props);
     const socket = makeSocket();
-    socket.on("CUSTOM LISTINGS", () => {
+    socket.on("PAGE: CUSTOM LISTINGS", () => {
       this.setState({page : "CUSTOM LISTINGS"});
     });
-    socket.on("GAME", () => {
+    socket.on("PAGE: GAME", () => {
       this.setState({page : "GAME"});
     });
-    socket.on("CUSTOM MATCH LOBBY", () => {
+    socket.on("PAGE: CUSTOM MATCH LOBBY", () => {
       this.setState({
         page : "CUSTOM MATCH LOBBY",
       });
     });
-    socket.on('IN QUEUE', () => {
+    socket.on('PAGE: IN QUEUE', () => {
       this.setState({
         page: 'IN QUEUE',
       })

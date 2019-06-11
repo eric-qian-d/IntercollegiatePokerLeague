@@ -50,8 +50,8 @@ module.exports = class Match {
         playerStatusMap[team2[i].id] = "GAME";
         playerGameMap[team1[i].id] = newGameId;
         playerGameMap[team2[i].id] = newGameId;
-        io.to(playerSocketMap[team1[i].id]).emit("GAME");
-        io.to(playerSocketMap[team2[i].id]).emit("GAME");
+        io.to(playerSocketMap[team1[i].id]).emit("PAGE: GAME");
+        io.to(playerSocketMap[team2[i].id]).emit("PAGE: GAME");
       }
     }
     console.log(this.type);
