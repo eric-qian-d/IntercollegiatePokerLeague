@@ -9,12 +9,13 @@ var Match = require("../common/match-logic/match");
 
 var session = require("../config/session");
 const states = require('../common/states');
+const constants = require('../common/constants');
 
 const playerGameMap = states.playerGameMap; //maps from playerId to gameId
 const playerMatchMap = states.playerMatchMap; //maps from playerId to matchId
 const playerStatusMap = states.playerStatusMap; //maps from playerId to //CUSTOM LISTINGS, CUSTOM MATCH LOBBY, GAME
 const playerSocketMap = states.playerSocketMap; //maps from playerId to socket
-const playerAvailable = states.playerAvailable; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE
+const playerAvailable = states.playerAvailable; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE, IN GAME
 const matchMap = states.matchMap; //maps from matchId to Match object
 const gameMap = states.gameMap; //maps from gameId to Game object
 
@@ -141,8 +142,8 @@ module.exports = {
         if (!playerStatusMap.hasOwnProperty(userId)) {
           //client joining for the first time
           //TODO: also send out a ping about what the user should see, just in case
-          playerAvailable[userId] = "AVAILABLE";
-          playerStatusMap[userId] = "CUSTOM LISTINGS";
+          playerAvailable[userId] = constants.userAvailable.AVAILABLE;
+          playerStatusMap[userId] = constants.userLocations.CUSTOM_LISTINGS;
           socket.join("CUSTOM LISTINGS");
         } else if (playerStatusMap[userId] === "CUSTOM LISTINGS") {
           //client refreshed while in custom listings
@@ -156,13 +157,13 @@ module.exports = {
       socket.on("WHICH PAGE", async () => {
         const state = playerStatusMap[socket.request.user.id];
         const userId = socket.request.user.id;
-        if (state === undefined || state === "CUSTOM LISTINGS") {
+        if (state === undefined || state === constants.userLocations.CUSTOM_LISTINGS) {
           io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
-        } else if (state === "CUSTOM MATCH LOBBY") {
+        } else if (state === constants.userLocations.CUSTOM_MATCH_LOBBY) {
           io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM MATCH LOBBY")
-        } else if (state === "GAME") {
+        } else if (state === constants.userLocations.GAME) {
           io.to(playerSocketMap[userId]).emit("PAGE: GAME");
-        } else if (state === 'IN QUEUE') {
+        } else if (state === constants.userLocations.IN_QUEUE) {
           io.to(playerSocketMap[userId]).emit('PAGE: IN QUEUE');
         }
       });
@@ -170,7 +171,7 @@ module.exports = {
       //Custom Match Lobby Logic
       socket.on("GET CUSTOM MATCHES", async () => {
         const userId = socket.request.user.id;
-        playerStatusMap[userId] = "CUSTOM LISTINGS";
+        playerStatusMap[userId] = constants.userLocations.CUSTOM_LISTINGS;
         socket.join("CUSTOM LISTINGS");
         io.to(playerSocketMap[userId]).emit("CUSTOM MATCHES", getCustomMatches());
       });
@@ -178,13 +179,13 @@ module.exports = {
       //a user cannot be queued in anything else before they request to create a custom game
       socket.on("NEW CUSTOM MATCH", async (name, numPlayers) => {
         const userId = socket.request.user.id;
-        if (playerAvailable[userId] !== "AVAILABLE") {
+        if (playerAvailable[userId] !== constants.userAvailable.AVAILABLE) {
           io.to(playerSocketMap[userId]).emit("CREATE FAILED", playerAvailable[userId]);
         } else {
-          playerAvailable[userId] = "CUSTOM MATCH OWNER";
+          playerAvailable[userId] = constants.userAvailable.CUSTOM_MATCH_OWNER;
           const newMatchId = uuidv4();
           addCustomMatch(newMatchId, name, numPlayers, userId);
-          playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
+          playerStatusMap[userId] = constants.userLocations.CUSTOM_MATCH_LOBBY;
           playerMatchMap[userId] = newMatchId;
           socket.emit("PAGE: CUSTOM MATCH LOBBY");
         }
@@ -193,10 +194,10 @@ module.exports = {
       //a user cannot be queued in anything else before they request to create a custom game
       socket.on("JOIN CUSTOM MATCH", async (matchId) => {
         const userId = socket.request.user.id;
-        if (playerAvailable[userId] !== "AVAILABLE") {
+        if (playerAvailable[userId] !== constants.userAvailable.AVAILABLE) {
           io.to(playerSocketMap[userId]).emit("JOIN FAILED", playerAvailable[userId]);
         } else {
-          playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
+          playerStatusMap[userId] = constants.userLocations.CUSTOM_MATCH_LOBBY;
           playerMatchMap[userId] = matchId;
           const match = matchMap[matchId];
           match.listeners[userId] = true;
@@ -212,6 +213,7 @@ module.exports = {
         const match = matchMap[matchId];
         io.to(playerSocketMap[userId]).emit("IS OWNER", match.ownerId === userId);
       })
+      //assumes that you are avalable when you are in a match lobby room
       socket.on("JOIN TEAM 1", async () => {
         const userId = socket.request.user.id;
         const matchId = playerMatchMap[userId];
@@ -263,8 +265,8 @@ module.exports = {
         })
         io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
         io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
-        playerAvailable[userId] = "AVAILABLE";
-        playerStatusMap[userId] = "CUSTOM LISTINGS";
+        playerAvailable[userId] = constants.available.AVAILABLE;
+        playerStatusMap[userId] = constants.userLocations.CUSTOM_LISTINGS;
         socket.join("CUSTOM LISTINGS");
         io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
       });
@@ -276,11 +278,8 @@ module.exports = {
         io.to(playerSocketMap[userId]).emit("GAME STATE", gameState[0], gameState[1]);
       })
 
-      socket.on("JOIN LOBBY", async function(seatNumber) {
-        addPlayer(socket.id, "1234");//how to get player ID?
-      });
-
       socket.on("FOLD", async function() {
+        const user = request.user;
         fold(socket.request.user.id);
       });
       socket.on("CALL", async function() {
