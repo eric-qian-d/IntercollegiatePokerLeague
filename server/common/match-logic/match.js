@@ -52,7 +52,6 @@ module.exports = class Match {
         playerGameMap[team2[i].id] = newGameId;
         io.to(playerSocketMap[team1[i].id]).emit("GAME");
         io.to(playerSocketMap[team2[i].id]).emit("GAME");
-        // console.log(newGame);
       }
     }
     console.log(this.type);

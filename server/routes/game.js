@@ -22,14 +22,9 @@ router.post('/join-ranked', async (req, res, next) => {
     playerAvailable[userId] = 'IN RANKED HU QUEUE';
     playerStatusMap[userId] = 'IN QUEUE'
     if (rankedQueue.length == 1) {
-      console.log('creating match');
       const otherPlayer = rankedQueue.shift();
-      console.log(otherPlayer);
-
       socketLogic.createNewRankedHUMatch(user, otherPlayer);
     } else {
-      console.log('pending');
-
       rankedQueue.push(user);
     }
   }
@@ -37,7 +32,18 @@ router.post('/join-ranked', async (req, res, next) => {
 });
 
 router.post('/join-normal', async (req, res, next) => {
-
+  const user = req.user;
+  const userId = user.id;
+  if (playerAvailable[userId] === 'AVAILABLE') {
+    playerAvailable[userId] = 'IN NORMAL HU QUEUE';
+    playerStatusMap[userId] = 'IN QUEUE'
+    if (normalQueue.length == 1) {
+      const otherPlayer = normalQueue.shift();
+      socketLogic.createNewNormalHUMatch(user, otherPlayer);
+    } else {
+      normalQueue.push(user);
+    }
+  }
 
 });
 
