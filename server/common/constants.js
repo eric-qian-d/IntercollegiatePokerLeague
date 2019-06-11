@@ -13,7 +13,8 @@ module.exports = {
     AVAILABLE: 'available',
     CUSTOM_MATCH_OWNER: 'custom match owner',
     IN_CUSTOM_MATCH: 'in custom match',
-    IN_QUEUE: 'in queue',
+    IN_RANKED_HU_QUEUE: 'in ranked hu queue',
+    IN_NORMAL_HU_QUEUE: 'in normal hu queue',
     IN_GAME: 'in game'
   }),
   userLocation: Object.freeze({

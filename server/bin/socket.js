@@ -135,6 +135,7 @@ module.exports = {
       console.log("New client connected");
       //need to implement logic to direct people to home/login if not logged in
       console.log(userStatus);
+      console.log(userLocation);
       if(socket.request.isAuthenticated()) {
         const userId = socket.request.user.id;
         userSocketMap[userId] = socket.id;
@@ -310,6 +311,9 @@ module.exports = {
       socket.on('GET MATCH STATUS', async function () {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
+        console.log(userMatchMap);
+        console.log('match id');
+        console.log(matchId);
         const match = matchMap[matchId];
         io.to(userSocketMap[userId]).emit('MATCH STATUS', match.status);
       })

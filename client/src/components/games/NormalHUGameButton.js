@@ -18,7 +18,7 @@ class NormalHUGameButton extends React.Component {
       body: JSON.stringify(this.state),
       credentials : 'include',
       withCredentials : true,
-    })
+    });
     this.props.history.push('/games');
   }
 

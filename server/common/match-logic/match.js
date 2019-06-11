@@ -7,7 +7,8 @@ const gameMap = states.gameMap;
 const userLocation = states.userLocation;
 const userGameMap = states.userGameMap;
 const userStatus = states.userStatus;
-const userSocketMap = states.userSocketMap
+const userSocketMap = states.userSocketMap;
+const userMatchMap = states.userMatchMap;
 
 
 //Use this class later, once Game works
@@ -51,6 +52,8 @@ module.exports = class Match {
         userLocation[team2[i].id] = constants.userLocation.GAME;
         userStatus[team1[i].id] = constants.userStatus.IN_GAME;
         userStatus[team2[i].id] = constants.userStatus.IN_GAME;
+        userMatchMap[team1[i].id] = this.id;
+        userMatchMap[team2[i].id] = this.id;
         userGameMap[team1[i].id] = newGameId;
         userGameMap[team2[i].id] = newGameId;
         io.to(userSocketMap[team1[i].id]).emit("PAGE: GAME");
