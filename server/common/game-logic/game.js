@@ -232,13 +232,14 @@ module.exports = class Game { // maybe rename this to be Table
         player.stackSize -= needToCall;
       }
       var advanced = false;
+      //finds the next player to act
       while (!advanced) {
         this.action = (this.action + 1) % this.numPlayers;
         if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
           advanced = true;
         }
       }
-      this.time = 30;
+      this.time = 30; //adjust to make this correct
       this.emitAll();
       if (this.action === this.lastRaiser) {
         this.nextStreet();
@@ -274,6 +275,7 @@ module.exports = class Game { // maybe rename this to be Table
         this.lastRaiseSize = raiseDelta;
         this.currentTotalRaise = finalAmount;
         var advanced = false;
+        //finds the next player to act
         while (!advanced) {
           this.action = (this.action + 1) % this.numPlayers;
           console.log(this.action);
@@ -281,10 +283,7 @@ module.exports = class Game { // maybe rename this to be Table
             advanced = true;
           }
         }
-        const adaptedBoard = this.board.map(card => {
-          return [card.suit, card.rank];
-        });
-        this.time = 30;
+        this.time = 30;//adjust to make this is correct
         this.emitAll();
       } else {
         //illegal raise logic
@@ -304,6 +303,7 @@ module.exports = class Game { // maybe rename this to be Table
       })[0];
       player.inHand = false;
       var advanced = false;
+      //finds the next player to act
       while (!advanced) {
         this.action = (this.action + 1) % this.numPlayers;
         if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
@@ -313,7 +313,7 @@ module.exports = class Game { // maybe rename this to be Table
       const playersInHandList = Object.values(this.seatMap).filter(player => {
         return player.inHand;
       });
-      this.time = 30;
+      this.time = 30;//adjust to make this correct
       this.emitAll();
       const numPlayersInHand = playersInHandList.length;
       if (this.action === this.lastRaiser || numPlayersInHand == 1) {
@@ -341,11 +341,12 @@ module.exports = class Game { // maybe rename this to be Table
       })
       playersInHandList[0].stackSize += this.pot;
     } else {
-      //moves to next street
+      //makes sure animation happens in next clock tick - to change this so that there's no timing issues
       this.animateNextStreet = true;
-      //adds bets to pot
+      //resets variables for the next street
       this.lastRaiseSize = 0;
       this.currentTotalRaise = 0;
+      //adds outstanding bets to pot and
       Object.values(this.seatMap).forEach(player => {
         if (player.investedStack > 0) {
           this.pot += player.investedStack;
@@ -408,7 +409,7 @@ module.exports = class Game { // maybe rename this to be Table
             winners = [player];
           }
         })
-
+        //finds the value of the final pot
         Object.values(this.seatMap).forEach(player => {
           if (player.investedStack > 0) {
             this.pot += player.investedStack;

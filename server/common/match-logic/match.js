@@ -2,6 +2,7 @@ var Game = require("../game-logic/game");
 const uuidv4 = require('uuid/v4');
 const states = require('../states');
 const constants = require('../constants');
+const models = require('../../models');
 
 const gameMap = states.gameMap;
 const userLocation = states.userLocation;
@@ -116,7 +117,41 @@ module.exports = class Match {
 
     if (this.type === 'ranked') {
       //logic to take care of adjusting player ratings
+      if (Object.keys(this.games).length === 1) {
+        //this only executes once, so it's fine
+        Object.values(this.games).forEach((game, gameNumber) => {
+          var winner;
+          var loser;
+          if (game.winner === game.team1Player.id) {
+            winner = game.team1Player;
+            loser = game.team2Player;
+          } else {
+            winner = game.team2Player;
+            loser = game.team1Player;
+          }
+          models.User.update({rankedHURanking: winner.rankedHURanking + 1}, {where: {id: winner.id}});
+          models.User.update({rankedHURanking: loser.rankedHURanking - 1}, {where: {id: loser.id}});
+        })
+      }
+
     } else if (this.type === 'normal') {
+      //logic to take care of adjusting player ratings
+      if (Object.keys(this.games).length === 1) {
+        //this only executes once, so it's fine
+        Object.values(this.games).forEach((game, gameNumber) => {
+          var winner;
+          var loser;
+          if (game.winner === game.team1Player.id) {
+            winner = game.team1Player;
+            loser = game.team2Player;
+          } else {
+            winner = game.team2Player;
+            loser = game.team1Player;
+          }
+          models.User.update({normalHURanking: winner.normalHURanking + 1}, {where: {id: winner.id}});
+          models.User.update({normalHURanking: loser.normalHURanking - 1}, {where: {id: loser.id}});
+        })
+      }
 
     }
 

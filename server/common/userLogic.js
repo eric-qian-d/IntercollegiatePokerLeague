@@ -7,9 +7,6 @@ const hashRounds = 5;
 
 module.exports = {
   createUser : async (user) => {
-    console.log("trying to create this user");
-    console.log(user);
-
     bcrypt.hash(user.password, hashRounds, function(err, hash) {
       user.password = hash;
       models.User.create(user);
