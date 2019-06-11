@@ -11,11 +11,11 @@ var session = require("../config/session");
 const states = require('../common/states');
 const constants = require('../common/constants');
 
-const playerGameMap = states.playerGameMap; //maps from playerId to gameId
-const playerMatchMap = states.playerMatchMap; //maps from playerId to matchId
-const playerStatusMap = states.playerStatusMap; //maps from playerId to //CUSTOM LISTINGS, CUSTOM MATCH LOBBY, GAME
-const playerSocketMap = states.playerSocketMap; //maps from playerId to socket
-const playerAvailable = states.playerAvailable; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE, IN GAME
+const userGameMap = states.userGameMap; //maps from playerId to gameId
+const userMatchMap = states.userMatchMap; //maps from playerId to matchId
+const userLocation = states.userLocation; //maps from playerId to //CUSTOM LISTINGS, CUSTOM MATCH LOBBY, GAME
+const userSocketMap = states.userSocketMap; //maps from playerId to socket
+const userStatus = states.userStatus; //maps from playerId to availability //AVAILABLE, CUSTOM MATCH OWNER, IN CUSTOM MATCH, IN QUEUE, IN GAME
 const matchMap = states.matchMap; //maps from matchId to Match object
 const gameMap = states.gameMap; //maps from gameId to Game object
 
@@ -66,7 +66,7 @@ function notifyCustomMatchLobby() {
  * @return {Boolean}         true if the game was exited successfully and false otherwise
  */
 function leaveGame(playerId) {
-  var game = gameMap[playerGameMap[playerId]];
+  var game = gameMap[userGameMap[playerId]];
   game.removePlayer(playerId);
 }
 
@@ -75,11 +75,11 @@ function leaveGame(playerId) {
  * @param  {String} playerId the UUID of the player
  */
 function fold(playerId) {
-  const game = gameMap[playerGameMap[playerId]];
+  const game = gameMap[userGameMap[playerId]];
   const playerIds = game.getPlayerIds();
-  const gamePlayerSocketMap = {}
+  const gameuserSocketMap = {}
   playerIds.forEach(playerId => {
-    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+    gameuserSocketMap[playerId] = userSocketMap[playerId];
   })
   game.fold(playerId);
 }
@@ -89,11 +89,11 @@ function fold(playerId) {
  * @param  {String} playerId the UUID of the player
  */
 function call(playerId) {
-  const game = gameMap[playerGameMap[playerId]];
+  const game = gameMap[userGameMap[playerId]];
   const playerIds = game.getPlayerIds();
-  const gamePlayerSocketMap = {}
+  const gameuserSocketMap = {}
   playerIds.forEach(playerId => {
-    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+    gameuserSocketMap[playerId] = userSocketMap[playerId];
   })
   game.call(playerId);
 }
@@ -104,11 +104,11 @@ function call(playerId) {
  * @param  {Integer} finalAmount the final amount that the player is raising to
  */
 function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
-  const game = gameMap[playerGameMap[playerId]];
+  const game = gameMap[userGameMap[playerId]];
   const playerIds = game.getPlayerIds();
-  const gamePlayerSocketMap = {}
+  const gameuserSocketMap = {}
   playerIds.forEach(playerId => {
-    gamePlayerSocketMap[playerId] = playerSocketMap[playerId];
+    gameuserSocketMap[playerId] = userSocketMap[playerId];
   })
   game.raise(playerId, finalAmount);
 }
@@ -134,59 +134,59 @@ module.exports = {
     io.on("connection", function(socket) {
       console.log("New client connected");
       //need to implement logic to direct people to home/login if not logged in
-      console.log(playerAvailable);
+      console.log(userStatus);
       if(socket.request.isAuthenticated()) {
         const userId = socket.request.user.id;
-        playerSocketMap[userId] = socket.id;
+        userSocketMap[userId] = socket.id;
 
-        if (!playerStatusMap.hasOwnProperty(userId)) {
+        if (!userLocation.hasOwnProperty(userId)) {
           //client joining for the first time
           //TODO: also send out a ping about what the user should see, just in case
-          playerAvailable[userId] = constants.userAvailable.AVAILABLE;
-          playerStatusMap[userId] = constants.userLocations.CUSTOM_LISTINGS;
+          userStatus[userId] = constants.userStatus.AVAILABLE;
+          userLocation[userId] = constants.userLocations.CUSTOM_LISTINGS;
           socket.join("CUSTOM LISTINGS");
-        } else if (playerStatusMap[userId] === "CUSTOM LISTINGS") {
+        } else if (userLocation[userId] === "CUSTOM LISTINGS") {
           //client refreshed while in custom listings
           socket.join("CUSTOM LISTINGS");
-        } else if (playerStatusMap[userId] === "CUSTOM MATCH LOBBY") {
+        } else if (userLocation[userId] === "CUSTOM MATCH LOBBY") {
           //client refreshed while in a match lobby
-          socket.join(playerMatchMap[userId]);
+          socket.join(userMatchMap[userId]);
         }
       }
       //Sends user the correct page when they refresh
       socket.on("WHICH PAGE", async () => {
-        const state = playerStatusMap[socket.request.user.id];
+        const state = userLocation[socket.request.user.id];
         const userId = socket.request.user.id;
         if (state === undefined || state === constants.userLocations.CUSTOM_LISTINGS) {
-          io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
+          io.to(userSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
         } else if (state === constants.userLocations.CUSTOM_MATCH_LOBBY) {
-          io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM MATCH LOBBY")
+          io.to(userSocketMap[userId]).emit("PAGE: CUSTOM MATCH LOBBY")
         } else if (state === constants.userLocations.GAME) {
-          io.to(playerSocketMap[userId]).emit("PAGE: GAME");
+          io.to(userSocketMap[userId]).emit("PAGE: GAME");
         } else if (state === constants.userLocations.IN_QUEUE) {
-          io.to(playerSocketMap[userId]).emit('PAGE: IN QUEUE');
+          io.to(userSocketMap[userId]).emit('PAGE: IN QUEUE');
         }
       });
 
       //Custom Match Lobby Logic
       socket.on("GET CUSTOM MATCHES", async () => {
         const userId = socket.request.user.id;
-        playerStatusMap[userId] = constants.userLocations.CUSTOM_LISTINGS;
+        userLocation[userId] = constants.userLocations.CUSTOM_LISTINGS;
         socket.join("CUSTOM LISTINGS");
-        io.to(playerSocketMap[userId]).emit("CUSTOM MATCHES", getCustomMatches());
+        io.to(userSocketMap[userId]).emit("CUSTOM MATCHES", getCustomMatches());
       });
 
       //a user cannot be queued in anything else before they request to create a custom game
       socket.on("NEW CUSTOM MATCH", async (name, numPlayers) => {
         const userId = socket.request.user.id;
-        if (playerAvailable[userId] !== constants.userAvailable.AVAILABLE) {
-          io.to(playerSocketMap[userId]).emit("CREATE FAILED", playerAvailable[userId]);
+        if (userStatus[userId] !== constants.userStatus.AVAILABLE) {
+          io.to(userSocketMap[userId]).emit("CREATE FAILED", userStatus[userId]);
         } else {
-          playerAvailable[userId] = constants.userAvailable.CUSTOM_MATCH_OWNER;
+          userStatus[userId] = constants.userStatus.CUSTOM_MATCH_OWNER;
           const newMatchId = uuidv4();
           addCustomMatch(newMatchId, name, numPlayers, userId);
-          playerStatusMap[userId] = constants.userLocations.CUSTOM_MATCH_LOBBY;
-          playerMatchMap[userId] = newMatchId;
+          userLocation[userId] = constants.userLocations.CUSTOM_MATCH_LOBBY;
+          userMatchMap[userId] = newMatchId;
           socket.emit("PAGE: CUSTOM MATCH LOBBY");
         }
       });
@@ -194,14 +194,14 @@ module.exports = {
       //a user cannot be queued in anything else before they request to create a custom game
       socket.on("JOIN CUSTOM MATCH", async (matchId) => {
         const userId = socket.request.user.id;
-        if (playerAvailable[userId] !== constants.userAvailable.AVAILABLE) {
-          io.to(playerSocketMap[userId]).emit("JOIN FAILED", playerAvailable[userId]);
+        if (userStatus[userId] !== constants.userStatus.AVAILABLE) {
+          io.to(userSocketMap[userId]).emit("JOIN FAILED", userStatus[userId]);
         } else {
-          playerStatusMap[userId] = constants.userLocations.CUSTOM_MATCH_LOBBY;
-          playerMatchMap[userId] = matchId;
+          userLocation[userId] = constants.userLocations.CUSTOM_MATCH_LOBBY;
+          userMatchMap[userId] = matchId;
           const match = matchMap[matchId];
           match.listeners[userId] = true;
-          io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM MATCH LOBBY");
+          io.to(userSocketMap[userId]).emit("PAGE: CUSTOM MATCH LOBBY");
         }
       });
 
@@ -209,42 +209,42 @@ module.exports = {
       //Custom Match Lobby Logic
       socket.on("IS OWNER", async() => {
         const userId = socket.request.user.id;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        io.to(playerSocketMap[userId]).emit("IS OWNER", match.ownerId === userId);
+        io.to(userSocketMap[userId]).emit("IS OWNER", match.ownerId === userId);
       })
       //assumes that you are avalable when you are in a match lobby room
       socket.on("JOIN TEAM 1", async () => {
         const userId = socket.request.user.id;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
         match.joinTeam1(socket.request.user);
       });
 
       socket.on("JOIN TEAM 2", async () => {
         const userId = socket.request.user.id;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
         match.joinTeam2(socket.request.user);
       });
 
       socket.on("GET TEAM 1", async () => {
         const userId = socket.request.user.id;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
         const team1names = match.getTeam1Names();
-        io.to(playerSocketMap[userId]).emit("TEAM 1", team1names);
+        io.to(userSocketMap[userId]).emit("TEAM 1", team1names);
       });
       socket.on("GET TEAM 2", async () => {
         const userId = socket.request.user.id;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
         const team2names = match.getTeam2Names();
-        io.to(playerSocketMap[userId]).emit("TEAM 2", team2names);
+        io.to(userSocketMap[userId]).emit("TEAM 2", team2names);
       });
       socket.on("START MATCH", async () => {
         const userId = socket.request.user.id;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
         if (match.ownerId === userId) {
           match.start();
@@ -254,32 +254,32 @@ module.exports = {
       socket.on("RETURN TO LISTINGS", async () => {
         const userId = socket.request.user.id;
         const userEmail = socket.request.user.email;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
         match.team1 = match.team1.filter(id => {return !(id === userId)});
         match.team2 = match.team2.filter(id => {return !(id === userId)});
         delete match.listeners[userId];
         Object.keys(match.listeners).forEach(playerId => {
-          io.to(playerSocketMap[playerId]).emit("TEAM 1", match.team1, false);
-          io.to(playerSocketMap[playerId]).emit("TEAM 2", match.team2, false);
+          io.to(userSocketMap[playerId]).emit("TEAM 1", match.team1, false);
+          io.to(userSocketMap[playerId]).emit("TEAM 2", match.team2, false);
         })
-        io.to(playerSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
-        io.to(playerSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
-        playerAvailable[userId] = constants.available.AVAILABLE;
-        playerStatusMap[userId] = constants.userLocations.CUSTOM_LISTINGS;
+        io.to(userSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
+        io.to(userSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
+        userStatus[userId] = constants.userStatus.AVAILABLE;
+        userLocation[userId] = constants.userLocations.CUSTOM_LISTINGS;
         socket.join("CUSTOM LISTINGS");
-        io.to(playerSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
+        io.to(userSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
       });
 
       socket.on("GET GAME STATE", async function() {
         const userId = socket.request.user.id;
-        const game = gameMap[playerGameMap[userId]];
+        const game = gameMap[userGameMap[userId]];
         const gameState = game.getGameState(userId);
-        io.to(playerSocketMap[userId]).emit("GAME STATE", gameState[0], gameState[1]);
+        io.to(userSocketMap[userId]).emit("GAME STATE", gameState[0], gameState[1]);
       })
 
       socket.on("FOLD", async function() {
-        const user = request.user;
+
         fold(socket.request.user.id);
       });
       socket.on("CALL", async function() {
@@ -291,21 +291,21 @@ module.exports = {
       });
       socket.on('GO TO LOBBY', async function() {
         const userId = socket.request.user.id;
-        playerStatusMap[userId] = "CUSTOM MATCH LOBBY";
+        userLocation[userId] = "CUSTOM MATCH LOBBY";
         // const match = matchMap[matchId];
-        io.to(playerSocketMap[userId]).emit("CUSTOM MATCH LOBBY");
+        io.to(userSocketMap[userId]).emit("CUSTOM MATCH LOBBY");
       });
 
       socket.on('GET MATCH STATUS', async function () {
         const userId = socket.request.user.id;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        io.to(playerSocketMap[userId]).emit('MATCH STATUS', match.status);
+        io.to(userSocketMap[userId]).emit('MATCH STATUS', match.status);
       })
 
       socket.on('MATCH RESULTS', async function() {
         const userId = socket.request.user.id;
-        const matchId = playerMatchMap[userId];
+        const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
         const results = [];
         const team1 = match.team1;
@@ -330,7 +330,7 @@ module.exports = {
             }
           }
         })
-        io.to(playerSocketMap[userId]).emit('MATCH RESULTS', results);
+        io.to(userSocketMap[userId]).emit('MATCH RESULTS', results);
       })
 
       socket.on("EXIT", async function() {

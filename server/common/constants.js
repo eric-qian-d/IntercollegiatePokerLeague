@@ -9,7 +9,7 @@ module.exports = {
     IN_PROGRESS: 'in progress',
     FINISHED: 'finished',
   }),
-  userAvailable: Object.freeze({
+  userStatus: Object.freeze({
     AVAILABLE: 'available',
     CUSTOM_MATCH_OWNER: 'custom match owner',
     IN_CUSTOM_MATCH: 'in custom match',

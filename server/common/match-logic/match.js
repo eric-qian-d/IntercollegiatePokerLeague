@@ -4,9 +4,9 @@ const states = require('../states');
 const constants = require('../constants');
 
 const gameMap = states.gameMap;
-const playerStatusMap = states.playerStatusMap;
-const playerGameMap = states.playerGameMap;
-const playerSocketMap = states.playerSocketMap
+const userLocation = states.userLocation;
+const userGameMap = states.userGameMap;
+const userSocketMap = states.userSocketMap
 
 
 //Use this class later, once Game works
@@ -36,7 +36,7 @@ module.exports = class Match {
       this.status = constants.matchStates.IN_PROGRESS;
       for(var i = 0; i < team1.length; i++) {
         const newGameId = uuidv4();
-        const newGame = new Game(newGameId, "", 2, 10, this.id, playerSocketMap, io, this);
+        const newGame = new Game(newGameId, "", 2, 10, this.id, userSocketMap, io, this);
         newGame.addPlayer(team1[i].id, 0, 10000, team1[i].firstName + ' ' + team1[i].lastName);
         newGame.addPlayer(team2[i].id, 1, 10000, team2[i].firstName + ' ' + team2[i].lastName);
         games[newGameId] = {
@@ -46,12 +46,12 @@ module.exports = class Match {
           winner : "none"
         }
         gameMap[newGameId] = newGame;
-        playerStatusMap[team1[i].id] = "GAME";
-        playerStatusMap[team2[i].id] = "GAME";
-        playerGameMap[team1[i].id] = newGameId;
-        playerGameMap[team2[i].id] = newGameId;
-        io.to(playerSocketMap[team1[i].id]).emit("PAGE: GAME");
-        io.to(playerSocketMap[team2[i].id]).emit("PAGE: GAME");
+        userLocation[team1[i].id] = "GAME";
+        userLocation[team2[i].id] = "GAME";
+        userGameMap[team1[i].id] = newGameId;
+        userGameMap[team2[i].id] = newGameId;
+        io.to(userSocketMap[team1[i].id]).emit("PAGE: GAME");
+        io.to(userSocketMap[team2[i].id]).emit("PAGE: GAME");
       }
     }
     console.log(this.type);
@@ -65,11 +65,11 @@ module.exports = class Match {
     const team1names = this.getTeam1Names();
     const team2names = this.getTeam2Names();
     Object.keys(this.listeners).forEach(playerId => {
-      io.to(playerSocketMap[playerId]).emit("TEAM 1", team1names, false);
-      io.to(playerSocketMap[playerId]).emit("TEAM 2", team2names, false);
+      io.to(userSocketMap[playerId]).emit("TEAM 1", team1names, false);
+      io.to(userSocketMap[playerId]).emit("TEAM 2", team2names, false);
     })
-    io.to(playerSocketMap[this.ownerId]).emit("TEAM 1", team1names, true);
-    io.to(playerSocketMap[this.ownerId]).emit("TEAM 2", team2names, true);
+    io.to(userSocketMap[this.ownerId]).emit("TEAM 1", team1names, true);
+    io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true);
   }
 
   joinTeam2(newUser) {
@@ -80,11 +80,11 @@ module.exports = class Match {
     const team1names = this.getTeam1Names();
     const team2names = this.getTeam2Names();
     Object.keys(this.listeners).forEach(playerId => {
-      io.to(playerSocketMap[playerId]).emit("TEAM 1", team1names, false);
-      io.to(playerSocketMap[playerId]).emit("TEAM 2", team2names, false);
+      io.to(userSocketMap[playerId]).emit("TEAM 1", team1names, false);
+      io.to(userSocketMap[playerId]).emit("TEAM 2", team2names, false);
     })
-    io.to(playerSocketMap[this.ownerId]).emit("TEAM 1", team1names, true);
-    io.to(playerSocketMap[this.ownerId]).emit("TEAM 2", team2names, true);
+    io.to(userSocketMap[this.ownerId]).emit("TEAM 1", team1names, true);
+    io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true);
   }
 
   getTeam1Names() {

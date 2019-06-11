@@ -9,7 +9,7 @@ module.exports = class Game { // maybe rename this to be Table
    * @param {String} gameId UUID of the game
    * @param {gameType} type   type of game
    */
-  constructor(gameId, type, numPlayers, bigBlindValue, parentMatchId, playerSocketMap, io, parentMatch) {
+  constructor(gameId, type, numPlayers, bigBlindValue, parentMatchId, userSocketMap, io, parentMatch) {
     this.id = gameId;
     this.type = type;
     this.numPlayers = numPlayers;
@@ -26,7 +26,7 @@ module.exports = class Game { // maybe rename this to be Table
     this.deck = new Deck();
     this.board = [];
     this.time = 30;
-    this.playerSocketMap = playerSocketMap;
+    this.userSocketMap = userSocketMap;
     this.animateNextStreet = false;
     this.animateWin = false;
     this.animateCtr = 1;
@@ -69,7 +69,7 @@ module.exports = class Game { // maybe rename this to be Table
             // const allPlayerInfo = [];
 
 
-            obj.io.to(obj.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+            obj.io.to(obj.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
           })
         } else {
           //just ticking waiting for player to act
@@ -393,7 +393,7 @@ module.exports = class Game { // maybe rename this to be Table
           // const allPlayerInfo = [];
 
 
-          this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+          this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
         })
 
         var currentStrongestHandStrength = 0;
@@ -469,7 +469,7 @@ module.exports = class Game { // maybe rename this to be Table
     Object.values(this.seatMap).forEach(basePlayer => {
       const info = this.getGameState(basePlayer.id);
       console.log(info[1]);
-      this.io.to(this.playerSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+      this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
     })
   }
 

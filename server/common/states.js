@@ -1,9 +1,9 @@
 module.exports = {
-  playerGameMap: {},
-  playerMatchMap: {},
-  playerStatusMap: {},
-  playerSocketMap: {},
-  playerAvailable: {},
+  userGameMap: {},
+  userMatchMap: {},
+  userLocation: {},
+  userSocketMap: {},
+  userStatus: {},
   matchMap: {},
   gameMap: {},
 }
