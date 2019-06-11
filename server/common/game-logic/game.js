@@ -468,7 +468,7 @@ module.exports = class Game { // maybe rename this to be Table
   emitAll() {
     Object.values(this.seatMap).forEach(basePlayer => {
       const info = this.getGameState(basePlayer.id);
-      console.log(info[1]);
+      // console.log(info[1]);
       this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
     })
   }

@@ -3,6 +3,7 @@ import GameContainer from "./gameplay/GameContainer";
 import CustomMatchListingsContainer from "./custom-match-listings/CustomMatchListingsContainer";
 import CustomMatchLobbyContainer from "./custom-match-lobby/CustomMatchLobbyContainer";
 import QueueContainer from './queue/QueueContainer';
+import MatchLobbyContainer from './match-lobby/MatchLobbyContainer';
 import {makeSocket} from "../js/socket";
 
 class GamePagesContainer extends React.Component {
@@ -23,6 +24,11 @@ class GamePagesContainer extends React.Component {
     socket.on('PAGE: IN QUEUE', () => {
       this.setState({
         page: 'IN QUEUE',
+      })
+    })
+    socket.on('PAGE: MATCH LOBBY', () => {
+      this.setState({
+        page: 'MATCH LOBBY',
       })
     })
     socket.emit("WHICH PAGE");
@@ -51,6 +57,10 @@ class GamePagesContainer extends React.Component {
     } else if (page === 'IN QUEUE') {
       return (
         <QueueContainer socket = {socket} />
+      )
+    } else if (page === 'MATCH LOBBY') {
+      return (
+        <MatchLobbyContainer socket = {socket} />
       )
     } else {
       return (

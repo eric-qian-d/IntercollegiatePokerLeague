@@ -6,6 +6,7 @@ const constants = require('../constants');
 const gameMap = states.gameMap;
 const userLocation = states.userLocation;
 const userGameMap = states.userGameMap;
+const userStatus = states.userStatus;
 const userSocketMap = states.userSocketMap
 
 
@@ -46,8 +47,10 @@ module.exports = class Match {
           winner : "none"
         }
         gameMap[newGameId] = newGame;
-        userLocation[team1[i].id] = "GAME";
-        userLocation[team2[i].id] = "GAME";
+        userLocation[team1[i].id] = constants.userLocation.GAME;
+        userLocation[team2[i].id] = constants.userLocation.GAME;
+        userStatus[team1[i].id] = constants.userStatus.IN_GAME;
+        userStatus[team2[i].id] = constants.userStatus.IN_GAME;
         userGameMap[team1[i].id] = newGameId;
         userGameMap[team2[i].id] = newGameId;
         io.to(userSocketMap[team1[i].id]).emit("PAGE: GAME");

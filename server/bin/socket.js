@@ -294,15 +294,17 @@ module.exports = {
       });
       socket.on("RAISE", async function(finalAmount) {
         const userId = socket.request.user.id;
+        console.log(userStatus)
         if (userStatus[userId] === constants.userStatus.IN_GAME) {
           raise(userId, finalAmount);
         }
       });
       socket.on('GO TO LOBBY', async function() {
+        console.log('received go to lobby req');
         const userId = socket.request.user.id;
-        userLocation[userId] = constants.userLocation.CUSTOM_MATCH_LOBBY;
+        userLocation[userId] = constants.userLocation.MATCH_LOBBY;
         // const match = matchMap[matchId];
-        io.to(userSocketMap[userId]).emit("CUSTOM MATCH LOBBY");
+        io.to(userSocketMap[userId]).emit("PAGE: MATCH LOBBY");
       });
 
       socket.on('GET MATCH STATUS', async function () {
@@ -359,8 +361,6 @@ module.exports = {
   },
 
   createNewRankedHUMatch: (player1, player2) => {
-    console.log(player1);
-    console.log(player2);
     const newMatchId = uuidv4();
     const newMatch = new Match(newMatchId, newMatchId, 1, '', io, 'ranked');
     matchMap[newMatchId] = newMatch;
