@@ -16,7 +16,7 @@ module.exports = {
     IN_QUEUE: 'in queue',
     IN_GAME: 'in game'
   }),
-  userLocations: Object.freeze({
+  userLocation: Object.freeze({
     CUSTOM_LISTINGS: 'custom listings',
     CUSTOM_MATCH_LOBBY: 'custom match lobby',
     GAME: 'game',
