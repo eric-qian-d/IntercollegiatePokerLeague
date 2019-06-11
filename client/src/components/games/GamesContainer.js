@@ -14,8 +14,8 @@ class GamesContainer extends React.Component {
       <div className = 'GamesContainer'>
         <Navbar />
         <CustomGamesButton {...this.props} />
-        <NormalHUGameButton />
-        <RankedHUGameButton />
+        <NormalHUGameButton {...this.props}/>
+        <RankedHUGameButton {...this.props}/>
       </div>
     )
 

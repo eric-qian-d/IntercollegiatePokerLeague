@@ -22,8 +22,9 @@ module.exports = class Match {
     this.listeners = {};
     this.games = {};
     this.status = constants.matchStates.CREATION;
-    this.io = io;
     this.type = type;
+    this.io = io;
+
   }
 
   start() {
@@ -51,8 +52,10 @@ module.exports = class Match {
         playerGameMap[team2[i].id] = newGameId;
         io.to(playerSocketMap[team1[i].id]).emit("GAME");
         io.to(playerSocketMap[team2[i].id]).emit("GAME");
+        // console.log(newGame);
       }
     }
+    console.log(this.type);
   }
 
   joinTeam1(newUser) {

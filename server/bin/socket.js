@@ -162,6 +162,8 @@ module.exports = {
           io.to(playerSocketMap[userId]).emit("CUSTOM MATCH LOBBY")
         } else if (state === "GAME") {
           io.to(playerSocketMap[userId]).emit("GAME");
+        } else if (state === 'IN QUEUE') {
+          io.to(playerSocketMap[userId]).emit('IN QUEUE');
         }
       });
 
@@ -342,18 +344,21 @@ module.exports = {
   createNewNormalHUMatch: (player1, player2) => {
     const newMatchId = uuidv4();
     const newMatch = new Match(newMatchId, newMatchId, 1, '', io, 'normal');
-    matchMap[matchId] = newMatch;
+    matchMap[newMatchId] = newMatch;
     newMatch.joinTeam1(player1);
     newMatch.joinTeam2(player2);
     newMatch.start();
   },
 
   createNewRankedHUMatch: (player1, player2) => {
+    console.log(player1);
+    console.log(player2);
     const newMatchId = uuidv4();
     const newMatch = new Match(newMatchId, newMatchId, 1, '', io, 'ranked');
-    matchMap[matchId] = newMatch;
+    matchMap[newMatchId] = newMatch;
     newMatch.joinTeam1(player1);
     newMatch.joinTeam2(player2);
+    // console.log(newMatch.team1);
     newMatch.start();
   }
 

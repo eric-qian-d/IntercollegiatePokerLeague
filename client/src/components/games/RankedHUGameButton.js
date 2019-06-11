@@ -19,6 +19,7 @@ class RankedHUGameButton extends React.Component {
       credentials : 'include',
       withCredentials : true,
     })
+    this.props.history.push('/games');
   }
 
   render() {
