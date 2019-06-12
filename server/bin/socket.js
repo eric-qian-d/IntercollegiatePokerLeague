@@ -134,8 +134,8 @@ module.exports = {
     io.on("connection", function(socket) {
       console.log("New client connected");
       //need to implement logic to direct people to home/login if not logged in
-      console.log(userStatus);
-      console.log(userLocation);
+      console.log(userSocketMap);
+      console.log(socket.request.isAuthenticated);
       if(socket.request.isAuthenticated()) {
         const userId = socket.request.user.id;
         userSocketMap[userId] = socket.id;
@@ -306,13 +306,27 @@ module.exports = {
           raise(userId, finalAmount);
         }
       });
+
       socket.on('GO TO LOBBY', async function() {
         console.log('received go to lobby req');
         const userId = socket.request.user.id;
         userLocation[userId] = constants.userLocation.MATCH_LOBBY;
-        // const match = matchMap[matchId];
         io.to(userSocketMap[userId]).emit("PAGE: MATCH LOBBY");
       });
+
+      socket.on('RETURN TO GAME', async function() {
+        console.log('received go to game req');
+        const userId = socket.request.user.id;
+        userLocation[userId] = constants.userLocation.GAME;
+        io.to(userSocketMap[userId]).emit('PAGE: GAME');
+      })
+
+      socket.on('RETURN TO HOME', async function() {
+        console.log('received go to home req');
+        const userId = socket.request.user.id;
+        userLocation[userId] = constants.userLocation.OTHER;
+        // io.to(userSocketMap[userId]).emit('PAGE: GAME');
+      })
 
       socket.on('GET MATCH STATUS', async function () {
         const userId = socket.request.user.id;

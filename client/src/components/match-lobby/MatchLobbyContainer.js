@@ -1,5 +1,7 @@
 import React from "react";
 import ResultsContainer from './ResultsContainer';
+import ReturnToGameButton from './ReturnToGameButton';
+import ReturnToHomeButton from './ReturnToHomeButton';
 
 class MatchLobbyContainer extends React.Component {
   constructor(props) {
@@ -23,12 +25,16 @@ class MatchLobbyContainer extends React.Component {
     const {socket} = this.props;
     if (matchStatus === 'in progress') {
       return (
-        <div> in progress </div>
+        <div>
+          in progress
+          <ReturnToGameButton {...this.props}/>
+        </div>
       )
     } else if (matchStatus === 'finished') {
       return (
         <div>
           <ResultsContainer socket = {socket} />
+          <ReturnToHomeButton {...this.props}/>
         </div>
       )
     } else {

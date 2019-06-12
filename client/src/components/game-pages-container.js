@@ -60,7 +60,7 @@ class GamePagesContainer extends React.Component {
       )
     } else if (page === 'MATCH LOBBY') {
       return (
-        <MatchLobbyContainer socket = {socket} />
+        <MatchLobbyContainer socket = {socket} {...this.props}/>
       )
     } else {
       return (
