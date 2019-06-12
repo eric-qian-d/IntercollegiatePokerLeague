@@ -6,7 +6,7 @@ import RegistrationContainer from "./components/registration/RegistrationContain
 import LoginContainer from "./components/login/LoginContainer";
 import GamesContainer from './components/games/GamesContainer';
 import HomeContainer from "./components/home/HomeContainer";
-
+import RankingsContainer from './components/rankings/RankingsContainer';
 
 const routing = (
   <Router>
@@ -16,6 +16,7 @@ const routing = (
       <Route path = "/login" component = {LoginContainer}/>
       <Route path = '/choose-game' component = {GamesContainer} />
       <Route path = "/games" component = {GamePagesContainer} />
+      <Route path = "/rankings" component = {RankingsContainer} />
     </div>
   </Router>
 )

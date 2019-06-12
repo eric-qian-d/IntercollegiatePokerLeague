@@ -8,6 +8,7 @@ const chooseGame = require('./routes/game');
 
 const passportConfigure = require("./common/passport");
 const registration = require("./routes/registration");
+const rankings = require('./routes/rankings');
 
 passportConfigure.configure(passport);
 
@@ -31,6 +32,7 @@ app.use(passport.session());
 
 app.use("/api/registration", registration);
 app.use('/api/choose-game', chooseGame);
+app.use('/api/rankings', rankings);
 
 app.get('/loggedin', function(req, res, next) {
   // console.log(req.session);
