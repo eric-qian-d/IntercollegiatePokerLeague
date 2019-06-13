@@ -164,9 +164,10 @@ module.exports = {
       }
       //Sends user the correct page when they refresh
       socket.on("WHICH PAGE", async () => {
+        console.log('which page req');
         const state = userLocation[socket.request.user.id];
         const userId = socket.request.user.id;
-        if (state === undefined || state === constants.userLocation.CUSTOM_LISTINGS) {
+        if (state === undefined || state === constants.userLocation.CUSTOM_LISTINGS || state === constants.userLocation.OTHER) {
           io.to(userSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
         } else if (state === constants.userLocation.CUSTOM_MATCH_LOBBY) {
           io.to(userSocketMap[userId]).emit("PAGE: CUSTOM MATCH LOBBY")
