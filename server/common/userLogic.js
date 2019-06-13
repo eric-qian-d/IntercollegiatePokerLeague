@@ -7,10 +7,29 @@ const hashRounds = 5;
 
 module.exports = {
   createUser : async (user) => {
-    bcrypt.hash(user.password, hashRounds, function(err, hash) {
-      user.password = hash;
-      models.User.create(user);
-    });
+    const email = user.email;
+    const splitEmail = email.split('@');
+    if (splitEmail.length == 2) {
+      domain = splitEmail[1] //should assert that this has length 2
+      const school = await models.School.findOne({ where: {domain: domain} , raw: true});
+      if (school === null) {
+        user.schoolName = "Undetermined";
+        //to fill in school id that is standard for undetermined schools
+      } else {
+        user.schoolName = school.name;
+        user.schoolId = school.id;
+      }
+
+
+      bcrypt.hash(user.password, hashRounds, function(err, hash) {
+        console.log('password');
+        console.log(user.password);
+        user.password = hash;
+        // console.log(user);
+        models.User.create(user);
+      });
+    }
+
   },
 
   getUserByEmail : async (email) => {

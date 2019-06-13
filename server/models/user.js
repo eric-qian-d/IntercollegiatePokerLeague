@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       schoolId: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        field: 'school_id',
+      },
+      schoolName: {
+        type: DataTypes.STRING,
+        field: 'school_name'
       },
       firstName: {
         type: DataTypes.STRING,
