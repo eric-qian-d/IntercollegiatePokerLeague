@@ -67,6 +67,13 @@ app.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
+app.post('/logout', function(req, res, next) {
+  console.log('received logout req');
+  req.session.destroy(function (err) {
+    console.log(err);
+  })
+});
+
 
 
 module.exports = app;

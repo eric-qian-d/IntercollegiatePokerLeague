@@ -21,7 +21,7 @@ class HomeContainer extends React.Component {
   render() {
     return(
       <div>
-        <Navbar/>
+        <Navbar {...this.props}/>
       </div>
     )
   }
