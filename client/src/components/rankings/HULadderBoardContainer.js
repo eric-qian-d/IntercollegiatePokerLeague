@@ -23,7 +23,7 @@ class HULadderBoardContainer extends React.Component {
     const {huRankings} = this.state;
     const huRankingsList = huRankings.map((listing, place) => {
       return (
-        <PlayerRanking name = {listing[0]} ranking = {listing[1]} place = {place}/>
+        <PlayerRanking name = {listing[0]} ranking = {listing[1]} place = {place + 1}/>
       )
     })
     return (
