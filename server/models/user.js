@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         unique: true
       },
+      schoolId: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       firstName: {
         type: DataTypes.STRING,
         field: "first_name"
