@@ -120,6 +120,10 @@ module.exports = {
         session.session(socket.request, socket.request.res, next);
     });
 
+    // function onAuthFail() {
+    //   return accept(new Error('fail'));
+    // }
+
     io.use(passportSocket.authorize({
       cookieParser: cookieParser,
       store: session.MemoryStore,
@@ -128,8 +132,12 @@ module.exports = {
       saveUninitialized: true,
       cookie: {
           expires: 24*60*60*1000
-      }
+      },
     }));
+
+    // io.use(function(socket, next) {
+    //   if()
+    // })
 
     io.on("connection", function(socket) {
       console.log("New client connected");

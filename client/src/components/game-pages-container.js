@@ -39,6 +39,17 @@ class GamePagesContainer extends React.Component {
     }
   }
 
+  componentDidMount() {
+    fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.loggedIn) {
+        this.props.history.push("/login");
+      }
+    });
+  }
+
   render() {
     const {page, socket, matchId} = this.state;
     console.log(page);

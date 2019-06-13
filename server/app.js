@@ -44,15 +44,8 @@ app.get('/loggedin', function(req, res, next) {
   }
 });
 
-// app.post('/login', passport.authenticate('local', {failureRedirect: "http://localhost:3000/games/login"}), (req, res) => {
-//   res.redirect("/games")
-// });
-
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    // console.log("RS start");
-    // console.log(res);
-    // console.log("RS END");
     if (err) {
       return next(err); // will generate a 500 error
     }
