@@ -27,7 +27,7 @@ class HULadderBoardContainer extends React.Component {
       )
     })
     return (
-      <div className = 'HULadderBoardContainer'>>
+      <div className = 'HULadderBoardContainer'>
         {huRankingsList}
       </div>
     )

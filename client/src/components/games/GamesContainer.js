@@ -15,7 +15,7 @@ class GamesContainer extends React.Component {
     .then(response => response.json())
     .then(data => {
       if (!data.loggedIn) {
-        this.props.history.push("/login");
+        this.props.history.push("/home");
       }
     });
   }
