@@ -380,7 +380,7 @@ module.exports = class Game { // maybe rename this to be Table
               this.allIn = true;
               advanced = true;
               setTimeout(() => {
-                this.board.push(this.deck.getNextCard());
+
                 this.emitAll();
               }, 1000);
               setTimeout(() => {
@@ -388,8 +388,12 @@ module.exports = class Game { // maybe rename this to be Table
                 this.emitAll();
               }, 2000);
               setTimeout(() => {
-                this.nextStreet();
+                this.board.push(this.deck.getNextCard());
+                this.emitAll();
               }, 3000);
+              setTimeout(() => {
+                this.nextStreet();
+              }, 4000);
             }
 
           }
@@ -424,17 +428,22 @@ module.exports = class Game { // maybe rename this to be Table
               advanced = true;
               if (this.board.length === 4) {
                 setTimeout(() => {
+                  this.emitAll();
+                }, 1000);
+                setTimeout(() => {
                   this.board.push(this.deck.getNextCard());
                   this.emitAll();
-                  console.log(this.board);
+                }, 2000);
+                setTimeout(() => {
+                  this.nextStreet();
+                }, 3000);
+              } else {
+                setTimeout(() => {
+                  this.emitAll();
                 }, 1000);
                 setTimeout(() => {
                   this.nextStreet();
                 }, 2000);
-              } else {
-                setTimeout(() => {
-                  this.nextStreet();
-                }, 1000);
               }
             }
           }
