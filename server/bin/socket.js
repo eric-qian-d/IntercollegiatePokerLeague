@@ -143,7 +143,7 @@ module.exports = {
       console.log("New client connected");
       //need to implement logic to direct people to home/login if not logged in
       console.log(userSocketMap);
-      console.log(socket.request.isAuthenticated);
+      console.log(socket.request.isAuthenticated());
       if(socket.request.isAuthenticated()) {
         const userId = socket.request.user.id;
         userSocketMap[userId] = socket.id;
@@ -164,7 +164,6 @@ module.exports = {
       }
       //Sends user the correct page when they refresh
       socket.on("WHICH PAGE", async () => {
-        console.log('which page req');
         const state = userLocation[socket.request.user.id];
         const userId = socket.request.user.id;
         if (state === undefined || state === constants.userLocation.CUSTOM_LISTINGS || state === constants.userLocation.OTHER) {
@@ -225,9 +224,6 @@ module.exports = {
       })
       //assumes that you are avalable when you are in a match lobby room
       socket.on("JOIN TEAM 1", async () => {
-        console.log('server join team 1 req');
-        console.log(socket.id);
-        console.log(userSocketMap);
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
@@ -235,9 +231,6 @@ module.exports = {
       });
 
       socket.on("JOIN TEAM 2", async () => {
-        console.log('server join team 2 req');
-        console.log(socket.id);
-        console.log(userSocketMap);
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];

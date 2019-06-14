@@ -32,6 +32,7 @@ module.exports = class Game { // maybe rename this to be Table
     this.animateCtr = 1;
     this.io = io;
     this.finished = false;
+    this.timer = null;
     for(var i = 0; i < numPlayers; i++) {
       this.seatMap[i] = "";
     };
@@ -39,23 +40,23 @@ module.exports = class Game { // maybe rename this to be Table
 
 
   timerLogic(obj) {
-    if (obj.animateNextStreet) {
-      //need to animate the next street
-      obj.animateNextStreet = false;
-      obj.aniamteCtr = 1;
-      // console.log(obj);
-    } else if (obj.animateWin) {
-      //need to animate a player winning the pot
-      obj.animateWin = false;
-      obj.animateCtr = 2;
-
-      if (obj.finished) {
-
-      } else {
-        obj.startHand();
-      }
-
-    } else {
+    // if (obj.animateNextStreet) {
+    //   //need to animate the next street
+    //   obj.animateNextStreet = false;
+    //   obj.aniamteCtr = 1;
+    //   // console.log(obj);
+    // } else if (obj.animateWin) {
+    //   //need to animate a player winning the pot
+    //   obj.animateWin = false;
+    //   obj.animateCtr = 2;
+    //
+    //   if (obj.finished) {
+    //
+    //   } else {
+    //     obj.startHand();
+    //   }
+    //
+    // } else {
       if (obj.animateCtr > 0) {
         //waiting for animation to finish
         obj.animateCtr--;
@@ -81,7 +82,7 @@ module.exports = class Game { // maybe rename this to be Table
 
       }
 
-    }
+    // }
 
 
   }
@@ -105,7 +106,7 @@ module.exports = class Game { // maybe rename this to be Table
       return player !== "";
     }).length;
     if (numPlayersJoined >= 2) {
-      setInterval(this.timerLogic, 1000, this);
+      this.timer = setInterval(this.timerLogic, 1000, this);
       this.startHand();
     }
   }
@@ -330,7 +331,10 @@ module.exports = class Game { // maybe rename this to be Table
     });
     const numPlayersInHand = playersInHandList.length;
     if (numPlayersInHand === 1) {
-      this.animateWin = true;
+      // this.animateWin = true;
+      //
+      clearInterval(this.timer);
+      setTimeout(() => this.timer = timerLogic(this), 2000);
       //one player won
       //gives player the pot
       Object.values(this.seatMap).forEach(player => {
@@ -342,7 +346,8 @@ module.exports = class Game { // maybe rename this to be Table
       playersInHandList[0].stackSize += this.pot;
     } else {
       //makes sure animation happens in next clock tick - to change this so that there's no timing issues
-      this.animateNextStreet = true;
+      clearInterval(this.timer);
+      setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 1000);
       //resets variables for the next street
       this.lastRaiseSize = 0;
       this.currentTotalRaise = 0;
