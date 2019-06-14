@@ -39,6 +39,7 @@ module.exports = {
 				rankMap[1]++;
 			}
 		}
+		console.log(suitMap);
 		var pair1 = 0;
 		var pair2 = 0;
 		var pair3 = 0;
@@ -55,13 +56,13 @@ module.exports = {
 		var straightHigh = 0;
 		var flush = false;
 		var flushSuit = null;
-		var flush1 = 0;
-		var flush2 = 0;
-		var flush3 = 0;
-		var flush4 = 0;
-		var flush5 = 0;
-		var flush6 = 0;
-		var flush7 = 0;
+		var flush1 = -10;
+		var flush2 = -10;
+		var flush3 = -10;
+		var flush4 = -10;
+		var flush5 = -10;
+		var flush6 = -10;
+		var flush7 = -10;
 		var straightFlush = false;
 		var straightFlushHigh = 0;
 
@@ -113,65 +114,80 @@ module.exports = {
 				straightCtr = 0;
 			}
 		}
-		for(var i = 0; i < 4; i++) {
-			if (intToSuit[i] >= 5) {
+		Object.keys(suitMap).forEach(suit => {
+			if (suitMap[suit] >= 5) {
 				flush = true;
-				flushSuit = intToSuit[i];
+				flushSuit = suit;
 			}
-		}
+		})
 		if (flush) {
-			for (var i = 6; i >= 0; i--) {
+			for (var i = 0; i < 7; i++) {
 				const currentCard = sortedCards[i]
 				if (currentCard.suit == flushSuit) {
 					const currentCardValue = currentCard.power;
 					//finds the strength of the flush
-					if (flush1 != 0) {
+					if (flush1 == -10) {
 						flush1 = currentCardValue;
-					} else if (flush2 != 0) {
+					} else if (flush2 == -10) {
 						flush2 = currentCardValue;
-					} else if (flush3 != 0) {
+					} else if (flush3 == -10) {
 						flush3 = currentCardValue;
-					} else if (flush4 != 0) {
+					} else if (flush4 == -10) {
 						flush4 = currentCardValue;
-					} else if (flush5 != 0) {
+					} else if (flush5 == -10) {
 						flush5 = currentCardValue;
-					} else if (flush6 != 0) {
+					} else if (flush6 == -10) {
 						flush6 = currentCardValue;
-					} else if (flush7 != 0) {
+					} else if (flush7 == -10) {
 						flush7 = currentCardValue;
 					}
 				}
 			}
+			console.log(flush1);
+			console.log(flush2);
+			console.log(flush3);
+			console.log(flush4);
+			console.log(flush5);
+			console.log(flush6);
+			console.log(flush7);
 
-			if(flush1 - flush5 == 4) {
+			if(flush1 - flush5 === 4) {
 				straightFlush = true;
 				straightFlushHigh = flush1;
-			} else if (flush2 - flush6 == 4) {
+			} else if (flush2 - flush6 === 4) {
 				straightFlush = true;
 				straightFlushHigh = flush2;
-			} else if (flush3 - flush7 == 4) {
+			} else if (flush3 - flush7 === 4) {
 				straightFlush = true;
 				straightFlushHigh = flush3;
-			} else if (flush4 - flush7 == 3 && flush7 == 2 && flush1 == 14) {//straight flush A-5
+			} else if (flush1 === 14) {//straight flush A-5 check
+				if ((flush2 - flush5 == 3 && flush2 == 5) || (flush3 - flush6 == 3 && flush2 == 5) || (flush4 - flush7 == 3 && flush2 == 5))
 				straightFlush = true;
 				straightFlushHigh = 5;
 			}
 		}
 		if (straightFlush) {
+			console.log('straight flush');
 			return straightFlushHigh * 10000000000000000
 		} else if (quad1 > 0) {
+			console.log('quads');
 			const singleVal = Math.max(single1, pair1, triple1);
 			return quad1 * 100000000000000 + singleVal;
 		} else if (triple1 > 0 && (triple2 > 0 || pair1 > 0)) {
+			console.log('house');
 			const pairVal = triple2 > pair1 ? triple2 : pair1;
 			return triple1 * 1000000000000 + pairVal;
 		} else if (flush) {
-			return flush1 * 10000000000 + flush2 + flush3 + flush4 + flush5;
+			console.log('flush');
+			return flush1 * 10000000000 + 100000000 * flush2 + 1000000 * flush3 + 10000 * flush4 + 100 * flush5;
 		} else if (straight) {
+			console.log('straight');
 			return straightHigh * 100000000;
 		} else if (triple1 > 0) {
+			console.log('set');
 			return triple1 * 1000000 + single1 + single2;
 		} else if (pair1 > 0 && pair2 > 0) {
+			console.log('two pair');
 			const singleVal = pair3 > single1 ? pair3 : single1;
 			return pair1 * 10000 + pair2 * 100 + singleVal;
 		} else if (pair1 > 0) {

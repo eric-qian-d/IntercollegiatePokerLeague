@@ -404,7 +404,6 @@ module.exports = class Game { // maybe rename this to be Table
 
         var currentStrongestHandStrength = 0;
         var winners = [];
-        console.log('getting hand strengths');
         playersInHandList.forEach(player => {
           const playerHandStrength = hand.getRanking(player.hand, this.board);
           if (playerHandStrength == currentStrongestHandStrength) {
