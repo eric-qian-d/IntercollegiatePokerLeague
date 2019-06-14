@@ -81,21 +81,21 @@ const Card = require('../common/game-logic/card');
 // console.log(handLogic.getRanking(sampleHand1, sampleBoard));
 
 
-//two pair vs house
-sampleBoard = [];
-sampleBoard.push(new Card('Spades', 2));
-sampleBoard.push(new Card('Hearts', 2));
-sampleBoard.push(new Card('Clubs', 10));
-sampleBoard.push(new Card('Spades', 4));
-sampleBoard.push(new Card('Spades', 3));
-
-sampleHand = [];
-sampleHand.push(new Card('Spades', 6));
-sampleHand.push(new Card('Diamonds', 6));
-
-sampleHand1 = [];
-sampleHand1.push(new Card('Diamonds', 10));
-sampleHand1.push(new Card('Spades', 10));
-
-console.log(handLogic.getRanking(sampleHand, sampleBoard));
-console.log(handLogic.getRanking(sampleHand1, sampleBoard));
+// //two pair vs house
+// sampleBoard = [];
+// sampleBoard.push(new Card('Spades', 2));
+// sampleBoard.push(new Card('Hearts', 2));
+// sampleBoard.push(new Card('Clubs', 10));
+// sampleBoard.push(new Card('Spades', 4));
+// sampleBoard.push(new Card('Spades', 3));
+//
+// sampleHand = [];
+// sampleHand.push(new Card('Spades', 6));
+// sampleHand.push(new Card('Diamonds', 6));
+//
+// sampleHand1 = [];
+// sampleHand1.push(new Card('Diamonds', 10));
+// sampleHand1.push(new Card('Spades', 10));
+//
+// console.log(handLogic.getRanking(sampleHand, sampleBoard));
+// console.log(handLogic.getRanking(sampleHand1, sampleBoard));

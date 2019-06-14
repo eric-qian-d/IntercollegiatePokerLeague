@@ -66,11 +66,11 @@ class RegistrationForm extends React.Component {
         </label>
         <label>
           Password:
-          <input type="text" name = "password" value={'*'.repeat(this.state.password.length)} onChange={this.handleChange} />
+          <input type="password" name = "password" value={this.state.password} onChange={this.handleChange} />
         </label>
         <label>
           Reenter password:
-          <input type="text" name = "reenteredPassword" value={'*'.repeat(this.state.reenteredPassword.length)} onChange={this.handleChange} />
+          <input type="password" name = "reenteredPassword" value={this.state.reenteredPassword.length} onChange={this.handleChange} />
         </label>
       <input type="submit" value="Register" />
       </form>
