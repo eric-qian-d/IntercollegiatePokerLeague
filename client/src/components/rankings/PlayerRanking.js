@@ -6,11 +6,12 @@ class PlayerRanking extends React.Component {
   }
 
   render() {
-    const {name, place, ranking} = this.props;
+    const {name, place, ranking, school} = this.props;
     return (
       <div className = 'PlayerRanking'>
         {place}
         {name}
+        {school}
         {ranking}
       </div>
     )

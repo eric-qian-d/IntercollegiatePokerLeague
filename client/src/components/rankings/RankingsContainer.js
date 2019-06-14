@@ -22,7 +22,7 @@ class RankingsContainer extends React.Component {
   render() {
     return(
       <div className = 'RankingsContainer'>
-        <Navbar/>
+        <Navbar {...this.props}/>
         <HULadderBoardContainer/>
       </div>
     )
