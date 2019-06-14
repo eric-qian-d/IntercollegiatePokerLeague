@@ -32,6 +32,7 @@ class GameContainer extends React.Component {
 
   render() {
     const {numPlayers, buttonLocation, action, pot, board, time, players} = this.state;
+    console.log(board);
     return (
       <div>
         <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation} action = {action} pot = {pot} board = {board} players = {players}/>
