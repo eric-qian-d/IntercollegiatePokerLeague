@@ -422,7 +422,7 @@ module.exports = class Game { // maybe rename this to be Table
               this.action = null;
               this.allIn = true;
               advanced = true;
-              if (this.board.length === 5) {
+              if (this.board.length === 4) {
                 setTimeout(() => {
                   this.board.push(this.deck.getNextCard());
                   this.emitAll();
