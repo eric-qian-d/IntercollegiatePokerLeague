@@ -1,4 +1,5 @@
 import React from 'react';
+import './PlayerRanking.css';
 
 class PlayerRanking extends React.Component {
   constructor(props) {
@@ -9,10 +10,18 @@ class PlayerRanking extends React.Component {
     const {name, place, ranking, school} = this.props;
     return (
       <div className = 'PlayerRanking'>
-        {place}
+        <div className = 'PlayerRankingPlace PlayerRankingInfo'>
+          {place}
+        </div>
+        <div className = 'PlayerRankingName PlayerRankingInfo'>
         {name}
+        </div>
+        <div className = 'PlayerRankingSchool PlayerRankingInfo'>
         {school}
+        </div>
+        <div className = 'PlayerRankingRanking PlayerRankingInfo'>
         {ranking}
+        </div>
       </div>
     )
   }

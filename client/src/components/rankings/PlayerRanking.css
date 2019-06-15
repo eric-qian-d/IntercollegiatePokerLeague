@@ -1,0 +1,24 @@
+.PlayerRankingInfo{
+  margin-right: 50px;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.PlayerRankingPlace{
+  width: 20px;
+}
+
+.PlayerRankingName{
+  width: 150px;
+}
+
+.PlayerRankingSchool{
+  width: 300px;
+}
+
+.PlayerRanking {
+  display: flex;
+  border: 2px solid black;
+  height: 30px;
+  margin-top: 5px;
+}
