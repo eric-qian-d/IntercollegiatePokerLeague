@@ -1,6 +1,7 @@
 import React from 'react';
-
 import {raise} from "../../js/gameplay";
+
+import './RaiseButton.css';
 
 
 class RaiseButton extends React.Component {
@@ -26,12 +27,10 @@ class RaiseButton extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Raise to:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Raise" />
+      <form className = 'RaiseButton' onSubmit={this.handleSubmit}>
+      <input className = 'RaiseButtonButton' type="submit" value="Raise to" />
+      <input className = 'RaiseButtonInput' type="text" value={this.state.value} onChange={this.handleChange} />
+
       </form>
     );
   }

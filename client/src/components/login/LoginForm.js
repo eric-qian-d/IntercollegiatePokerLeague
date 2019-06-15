@@ -91,20 +91,20 @@ class LoginForm extends React.Component {
 
       <form onSubmit={this.handleSubmit} className = 'LoginForm'>
       Account Login
-        <label>
+        <label className = 'LoginLabel'>
           <div className = 'InputContainer'>
             Email:
-            <input type="text" name = "email" value={this.state.email} onChange={this.handleChange} />
+            <input className = 'LoginInput' type="text" name = "email" value={this.state.email} onChange={this.handleChange} />
           </div>
         </label>
-        <label >
+        <label className = 'LoginLabel'>
           <div className = 'InputContainer'>
             Password:
-            <input type="password" name = "password" value={this.state.password} onChange={this.handleChange} />
+            <input className = 'LoginInput' type="password" name = "password" value={this.state.password} onChange={this.handleChange} />
           </div>
         </label>
         <input className = 'FormButton' type="submit" value="Login" />
-      
+
         <ToRegistrationButton {...this.props}/>
       </form>
     )

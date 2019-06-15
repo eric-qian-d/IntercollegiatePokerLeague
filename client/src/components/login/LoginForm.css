@@ -6,7 +6,7 @@
   margin: auto;
 }
 
-label {
+.LoginLabel{
   margin: auto;
   display: block;
   width: 250px;
@@ -17,7 +17,7 @@ label {
 
 
 
-input {
+.LoginInput{
   margin: auto;
   display: block;
   width: 250px;

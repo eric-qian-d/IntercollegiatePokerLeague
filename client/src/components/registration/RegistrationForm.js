@@ -56,25 +56,25 @@ class RegistrationForm extends React.Component {
     return (
       <form  onSubmit={this.handleSubmit} className = 'RegistrationForm'>
       Register
-        <label>
+        <label className = 'RegistrationLabel'>
           First Name:
-          <input type="text" name = "firstName" value={this.state.firstName} onChange={this.handleChange} />
+          <input className = 'RegistrationInput' type="text" name = "firstName" value={this.state.firstName} onChange={this.handleChange} />
         </label>
-        <label>
+        <label className = 'RegistrationLabel'>
           Last Name:
-          <input type="text" name = "lastName" value={this.state.lastName} onChange={this.handleChange} />
+          <input className = 'RegistrationInput' type="text" name = "lastName" value={this.state.lastName} onChange={this.handleChange} />
         </label>
-        <label>
+        <label className = 'RegistrationLabel'>
           Email:
-          <input type="text" name = "email" value={this.state.email} onChange={this.handleChange} />
+          <input className = 'RegistrationInput' type="text" name = "email" value={this.state.email} onChange={this.handleChange} />
         </label>
-        <label>
+        <label className = 'RegistrationLabel'>
           Password:
-          <input type="password" name = "password" value={this.state.password} onChange={this.handleChange} />
+          <input className = 'RegistrationInput' type="password" name = "password" value={this.state.password} onChange={this.handleChange} />
         </label>
-        <label>
+        <label className = 'RegistrationLabel'>
           Reenter password:
-          <input type="password" name = "reenteredPassword" value={this.state.reenteredPassword} onChange={this.handleChange} />
+          <input className = 'RegistrationInput' type="password" name = "reenteredPassword" value={this.state.reenteredPassword} onChange={this.handleChange} />
         </label>
       <input type="submit" value="Register" />
       <ToLoginButton {...this.props}/>
