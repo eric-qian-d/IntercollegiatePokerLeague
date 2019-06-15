@@ -7,7 +7,7 @@ const newStore = new redisStore({ host: 'localhost', port: 6379, client: client,
 
 module.exports = {
   session: session({
-    secret: 'somerandonstuffs',
+    secret: 'tomakesecurelater',
     store: newStore,
     resave: false,
     saveUninitialized: true,

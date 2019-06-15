@@ -1,17 +1,15 @@
-const express = require("express");
-const cors = require("cors");
-// const session = require("express-session");
-const session = require("./config/session");
+const express = require('express');
+const cors = require('cors');
+const session = require('./config/session');
 const bodyParser = require('body-parser');
-const passport = require("passport");
+const passport = require('passport');
 const chooseGame = require('./routes/game');
 
-const passportConfigure = require("./common/passport");
-const registration = require("./routes/registration");
+const passportConfigure = require('./common/passport');
+const registration = require('./routes/registration');
 const rankings = require('./routes/rankings');
 
 // const school = require('./config/school-script');
-
 // school.createAllSchools();
 
 
@@ -28,20 +26,15 @@ app.use(cors({
 }));
 
 app.use(bodyParser());
-
 app.use(session.session);
-
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-app.use("/api/registration", registration);
+app.use('/api/registration', registration);
 app.use('/api/choose-game', chooseGame);
 app.use('/api/rankings', rankings);
 
 app.get('/loggedin', function(req, res, next) {
-  // console.log(req.session);
-  // console.log(req.user);
   if (req.isAuthenticated()) {
     return res.status(200).send({loggedIn: true});
   } else {
@@ -59,13 +52,9 @@ app.post('/login', function(req, res, next) {
       return res.status(401).send({ success : false, message : 'authentication failed' });
     }
     req.login(user, function(err){
-
-      // console.log(user);
       if(err){
         return next(err);
       }
-      // console.log(req.user);
-      // console.log(req.session);
       req.session.cookie.playerId = req.user.dataValues.id;
       return res.status(200).send({ success : true, message : 'authentication succeeded' });
     });
@@ -73,12 +62,9 @@ app.post('/login', function(req, res, next) {
 });
 
 app.post('/logout', function(req, res, next) {
-  console.log('received logout req');
   req.session.destroy(function (err) {
     console.log(err);
   })
 });
-
-
 
 module.exports = app;
