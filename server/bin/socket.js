@@ -265,17 +265,7 @@ module.exports = {
         const userEmail = socket.request.user.email;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        match.team1 = match.team1.filter(id => {return !(id === userId)});
-        match.team2 = match.team2.filter(id => {return !(id === userId)});
-        delete match.listeners[userId];
-        Object.keys(match.listeners).forEach(playerId => {
-          io.to(userSocketMap[playerId]).emit("TEAM 1", match.team1, false);
-          io.to(userSocketMap[playerId]).emit("TEAM 2", match.team2, false);
-        })
-        io.to(userSocketMap[match.ownerId]).emit("TEAM 1", match.team1, true);
-        io.to(userSocketMap[match.ownerId]).emit("TEAM 2", match.team2, true);
-        userStatus[userId] = constants.userStatus.AVAILABLE;
-        userLocation[userId] = constants.userLocation.CUSTOM_LISTINGS;
+        match.exit(socket.request.user);
         socket.join("CUSTOM LISTINGS");
         io.to(userSocketMap[userId]).emit("PAGE: CUSTOM LISTINGS");
       });

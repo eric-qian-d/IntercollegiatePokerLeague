@@ -97,6 +97,24 @@ module.exports = class Match {
     io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true);
   }
 
+  exit(user) {
+    const io = this.io;
+    this.team1 = this.team1.filter(secondaryUser => {return (secondaryUser.id !== user.id)});
+    this.team2 = this.team2.filter(secondaryUser => {return (secondaryUser.id !== user.id)});
+    const userId = user.id
+    delete this.listeners[userId];
+    userStatus[userId] = constants.userStatus.AVAILABLE;
+    userLocation[userId] = constants.userLocation.CUSTOM_LISTINGS;
+    const team1names = this.getTeam1Names();
+    const team2names = this.getTeam2Names();
+    Object.keys(this.listeners).forEach(playerId => {
+      io.to(userSocketMap[playerId]).emit("TEAM 1", team1names, false);
+      io.to(userSocketMap[playerId]).emit("TEAM 2", team2names, false);
+    })
+    io.to(userSocketMap[this.ownerId]).emit("TEAM 1", team1names, true);
+    io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true);
+  }
+
   getTeam1Names() {
     const team1names = this.team1.map(user => {
       return (user.firstName + ' ' + user.lastName);
