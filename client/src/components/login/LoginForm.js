@@ -7,6 +7,7 @@ import {
 import { Redirect } from 'react-router-dom';
 import vars from '../../vars';
 import './LoginForm.css';
+import ToRegistrationButton from "./ToRegistrationButton";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -103,6 +104,8 @@ class LoginForm extends React.Component {
           </div>
         </label>
         <input className = 'FormButton' type="submit" value="Login" />
+      
+        <ToRegistrationButton {...this.props}/>
       </form>
     )
   }

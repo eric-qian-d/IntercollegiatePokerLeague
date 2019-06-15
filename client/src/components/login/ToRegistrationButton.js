@@ -1,4 +1,5 @@
 import React from "react";
+import './ToRegistrationButton.css';
 
 class ToRegistrationButton extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class ToRegistrationButton extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className = 'ToRegistrationContainer'>
         Don't have an account yet?
         <button onClick = {() => {this.props.history.push("/registration");}}>
           Register

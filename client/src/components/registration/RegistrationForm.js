@@ -1,6 +1,7 @@
 import React from "react";
 import vars from '../../vars';
 import './RegistrationForm.css';
+import ToLoginButton from './ToLoginButton';
 
 class RegistrationForm extends React.Component {
   constructor(props) {
@@ -76,6 +77,7 @@ class RegistrationForm extends React.Component {
           <input type="password" name = "reenteredPassword" value={this.state.reenteredPassword} onChange={this.handleChange} />
         </label>
       <input type="submit" value="Register" />
+      <ToLoginButton {...this.props}/>
       </form>
     )
   }

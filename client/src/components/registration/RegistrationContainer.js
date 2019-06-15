@@ -11,8 +11,8 @@ class RegistrationContainer extends React.Component {
   render() {
     return (
       <div className = "RegistrationContainer">
-        <RegistrationForm/>
-        <ToLoginButton {...this.props}/>
+        <RegistrationForm {...this.props}/>
+
       </div>
     )
   }
