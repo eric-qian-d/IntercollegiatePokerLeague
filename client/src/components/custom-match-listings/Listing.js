@@ -1,6 +1,6 @@
 import React from 'react';
 import {joinMatch} from "../../js/custom-match-listings";
-import { Redirect } from 'react-router-dom'
+import './Listing.css';
 
 class Listing extends React.Component {
   constructor(props) {
@@ -14,9 +14,13 @@ class Listing extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.props.name}
-        {this.props.numPlayers}
+      <div className = 'CustomListing'>
+        <div className = 'CustomListingInfo CustomListingName'>
+          {this.props.name}
+        </div>
+        <div className = 'CustomListingInfo CustomListingNumPlayers'>
+          {this.props.numPlayers}
+        </div>
         <button className = "JoinMatchButton" onClick = {() => {this.joinMatchButtonLogic()}}>
           {"Join"}
         </button>

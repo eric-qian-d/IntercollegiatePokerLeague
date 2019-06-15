@@ -1,0 +1,18 @@
+.CustomListingInfo{
+  display: inline;
+  margin-left: 40px;
+  margin-right: 30px;
+}
+
+.CustomListing{
+  display: flex;
+  border: 2px solid black;
+  /* height: 30px; */
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.JoinMatchButton {
+  position: absolute;
+  right: 40px;
+}
