@@ -4,27 +4,35 @@ const models = "./models";
 const userLogic = require("../common/userLogic");
 
 
-// console.log("testing");
-
 router.post('/', async (req, res, next) => {
-    console.log('received req');
-    // console.log()
-    const existingUser = await userLogic.getUserByEmail(req.body.email);
-    console.log("existing user");
-    console.log(existingUser);
-    const newUser = req.body;
-    // console.log()
-    if (!existingUser) {
-      userLogic.createUser(newUser);
+    const email = req.body.email;
+    const splitEmail = email.split('@');
+    //check for valid email
+    if (splitEmail.length === 2 && splitEmail[1].slice(-4) === '.edu') {
+      const existingUser = await userLogic.getUserByEmail(email);
+      console.log("existing user");
+      console.log(existingUser);
+      const newUser = req.body;
+      //make sure the email isn't already in use
+      if (!existingUser) {
+        await userLogic.createUser(newUser);
+        res.status(200).send({
+          success: true,
+          status: 'Account created!'
+        });
+      } else {
+        res.status(200).send({
+          success: false,
+          status: 'Email already in use!'
+        });
+      }
+    } else {
+      res.status(200).send({
+        success: false,
+        status: 'Invalid email'
+      });
     }
-    //check if email already exists
-
 
   });
-
-router.get('/test', (req,res, next) => {
-
-  console.log("success");
-});
 
 module.exports = router;

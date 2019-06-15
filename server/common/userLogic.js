@@ -10,7 +10,7 @@ module.exports = {
     const email = user.email;
     const splitEmail = email.split('@');
     if (splitEmail.length == 2) {
-      domain = splitEmail[1] //should assert that this has length 2
+      domain = splitEmail[1];
       const school = await models.School.findOne({ where: {domain: domain} , raw: true});
       if (school === null) {
         user.schoolName = "Undetermined";

@@ -19,7 +19,6 @@ class RegistrationForm extends React.Component {
   }
 
   handleChange(event) {
-
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -30,14 +29,11 @@ class RegistrationForm extends React.Component {
     event.preventDefault();
     const {email, password, reenteredPassword} = this.state;
     if (email.length < 4 || email.slice(-4) !== ".edu") {
-      alert("must use a .edu email!")
+      alert("Must use a .edu email!")
     }
     else if (password !== reenteredPassword) {
-      alert("passwords don't match!")
+      alert("Passwords don't match!")
     } else {
-      console.log("submitting")
-      console.log(JSON.stringify(this.state));
-      // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
       fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/registration', {
         method: 'POST',
         headers: {
@@ -46,6 +42,14 @@ class RegistrationForm extends React.Component {
         },
         body: JSON.stringify(this.state)
       })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          this.props.history.push("/");
+        } else {
+          alert(data.status);
+        }
+      });
     }
 
 
