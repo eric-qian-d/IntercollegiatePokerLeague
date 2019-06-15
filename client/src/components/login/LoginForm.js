@@ -1,5 +1,6 @@
 import React from "react";
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
+import vars from '../../vars';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class LoginForm extends React.Component {
       alert("must use a .edu email!")
     } else {
       // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
-      fetch("http://localhost:8081/login", {
+      fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/login', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

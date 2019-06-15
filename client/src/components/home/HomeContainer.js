@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from '../navbar/Navbar';
+import vars from '../../vars';
 
 class HomeContainer extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class HomeContainer extends React.Component {
 
 
   componentDidMount() {
-    fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin', {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {

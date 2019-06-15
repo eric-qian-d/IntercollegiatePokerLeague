@@ -1,6 +1,7 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 import ToRegistrationButton from "./ToRegistrationButton";
+import vars from '../../vars';
 
 class LoginContainer extends React.Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class LoginContainer extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
+    console.log(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin');
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin', {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {

@@ -5,6 +5,7 @@ import CustomMatchLobbyContainer from "./custom-match-lobby/CustomMatchLobbyCont
 import QueueContainer from './queue/QueueContainer';
 import MatchLobbyContainer from './match-lobby/MatchLobbyContainer';
 import {makeSocket} from "../js/socket";
+import vars from '../vars';
 
 class GamePagesContainer extends React.Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class GamePagesContainer extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin', {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {

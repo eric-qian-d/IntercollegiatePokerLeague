@@ -1,4 +1,5 @@
 import React from "react";
+import vars from '../../vars';
 
 class RegistrationForm extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class RegistrationForm extends React.Component {
       console.log("submitting")
       console.log(JSON.stringify(this.state));
       // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
-      fetch("http://localhost:8081/api/registration", {
+      fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/registration', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

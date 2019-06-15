@@ -1,6 +1,7 @@
 import React from "react";
 import RegistrationForm from "./RegistrationForm";
 import ToLoginButton from "./ToLoginButton";
+import vars from '../../vars';
 
 class RegistrationContainer extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class RegistrationContainer extends React.Component {
 
   componentDidMount() {
     //can change this to not share the same endpoint
-    fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin', {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {
