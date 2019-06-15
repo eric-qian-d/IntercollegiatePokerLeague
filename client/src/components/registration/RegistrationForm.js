@@ -1,5 +1,6 @@
 import React from "react";
 import vars from '../../vars';
+import './RegistrationForm.css';
 
 class RegistrationForm extends React.Component {
   constructor(props) {
@@ -52,7 +53,8 @@ class RegistrationForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form  onSubmit={this.handleSubmit} className = 'RegistrationForm'>
+      Register
         <label>
           First Name:
           <input type="text" name = "firstName" value={this.state.firstName} onChange={this.handleChange} />
@@ -71,7 +73,7 @@ class RegistrationForm extends React.Component {
         </label>
         <label>
           Reenter password:
-          <input type="password" name = "reenteredPassword" value={this.state.reenteredPassword.length} onChange={this.handleChange} />
+          <input type="password" name = "reenteredPassword" value={this.state.reenteredPassword} onChange={this.handleChange} />
         </label>
       <input type="submit" value="Register" />
       </form>
