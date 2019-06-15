@@ -103,7 +103,7 @@ class LoginForm extends React.Component {
             <input className = 'LoginInput' type="password" name = "password" value={this.state.password} onChange={this.handleChange} />
           </div>
         </label>
-        <input className = 'FormButton' type="submit" value="Login" />
+        <input className = 'FormButton LoginInput' type="submit" value="Login" />
 
         <ToRegistrationButton {...this.props}/>
       </form>

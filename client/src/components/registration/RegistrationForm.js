@@ -76,7 +76,7 @@ class RegistrationForm extends React.Component {
           Reenter password:
           <input className = 'RegistrationInput' type="password" name = "reenteredPassword" value={this.state.reenteredPassword} onChange={this.handleChange} />
         </label>
-      <input type="submit" value="Register" />
+      <input className = 'RegistrationInput' type="submit" value="Register" />
       <ToLoginButton {...this.props}/>
       </form>
     )
