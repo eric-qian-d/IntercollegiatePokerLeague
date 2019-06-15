@@ -19,8 +19,8 @@ const userStatus = states.userStatus; //maps from playerId to availability //AVA
 const matchMap = states.matchMap; //maps from matchId to Match object
 const gameMap = states.gameMap; //maps from gameId to Game object
 
-function addCustomMatch(matchId, name, numPlayers, ownerId) {
-  const newMatch = new Match(matchId, name, numPlayers, ownerId, io, 'custom');
+function addCustomMatch(matchId, name, numPlayers, ownerId, ownerName) {
+  const newMatch = new Match(matchId, name, numPlayers, ownerId, ownerName, io, 'custom');
   matchMap[matchId] = newMatch;
   notifyCustomMatchLobby();
 }
@@ -36,6 +36,7 @@ function getCustomMatches() {
         id : m.id,
         name : m.name,
         numPlayers : m.numPlayers,
+        ownerName : m.ownerName,
       }
     )
   })
@@ -174,12 +175,13 @@ module.exports = {
       //a user cannot be queued in anything else before they request to create a custom game
       socket.on('NEW CUSTOM MATCH', async (name, numPlayers) => {
         const userId = socket.request.user.id;
+        const userName = socket.request.user.firstName + ' ' + socket.request.user.lastName;
         if (userStatus[userId] !== constants.userStatus.AVAILABLE) {
           io.to(userSocketMap[userId]).emit('CREATE FAILED', userStatus[userId]);
         } else {
           userStatus[userId] = constants.userStatus.CUSTOM_MATCH_OWNER;
           const newMatchId = uuidv4();
-          addCustomMatch(newMatchId, name, numPlayers, userId);
+          addCustomMatch(newMatchId, name, numPlayers, userId, userName);
           userLocation[userId] = constants.userLocation.CUSTOM_MATCH_LOBBY;
           userMatchMap[userId] = newMatchId;
           socket.emit('PAGE: CUSTOM MATCH LOBBY');

@@ -15,8 +15,9 @@ const userMatchMap = states.userMatchMap;
 //Use this class later, once Game works
 module.exports = class Match {
 
-  constructor(matchId, name, numPlayers, ownerId, io, type) {
+  constructor(matchId, name, numPlayers, ownerId, ownerName, io, type) {
     this.ownerId = ownerId;
+    this.ownerName = ownerName;
     this.id = matchId;
     this.name = name;
     this.numPlayers = numPlayers;

@@ -1,5 +1,6 @@
 import React from 'react';
 import Listing from "./Listing";
+import './ListingsContainer.css';
 
 class ListingsContainer extends React.Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class ListingsContainer extends React.Component {
   }
 
   render() {
-    var lines = this.state.matches.map(function (match, i) {
+    var lines = this.state.matches
+    .map(function (match, i) {
       return (
         <div key = {i}>
           {match}
@@ -19,7 +21,8 @@ class ListingsContainer extends React.Component {
     });
     return (
 
-      <div id = "LobbyWrapper">
+      <div id = "ListingsContainer">
+        <Listing header = {true}/>
         {lines}
       </div>
     );
@@ -27,7 +30,6 @@ class ListingsContainer extends React.Component {
 
 
   componentDidMount() {
-    console.log("Listings Container is mounting");
     this.props.socket.emit("GET CUSTOM MATCHES");
     this.props.socket.on("CUSTOM MATCHES", matchesList => {
       var tempMatches = [];
@@ -35,7 +37,8 @@ class ListingsContainer extends React.Component {
           var name =  matchesList[i].name;
           var numPlayers =  matchesList[i].numPlayers;
           var id = matchesList[i].id;
-          tempMatches.push(<Listing name = {name} numPlayers = {numPlayers} socket = {this.props.socket} matchId = {id}/>);
+          var ownerName = matchesList[i].ownerName;
+          tempMatches.push(<Listing name = {name} numPlayers = {numPlayers} socket = {this.props.socket} matchId = {id} ownerName = {ownerName} header = {false}/>);
         }
       this.setState({matches: tempMatches});
     })
