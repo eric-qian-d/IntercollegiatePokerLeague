@@ -272,12 +272,14 @@ module.exports = {
         }
       });
       socket.on('CALL', async () => {
+        console.log('received call req');
         const userId = socket.request.user.id;
         if (userStatus[userId] === constants.userStatus.IN_GAME) {
           call(userId);
         }
       });
       socket.on('RAISE', async (finalAmount) => {
+        console.log('received raise req');
         const userId = socket.request.user.id;
         console.log(userStatus)
         if (userStatus[userId] === constants.userStatus.IN_GAME) {

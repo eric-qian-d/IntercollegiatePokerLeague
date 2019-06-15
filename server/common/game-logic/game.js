@@ -45,12 +45,6 @@ module.exports = class Game { // maybe rename this to be Table
       if (obj.animateCtr > 0) {
         //waiting for animation to finish
         obj.animateCtr--;
-        // console.log('ticking down');
-        // console.log(obj);
-      // } else if (obj.allIn) {
-      //   obj.emitAll();
-      //   setTimeout(obj.nextStreet, 1000);
-      //   console.log('timeout set');
       }else {
         if (obj.finished) {
           console.log('in timer but this is finished');
@@ -316,16 +310,11 @@ module.exports = class Game { // maybe rename this to be Table
 
   nextStreet() {
     //gets a list of all the players still in the hand
-    // console.log(this);
     const playersInHandList = Object.values(this.seatMap).filter(player => {
       return player.inHand;
     });
     const numPlayersInHand = playersInHandList.length;
     if (numPlayersInHand === 1) {
-      // this.animateWin = true;
-      //
-      clearInterval(this.timer);
-      setTimeout(() => this.timer = timerLogic(this), 2000);
       //one player won
       //gives player the pot
       Object.values(this.seatMap).forEach(player => {
@@ -335,6 +324,12 @@ module.exports = class Game { // maybe rename this to be Table
         }
       })
       playersInHandList[0].stackSize += this.pot;
+      clearInterval(this.timer);
+      setTimeout(() => {
+        this.startHand();
+        this.timer = setInterval(this.timerLogic, 1000, this);
+      }, 2000);
+
     } else {
       //makes sure animation happens in next clock tick - to change this so that there's no timing issues
       console.log('in else loop');
@@ -409,8 +404,6 @@ module.exports = class Game { // maybe rename this to be Table
         //finds the player who is going first on the turn
         while (!advanced) {
           this.action = (this.action + 1) % this.numPlayers;
-          console.log(this.seatMap[this.action]);
-          console.log(this.seatMap[this.buttonLocation + 1]);
           if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand && this.seatMap[this.action].stackSize > 0) {
             //sets lastRaiser so that when it gets back to this player, nextStreet() is called
             this.lastRaiser = this.action;
@@ -501,7 +494,13 @@ module.exports = class Game { // maybe rename this to be Table
             }
           }
 
+        } else {
+          setTimeout(() => {
+            this.startHand();
+            this.timer = this.timer = setInterval(this.timerLogic, 1000, this);
+          }, 1000);
         }
+
         this.allIn = false;
         this.pot = 0;
         this.animateWin = true;
@@ -509,8 +508,9 @@ module.exports = class Game { // maybe rename this to be Table
         // winner.stackSize += this.pot;
       }
       clearInterval(this.timer);
+      console.log('old interval cleared');
       if (!this.allIn) {
-
+        console.log('setting new interval');
         setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 1000);
       }
     }

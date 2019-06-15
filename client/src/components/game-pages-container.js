@@ -1,25 +1,25 @@
-import React from "react";
-import GameContainer from "./gameplay/GameContainer";
-import CustomMatchListingsContainer from "./custom-match-listings/CustomMatchListingsContainer";
-import CustomMatchLobbyContainer from "./custom-match-lobby/CustomMatchLobbyContainer";
+import React from 'react';
+import GameContainer from './gameplay/GameContainer';
+import CustomMatchListingsContainer from './custom-match-listings/CustomMatchListingsContainer';
+import CustomMatchLobbyContainer from './custom-match-lobby/CustomMatchLobbyContainer';
 import QueueContainer from './queue/QueueContainer';
 import MatchLobbyContainer from './match-lobby/MatchLobbyContainer';
-import {makeSocket} from "../js/socket";
+import {makeSocket} from '../js/socket';
 import vars from '../vars';
 
 class GamePagesContainer extends React.Component {
   constructor(props) {
     super(props);
     const socket = makeSocket();
-    socket.on("PAGE: CUSTOM LISTINGS", () => {
-      this.setState({page : "CUSTOM LISTINGS"});
+    socket.on('PAGE: CUSTOM LISTINGS', () => {
+      this.setState({page : 'CUSTOM LISTINGS'});
     });
-    socket.on("PAGE: GAME", () => {
-      this.setState({page : "GAME"});
+    socket.on('PAGE: GAME', () => {
+      this.setState({page : 'GAME'});
     });
-    socket.on("PAGE: CUSTOM MATCH LOBBY", () => {
+    socket.on('PAGE: CUSTOM MATCH LOBBY', () => {
       this.setState({
-        page : "CUSTOM MATCH LOBBY",
+        page : 'CUSTOM MATCH LOBBY',
       });
     });
     socket.on('PAGE: IN QUEUE', () => {
@@ -32,7 +32,8 @@ class GamePagesContainer extends React.Component {
         page: 'MATCH LOBBY',
       })
     })
-    socket.emit("WHICH PAGE");
+    console.log('should be emitting');
+    socket.emit('WHICH PAGE');
 
     this.state = {
       socket : socket,
@@ -46,7 +47,7 @@ class GamePagesContainer extends React.Component {
     .then(response => response.json())
     .then(data => {
       if (!data.loggedIn) {
-        this.props.history.push("/login");
+        this.props.history.push('/login');
       }
     });
   }
@@ -54,15 +55,15 @@ class GamePagesContainer extends React.Component {
   render() {
     const {page, socket, matchId} = this.state;
     console.log(page);
-    if (page === "CUSTOM LISTINGS") {
+    if (page === 'CUSTOM LISTINGS') {
       return (
         <CustomMatchListingsContainer socket = {socket} {...this.props}/>
       )
-    } else if (page === "GAME") {
+    } else if (page === 'GAME') {
       return (
         <GameContainer socket = {socket} />
       )
-    } else if (page === "CUSTOM MATCH LOBBY") {
+    } else if (page === 'CUSTOM MATCH LOBBY') {
       return (
         <CustomMatchLobbyContainer socket = {socket}/>
       )
