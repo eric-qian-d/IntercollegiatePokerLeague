@@ -28,10 +28,14 @@ class TeamsContainer extends React.Component {
     getTeam2(this.props.socket);
     this.props.socket.on("TEAM 1", (updatedTeam1, isOwner, renderJoin1) => {
       this.setState({team1 : updatedTeam1});
+      console.log('renderJoin1');
+      console.log(renderJoin1);
       this.setState({renderJoin1: renderJoin1});
     });
     this.props.socket.on("TEAM 2", (updatedTeam2, isOwner, renderJoin2) => {
       this.setState({team2 : updatedTeam2});
+      console.log('renderJoin2');
+      console.log(renderJoin2);
       this.setState({renderJoin2: renderJoin2});
     });
   }

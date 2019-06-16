@@ -75,11 +75,11 @@ module.exports = class Match {
       const team1names = this.getTeam1Names();
       const team2names = this.getTeam2Names();
       Object.keys(this.listeners).forEach(playerId => {
-        io.to(userSocketMap[playerId]).emit("TEAM 1", team1names, false);
-        io.to(userSocketMap[playerId]).emit("TEAM 2", team2names, false);
+        io.to(userSocketMap[playerId]).emit("TEAM 1", team1names, false, this.team1.length < this.numPlayers)
+        io.to(userSocketMap[playerId]).emit("TEAM 2", team2names, false, this.team2.length < this.numPlayers)
       })
-      io.to(userSocketMap[this.ownerId]).emit("TEAM 1", team1names, true);
-      io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true);
+      io.to(userSocketMap[this.ownerId]).emit("TEAM 1", team1names, true, this.team1.length < this.numPlayers)
+      io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true, this.team2.length < this.numPlayers)
     }
   }
 

@@ -21,9 +21,9 @@ class PlayersContainer extends React.Component {
       )
 
     })
+    console.log(renderJoin);
     if (renderJoin) {
       return (
-
           <div className = 'PlayersContainer'>
             {playersList}
             <button onClick = {() => {this.joinTeamLogic()}}>
