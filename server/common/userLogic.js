@@ -1,6 +1,6 @@
 const uuidV4 = require('uuid/v4');
 const models = require('../models');
-const Op = models.Sequelize.Op;
+// const Op = models.Sequelize.Op;
 const bcrypt = require('bcrypt');
 
 const hashRounds = 5;
@@ -33,10 +33,27 @@ module.exports = {
   },
 
   getUserByEmail : async (email) => {
-    console.log(email);
     const match = { email: email };
-    // const where = { [Op.or]: attributes };
     return await models.User.findOne({ where: match, attributes: { exclude: ['password'] } });
+  },
+
+  associateAllUsersWithSchools : async () => {
+    const users = await models.User.findAll({attributes: ['email', 'id', 'schoolName'], raw: true});
+    users.forEach(async (user) => {
+      if (user.schoolName === 'Undetermined') {
+        const email = user.email;
+        const domain = email.split('@')[1];
+        const school = await models.School.findOne({ where: {domain: domain} , raw: true});
+        if (school === null) {
+          user.schoolName = "Undetermined";
+          //to fill in school id that is standard for undetermined schools
+        } else {
+          const schoolName = school.name;
+          const schoolId = school.id;
+          models.User.update({schoolName: schoolName, schoolId: schoolId}, {where: {id: user.id}});
+        }
+      }
+    })
   }
 
 

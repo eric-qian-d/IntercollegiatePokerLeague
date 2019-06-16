@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 
+
 Sequelize.Promise.config({
     longStackTraces: true
 });
@@ -31,9 +32,13 @@ Object.keys(db).forEach(function(modelName) {
     }
 });
 
+// seedSchools.createAllSchools();
+// userLogic.associateAllUsersWithSchools();
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 // sequelize.sync();
+
 
 module.exports = db;
