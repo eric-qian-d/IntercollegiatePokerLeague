@@ -6,7 +6,7 @@ class newHUMatchButton extends React.Component {
     super(props);
     this.state = {
       name: 'a',
-      numPlayers: '0',
+      numPlayers: '1',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

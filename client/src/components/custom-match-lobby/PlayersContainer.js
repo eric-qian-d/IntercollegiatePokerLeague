@@ -12,6 +12,7 @@ class PlayersContainer extends React.Component {
   }
 
   render() {
+    const {renderJoin} = this.props;
     var playersList = this.props.players.map((p, i) => {
       return (
         <div key = {i}>
@@ -20,14 +21,24 @@ class PlayersContainer extends React.Component {
       )
 
     })
-    return (
+    if (renderJoin) {
+      return (
+
+          <div className = 'PlayersContainer'>
+            {playersList}
+            <button onClick = {() => {this.joinTeamLogic()}}>
+              Join Team
+            </button>
+          </div>
+      )
+    } else {
+      return (
         <div className = 'PlayersContainer'>
           {playersList}
-          <button onClick = {() => {this.joinTeamLogic()}}>
-            Join Team
-          </button>
         </div>
-    )
+      )
+    }
+
   }
 }
 
