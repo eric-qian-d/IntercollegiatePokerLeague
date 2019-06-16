@@ -7,23 +7,43 @@ class PlayerRanking extends React.Component {
   }
 
   render() {
-    const {name, place, ranking, school} = this.props;
-    return (
-      <div className = 'PlayerRanking'>
-        <div className = 'PlayerRankingPlace PlayerRankingInfo'>
-          {place}
+    const {name, place, ranking, school, header} = this.props;
+    if (header) {
+      return (
+        <div className = 'PlayerRanking'>
+          <div className = 'PlayerRankingPlace PlayerRankingInfo'>
+            Rank
+          </div>
+          <div className = 'PlayerRankingName PlayerRankingInfo'>
+            Name
+          </div>
+          <div className = 'PlayerRankingSchool PlayerRankingInfo'>
+            School
+          </div>
+          <div className = 'PlayerRankingRanking PlayerRankingInfo'>
+            Elo
+          </div>
         </div>
-        <div className = 'PlayerRankingName PlayerRankingInfo'>
-        {name}
+      )
+    } else {
+      return (
+        <div className = 'PlayerRanking'>
+          <div className = 'PlayerRankingPlace PlayerRankingInfo'>
+            {place}
+          </div>
+          <div className = 'PlayerRankingName PlayerRankingInfo'>
+          {name}
+          </div>
+          <div className = 'PlayerRankingSchool PlayerRankingInfo'>
+          {school}
+          </div>
+          <div className = 'PlayerRankingRanking PlayerRankingInfo'>
+          {ranking}
+          </div>
         </div>
-        <div className = 'PlayerRankingSchool PlayerRankingInfo'>
-        {school}
-        </div>
-        <div className = 'PlayerRankingRanking PlayerRankingInfo'>
-        {ranking}
-        </div>
-      </div>
-    )
+      )
+    }
+
   }
 }
 
