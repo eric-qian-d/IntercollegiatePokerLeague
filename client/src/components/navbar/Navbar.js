@@ -1,5 +1,6 @@
 import React from 'react';
 import './Navbar.css';
+import vars from '../../vars';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class Navbar extends React.Component {
         <li><a href="/choose-game">Games</a></li>
         <li><a href="/rankings">Rankings</a></li>
         <button onClick = {()=> {
-          fetch("http://localhost:8081/logout", {
+          fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/logout', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',

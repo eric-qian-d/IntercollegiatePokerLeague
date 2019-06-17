@@ -1,4 +1,5 @@
 import React from 'react';
+import vars from '../../vars';
 
 class QuitSearchButton extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class QuitSearchButton extends React.Component {
   }
 
   onClick() {
-    fetch("http://localhost:8081/api/choose-game/cancel-match", {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/choose-game/cancel-match', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

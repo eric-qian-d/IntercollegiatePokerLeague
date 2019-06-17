@@ -7,18 +7,6 @@ class RankingsContainer extends React.Component {
     super(props);
   }
 
-
-  // componentDidMount() {
-  //   fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
-  //   })
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     if (!data.loggedIn) {
-  //       this.props.history.push("/login");
-  //     }
-  //   });
-  // }
-
   render() {
     return(
       <div className = 'RankingsContainer'>

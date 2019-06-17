@@ -182,30 +182,11 @@ module.exports = class Match {
     this.team2.forEach(user => {
       userStatus[user.id] = constants.userStatus.AVAILABLE;
     })
-
-
-    // Object.values(this.games).forEach(game => {
-    //
-    //   //for ranked/normal games
-    //   userMatchMap[team1[i].id] = this.id;
-    //   userMatchMap[team2[i].id] = this.id;
-    //   userGameMap[team1[i].id] = newGameId;
-    //   userGameMap[team2[i].id] = newGameId;
-    // })
-
-
-
-
   }
 
 
   notifyEnd() {
 
   }
-
-
-
-
-
 
 }

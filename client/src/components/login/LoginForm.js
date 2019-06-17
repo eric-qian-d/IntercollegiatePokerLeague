@@ -1,9 +1,4 @@
 import React from "react";
-import {
-  Container, Col, Form,
-  FormGroup, Label, Input,
-  Button,
-} from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import vars from '../../vars';
 import './LoginForm.css';
@@ -35,7 +30,6 @@ class LoginForm extends React.Component {
     if (email.length < 4 || email.slice(-4) !== ".edu") {
       alert("must use a .edu email!")
     } else {
-      // fetch("http://localhost:8081").then(res => res.text()).then(res => console.log(res)).catch(err => err);
       fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/login', {
         method: 'POST',
         headers: {
@@ -58,35 +52,6 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    // return (
-    //   <Form className="form" onSubmit={this.handleSubmit}>
-    //       <Col>
-    //         <FormGroup>
-    //           <Label>Email</Label>
-    //           <Input
-    //             type="email"
-    //             name="email"
-    //             id="exampleEmail"
-    //             placeholder="myemail@email.com"
-    //           />
-    //         </FormGroup>
-    //       </Col>
-    //       <Col>
-    //         <FormGroup>
-    //           <Label for="examplePassword">Password</Label>
-    //           <Input
-    //             type="password"
-    //             name="password"
-    //             id="examplePassword"
-    //             placeholder="********"
-    //           />
-    //         </FormGroup>
-    //       </Col>
-    //       <Button>Submit</Button>
-    //     </Form>
-    // )
-
-
     return (
 
       <form onSubmit={this.handleSubmit} className = 'LoginForm'>

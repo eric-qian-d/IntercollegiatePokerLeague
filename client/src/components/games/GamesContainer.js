@@ -3,6 +3,7 @@ import CustomGamesButton from './CustomGamesButton';
 import NormalHUGameButton from './NormalHUGameButton';
 import RankedHUGameButton from './RankedHUGameButton';
 import Navbar from '../navbar/Navbar';
+import vars from '../../vars';
 
 class GamesContainer extends React.Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class GamesContainer extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8081/loggedin", {withCredentials: true, credentials: 'include'}, {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin', {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {

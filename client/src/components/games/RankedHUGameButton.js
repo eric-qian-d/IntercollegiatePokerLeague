@@ -1,4 +1,5 @@
 import React from 'react';
+import vars from '../../vars';
 
 class RankedHUGameButton extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class RankedHUGameButton extends React.Component {
   }
   clickLogic() {
     //should redirect to /games when loading
-    fetch("http://localhost:8081/api/choose-game/join-ranked", {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/choose-game/join-ranked', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

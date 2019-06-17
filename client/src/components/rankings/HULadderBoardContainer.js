@@ -1,5 +1,6 @@
 import React from 'react';
 import PlayerRanking from './PlayerRanking';
+import vars from '../../vars';
 
 class HULadderBoardContainer extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class HULadderBoardContainer extends React.Component {
 
   componentDidMount() {
     console.log('getting hu leaderboard data');
-    fetch("http://localhost:8081/api/rankings/hu-leaderboard", {withCredentials: true, credentials: 'include'}, {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/rankings/hu-leaderboard', {withCredentials: true, credentials: 'include'}, {
       })
       .then(response => response.json())
       .then(data => {
