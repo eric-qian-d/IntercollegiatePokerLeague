@@ -368,7 +368,7 @@ module.exports = {
 
   createNewNormalHUMatch: async (player1, player2) => {
     const newMatchId = uuidv4();
-    const newMatch = new Match(newMatchId, newMatchId, 1, '', io, 'normal');
+    const newMatch = new Match(newMatchId, newMatchId, 1, 'NOT CUSTOM', 'NOT CUSTOM', io, 'normal');
     matchMap[newMatchId] = newMatch;
     newMatch.joinTeam1(player1);
     newMatch.joinTeam2(player2);
@@ -377,7 +377,7 @@ module.exports = {
 
   createNewRankedHUMatch: async (player1, player2) => {
     const newMatchId = uuidv4();
-    const newMatch = new Match(newMatchId, newMatchId, 1, '', io, 'ranked');
+    const newMatch = new Match(newMatchId, newMatchId, 1, 'NOT CUSTOM', 'NOT CUSTOM', io, 'ranked');
     matchMap[newMatchId] = newMatch;
     newMatch.joinTeam1(player1);
     newMatch.joinTeam2(player2);

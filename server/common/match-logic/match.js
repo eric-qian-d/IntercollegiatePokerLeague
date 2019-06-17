@@ -1,8 +1,9 @@
-var Game = require("../game-logic/game");
+var Game = require('../game-logic/game');
 const uuidv4 = require('uuid/v4');
 const states = require('../states');
 const constants = require('../constants');
 const models = require('../../models');
+const elo = require ('./elo');
 
 const gameMap = states.gameMap;
 const userLocation = states.userLocation;
@@ -40,14 +41,14 @@ module.exports = class Match {
       this.status = constants.matchStates.IN_PROGRESS;
       for(var i = 0; i < team1.length; i++) {
         const newGameId = uuidv4();
-        const newGame = new Game(newGameId, "", 2, 10, this.id, userSocketMap, io, this);
+        const newGame = new Game(newGameId, '', 2, 10, this.id, userSocketMap, io, this);
         newGame.addPlayer(team1[i].id, 0, 10000, team1[i].firstName + ' ' + team1[i].lastName);
         newGame.addPlayer(team2[i].id, 1, 10000, team2[i].firstName + ' ' + team2[i].lastName);
         games[newGameId] = {
           team1Player : team1[i],
           team2Player : team2[i],
           gameId : newGameId,
-          winner : "none"
+          winner : 'none'
         }
         gameMap[newGameId] = newGame;
         userLocation[team1[i].id] = constants.userLocation.GAME;
@@ -59,8 +60,8 @@ module.exports = class Match {
         userMatchMap[team2[i].id] = this.id;
         userGameMap[team1[i].id] = newGameId;
         userGameMap[team2[i].id] = newGameId;
-        io.to(userSocketMap[team1[i].id]).emit("PAGE: GAME");
-        io.to(userSocketMap[team2[i].id]).emit("PAGE: GAME");
+        io.to(userSocketMap[team1[i].id]).emit('PAGE: GAME');
+        io.to(userSocketMap[team2[i].id]).emit('PAGE: GAME');
       }
     }
     console.log(this.type);
@@ -75,11 +76,11 @@ module.exports = class Match {
       const team1names = this.getTeam1Names();
       const team2names = this.getTeam2Names();
       Object.keys(this.listeners).forEach(playerId => {
-        io.to(userSocketMap[playerId]).emit("TEAM 1", team1names, false, this.team1.length < this.numPlayers)
-        io.to(userSocketMap[playerId]).emit("TEAM 2", team2names, false, this.team2.length < this.numPlayers)
+        io.to(userSocketMap[playerId]).emit('TEAM 1', team1names, false, this.team1.length < this.numPlayers)
+        io.to(userSocketMap[playerId]).emit('TEAM 2', team2names, false, this.team2.length < this.numPlayers)
       })
-      io.to(userSocketMap[this.ownerId]).emit("TEAM 1", team1names, true, this.team1.length < this.numPlayers)
-      io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true, this.team2.length < this.numPlayers)
+      io.to(userSocketMap[this.ownerId]).emit('TEAM 1', team1names, true, this.team1.length < this.numPlayers)
+      io.to(userSocketMap[this.ownerId]).emit('TEAM 2', team2names, true, this.team2.length < this.numPlayers)
     }
   }
 
@@ -92,11 +93,11 @@ module.exports = class Match {
       const team1names = this.getTeam1Names();
       const team2names = this.getTeam2Names();
       Object.keys(this.listeners).forEach(playerId => {
-        io.to(userSocketMap[playerId]).emit("TEAM 1", team1names, false, this.team1.length < this.numPlayers)
-        io.to(userSocketMap[playerId]).emit("TEAM 2", team2names, false, this.team2.length < this.numPlayers)
+        io.to(userSocketMap[playerId]).emit('TEAM 1', team1names, false, this.team1.length < this.numPlayers)
+        io.to(userSocketMap[playerId]).emit('TEAM 2', team2names, false, this.team2.length < this.numPlayers)
       })
-      io.to(userSocketMap[this.ownerId]).emit("TEAM 1", team1names, true, this.team1.length < this.numPlayers)
-      io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true, this.team2.length < this.numPlayers)
+      io.to(userSocketMap[this.ownerId]).emit('TEAM 1', team1names, true, this.team1.length < this.numPlayers)
+      io.to(userSocketMap[this.ownerId]).emit('TEAM 2', team2names, true, this.team2.length < this.numPlayers)
     }
   }
 
@@ -113,11 +114,11 @@ module.exports = class Match {
     const team1names = this.getTeam1Names();
     const team2names = this.getTeam2Names();
     Object.keys(this.listeners).forEach(playerId => {
-      io.to(userSocketMap[playerId]).emit("TEAM 1", team1names, false, this.team1.length < this.numPlayers)
-      io.to(userSocketMap[playerId]).emit("TEAM 2", team2names, false, this.team2.length < this.numPlayers)
+      io.to(userSocketMap[playerId]).emit('TEAM 1', team1names, false, this.team1.length < this.numPlayers)
+      io.to(userSocketMap[playerId]).emit('TEAM 2', team2names, false, this.team2.length < this.numPlayers)
     })
-    io.to(userSocketMap[this.ownerId]).emit("TEAM 1", team1names, true, this.team1.length < this.numPlayers)
-    io.to(userSocketMap[this.ownerId]).emit("TEAM 2", team2names, true, this.team2.length < this.numPlayers)
+    io.to(userSocketMap[this.ownerId]).emit('TEAM 1', team1names, true, this.team1.length < this.numPlayers)
+    io.to(userSocketMap[this.ownerId]).emit('TEAM 2', team2names, true, this.team2.length < this.numPlayers)
   }
 
   getTeam1Names() {
@@ -143,17 +144,12 @@ module.exports = class Match {
       if (Object.keys(this.games).length === 1) {
         //this only executes once, so it's fine
         Object.values(this.games).forEach((game, gameNumber) => {
-          var winner;
-          var loser;
-          if (game.winner === game.team1Player.id) {
-            winner = game.team1Player;
-            loser = game.team2Player;
-          } else {
-            winner = game.team2Player;
-            loser = game.team1Player;
-          }
-          models.User.update({rankedHURanking: winner.rankedHURanking + 1}, {where: {id: winner.id}});
-          models.User.update({rankedHURanking: loser.rankedHURanking - 1}, {where: {id: loser.id}});
+          console.log(game);
+          const winner = game.winner === game.team1Player.id ? game.team1Player : game.team2Player;
+          const loser = game.winner === game.team1Player.id ? game.team2Player : game.team1Player;
+          const [winnerElo, loserElo] = elo.findNewElo(winner.rankedHURanking, loser.rankedHURanking);
+          models.User.update({rankedHURanking: winnerElo}, {where: {id: winner.id}});
+          models.User.update({rankedHURanking: loserElo}, {where: {id: loser.id}});
         })
       }
 
@@ -162,17 +158,11 @@ module.exports = class Match {
       if (Object.keys(this.games).length === 1) {
         //this only executes once, so it's fine
         Object.values(this.games).forEach((game, gameNumber) => {
-          var winner;
-          var loser;
-          if (game.winner === game.team1Player.id) {
-            winner = game.team1Player;
-            loser = game.team2Player;
-          } else {
-            winner = game.team2Player;
-            loser = game.team1Player;
-          }
-          models.User.update({normalHURanking: winner.normalHURanking + 1}, {where: {id: winner.id}});
-          models.User.update({normalHURanking: loser.normalHURanking - 1}, {where: {id: loser.id}});
+          const winner = game.winner === team1Player.id ? game.team1Player : game.team2Player;
+          const loser = game.winner === team1Player.id ? game.team2Player : game.team1Player;
+          const [winnerElo, loserElo] = elo.findNewElo(winner.normalHURanking, loser.normalHURanking);
+          models.User.update({normalHURanking: winnerElo}, {where: {id: winner.id}});
+          models.User.update({normalHURanking: loserElo}, {where: {id: loser.id}});
         })
       }
     }
