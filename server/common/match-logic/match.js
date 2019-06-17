@@ -106,6 +106,8 @@ module.exports = class Match {
     this.team2 = this.team2.filter(secondaryUser => {return (secondaryUser.id !== user.id)});
     const userId = user.id
     delete this.listeners[userId];
+    userMatchMap[userId] = '';
+    userGameMap[userId] = '';
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.CUSTOM_LISTINGS;
     const team1names = this.getTeam1Names();
@@ -173,8 +175,23 @@ module.exports = class Match {
           models.User.update({normalHURanking: loser.normalHURanking - 1}, {where: {id: loser.id}});
         })
       }
-
     }
+    this.team1.forEach(user => {
+      userStatus[user.id] = constants.userStatus.AVAILABLE;
+    })
+    this.team2.forEach(user => {
+      userStatus[user.id] = constants.userStatus.AVAILABLE;
+    })
+
+
+    // Object.values(this.games).forEach(game => {
+    //
+    //   //for ranked/normal games
+    //   userMatchMap[team1[i].id] = this.id;
+    //   userMatchMap[team2[i].id] = this.id;
+    //   userGameMap[team1[i].id] = newGameId;
+    //   userGameMap[team2[i].id] = newGameId;
+    // })
 
 
 

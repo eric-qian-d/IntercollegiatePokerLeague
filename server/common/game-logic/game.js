@@ -104,7 +104,6 @@ module.exports = class Game { // maybe rename this to be Table
   }
 
   //game logic
-  //
 
   /**
    * Begins new hand. Moves the button and deals cards to everyone that was present at the Table
@@ -332,10 +331,6 @@ module.exports = class Game { // maybe rename this to be Table
 
     } else {
       //makes sure animation happens in next clock tick - to change this so that there's no timing issues
-      console.log('in else loop');
-
-
-
       //resets variables for the next street
       this.lastRaiseSize = 0;
       this.currentTotalRaise = 0;
@@ -370,12 +365,11 @@ module.exports = class Game { // maybe rename this to be Table
             if (firstTime) {
               firstTime = false;
             } else {
-              console.log('all in logic');
+              //all in situation
               this.action = null;
               this.allIn = true;
               advanced = true;
               setTimeout(() => {
-
                 this.emitAll();
               }, 1000);
               setTimeout(() => {
@@ -415,7 +409,7 @@ module.exports = class Game { // maybe rename this to be Table
             if (firstTime) {
               firstTime = false;
             } else {
-              console.log('all in logic');
+              //all in situation
               this.action = null;
               this.allIn = true;
               advanced = true;
@@ -484,7 +478,7 @@ module.exports = class Game { // maybe rename this to be Table
           this.finished = true;
           const winnerId = listOfLivePlayers[0].id;
           if (this.parentMatch !== null) {
-            //this game is part of a team match
+            //should be true by default now
             this.parentMatch.games[this.id].winner = winnerId;
             const numRemainingMatches = Object.values(this.parentMatch.games).filter(game => {
               return game.winner === 'none';

@@ -325,9 +325,6 @@ module.exports = {
       socket.on('GET MATCH STATUS', async () => {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
-        console.log(userMatchMap);
-        console.log('match id');
-        console.log(matchId);
         const match = matchMap[matchId];
         io.to(userSocketMap[userId]).emit('MATCH STATUS', match.status);
       })
