@@ -9,8 +9,8 @@ const passportConfigure = require('./common/passport');
 const registration = require('./routes/registration');
 const rankings = require('./routes/rankings');
 
-// const school = require('./config/school-script');
-// school.createAllSchools();
+const school = require('./config/school-script');
+school.createAllSchools();
 
 // const userLogic = require('./common/userLogic');
 // userLogic.associateAllUsersWithSchools();

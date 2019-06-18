@@ -13,7 +13,9 @@ module.exports = {
       domain = splitEmail[1];
       const school = await models.School.findOne({ where: {domain: domain} , raw: true});
       if (school === null) {
-        user.schoolName = "Undetermined";
+        const undefinedSchool = await models.School.findOne({ where: {name: 'Undetermined'} , raw: true});
+        user.schoolName = undefinedSchool.name;
+        user.schoolId = undefinedSchool.id;
         //to fill in school id that is standard for undetermined schools
       } else {
         user.schoolName = school.name;
@@ -22,10 +24,7 @@ module.exports = {
 
 
       bcrypt.hash(user.password, hashRounds, function(err, hash) {
-        console.log('password');
-        console.log(user.password);
         user.password = hash;
-        // console.log(user);
         models.User.create(user);
       });
     }
@@ -45,7 +44,9 @@ module.exports = {
         const domain = email.split('@')[1];
         const school = await models.School.findOne({ where: {domain: domain} , raw: true});
         if (school === null) {
-          user.schoolName = "Undetermined";
+          const undefinedSchool = await models.School.findOne({ where: {name: 'Undetermined'} , raw: true});
+          user.schoolName = undefinedSchool.name;
+          user.schoolId = undefinedSchool.id;
           //to fill in school id that is standard for undetermined schools
         } else {
           const schoolName = school.name;
