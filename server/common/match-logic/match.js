@@ -64,7 +64,6 @@ module.exports = class Match {
         io.to(userSocketMap[team2[i].id]).emit('PAGE: GAME');
       }
     }
-    console.log(this.type);
   }
 
   joinTeam1(newUser) {
@@ -141,6 +140,15 @@ module.exports = class Match {
       )
     });
     return team2;
+  }
+
+  removeMatch() {
+    //TODO MAKE SURE USERS CAN'T ACCIDENTALY JOIN RIGHT AS A MATCH IS BEING DESTROYED
+    this.status = constants.matchStates.REMOVED;
+    Object.keys(this.listeners).forEach(userId => {
+      this.removePlayerFromLobby(userId);
+    })
+    this.removePlayerFromLobby(this.ownerId);
   }
 
   end() {

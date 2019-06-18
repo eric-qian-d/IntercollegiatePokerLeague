@@ -28,7 +28,7 @@ function addCustomMatch(matchId, name, numPlayers, ownerId, ownerName) {
 function getCustomMatches() {
   var customMatches = Object.values(matchMap)
   .filter(m => {
-    return m.type === 'custom';
+    return m.type === 'custom' && m.status === constants.matchStates.CREATION;
   })
   .map(m => {
     return (
@@ -40,9 +40,6 @@ function getCustomMatches() {
       }
     )
   })
-  .filter(m => {
-    return !m.inProgress;
-  });
   return customMatches
 }
 
@@ -126,10 +123,7 @@ module.exports = {
     }));
 
     io.on('connection', function(socket) {
-      console.log('New client connected');
       //need to implement logic to direct people to home/login if not logged in
-      console.log(userSocketMap);
-      console.log(socket.request.isAuthenticated());
       if(socket.request.isAuthenticated()) {
         //associate user with a socket
         const userId = socket.request.user.id;
@@ -246,12 +240,17 @@ module.exports = {
           notifyCustomMatchLobby();
         }
       })
+
       socket.on('RETURN TO LISTINGS', async () => {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        match.removePlayerFromLobby(userId);
-        io.to(userSocketMap[userId]).emit('PAGE: CUSTOM LISTINGS');
+        if (userId === match.ownerId) {
+          match.removeMatch();
+        } else {
+          match.removePlayerFromLobby(userId);
+          io.to(userSocketMap[userId]).emit('PAGE: CUSTOM LISTINGS');
+        }
       });
 
       socket.on('MATCH OWNER', async() => {
@@ -265,7 +264,6 @@ module.exports = {
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
         if (userStatus[userId] === constants.userStatus.CUSTOM_MATCH_OWNER && match.ownerId === userId && kickPlayer !== match.ownerId) {
-          console.log('kickiing' + kickedPlayerId);
           match.removePlayerFromLobby(kickedPlayerId);
         }
       })
@@ -286,40 +284,33 @@ module.exports = {
         }
       });
       socket.on('CALL', async () => {
-        console.log('received call req');
         const userId = socket.request.user.id;
         if (userStatus[userId] === constants.userStatus.IN_GAME) {
           call(userId);
         }
       });
       socket.on('RAISE', async (finalAmount) => {
-        console.log('received raise req');
         const userId = socket.request.user.id;
-        console.log(userStatus)
         if (userStatus[userId] === constants.userStatus.IN_GAME) {
           raise(userId, finalAmount);
         }
       });
 
       socket.on('GO TO LOBBY', async () => {
-        console.log('received go to lobby req');
         const userId = socket.request.user.id;
         userLocation[userId] = constants.userLocation.MATCH_LOBBY;
         io.to(userSocketMap[userId]).emit('PAGE: MATCH LOBBY');
       });
 
       socket.on('RETURN TO GAME', async () => {
-        console.log('received go to game req');
         const userId = socket.request.user.id;
         userLocation[userId] = constants.userLocation.GAME;
         io.to(userSocketMap[userId]).emit('PAGE: GAME');
       })
 
       socket.on('RETURN TO HOME', async () => {
-        console.log('received go to home req');
         const userId = socket.request.user.id;
         userLocation[userId] = constants.userLocation.OTHER;
-        // io.to(userSocketMap[userId]).emit('PAGE: GAME');
       })
 
       socket.on('GET MATCH STATUS', async () => {

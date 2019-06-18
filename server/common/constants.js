@@ -8,6 +8,7 @@ module.exports = {
     CREATION: 'creation',
     IN_PROGRESS: 'in progress',
     FINISHED: 'finished',
+    REMOVED: 'removed'
   }),
   userStatus: Object.freeze({
     AVAILABLE: 'available',
