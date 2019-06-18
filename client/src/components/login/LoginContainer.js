@@ -9,8 +9,7 @@ class LoginContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin');
-    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin', {withCredentials: true, credentials: 'include'}, {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/loggedin', {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {

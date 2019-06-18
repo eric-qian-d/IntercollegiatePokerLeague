@@ -6,11 +6,11 @@ const passport = require('passport');
 const chooseGame = require('./routes/game');
 
 const passportConfigure = require('./common/passport');
-const registration = require('./routes/registration');
+const users = require('./routes/users');
 const rankings = require('./routes/rankings');
 
-const school = require('./config/school-script');
-school.createAllSchools();
+// const school = require('./config/school-script');
+// school.createAllSchools();
 
 // const userLogic = require('./common/userLogic');
 // userLogic.associateAllUsersWithSchools();
@@ -33,18 +33,11 @@ app.use(session.session);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/registration', registration);
+app.use('/api/users', users);
 app.use('/api/choose-game', chooseGame);
 app.use('/api/rankings', rankings);
 
-app.get('/loggedin', function(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.status(200).send({loggedIn: true});
-  } else {
-    return res.status(200).send({loggedIn: false});
-  }
-});
-
+//keep this here to keep passport modularized
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {

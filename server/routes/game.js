@@ -53,16 +53,10 @@ router.post('/cancel-match', async (req, res, next) => {
   const userId = user.id;
   if (userStatus[userId] === constants.userStatus.IN_RANKED_HU_QUEUE) {
     rankedQueue.shift();
-    // rankedQueue = rankedQueue.filter(u => {
-    //   return u !== user;
-    // });
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.OTHER;
   } else if (userStatus[userId] === constants.userStatus.IN_NORMAL_HU_QUEUE) {
     normalQueue.shift();
-    // normalQueue = normalQueue.filter(u => {
-    //   return u !== user;
-    // });
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.OTHER;
   }

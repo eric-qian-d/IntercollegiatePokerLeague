@@ -9,7 +9,7 @@ class HomeContainer extends React.Component {
 
 
   componentDidMount() {
-    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/loggedin', {withCredentials: true, credentials: 'include'}, {
+    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/loggedin', {withCredentials: true, credentials: 'include'}, {
     })
     .then(response => response.json())
     .then(data => {

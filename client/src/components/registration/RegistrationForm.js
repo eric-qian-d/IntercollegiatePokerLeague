@@ -34,7 +34,7 @@ class RegistrationForm extends React.Component {
     else if (password !== reenteredPassword) {
       alert("Passwords don't match!")
     } else {
-      fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/registration', {
+      fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/registration', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
