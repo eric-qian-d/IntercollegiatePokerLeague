@@ -73,14 +73,7 @@ module.exports = class Match {
       this.team1 = this.team1.filter(secondaryUser => {return (secondaryUser.id !== newUser.id)});
       this.team2 = this.team2.filter(secondaryUser => {return (secondaryUser.id !== newUser.id)});
       this.team1.push(newUser);
-      const team1names = this.getTeam1Names();
-      const team2names = this.getTeam2Names();
-      Object.keys(this.listeners).forEach(playerId => {
-        io.to(userSocketMap[playerId]).emit('TEAM 1', team1names, false, this.team1.length < this.numPlayers)
-        io.to(userSocketMap[playerId]).emit('TEAM 2', team2names, false, this.team2.length < this.numPlayers)
-      })
-      io.to(userSocketMap[this.ownerId]).emit('TEAM 1', team1names, true, this.team1.length < this.numPlayers)
-      io.to(userSocketMap[this.ownerId]).emit('TEAM 2', team2names, true, this.team2.length < this.numPlayers)
+      this.notifyTeamChange();
     }
   }
 
@@ -90,15 +83,27 @@ module.exports = class Match {
       this.team1 = this.team1.filter(secondaryUser => {return (secondaryUser.id !== newUser.id)});
       this.team2 = this.team2.filter(secondaryUser => {return (secondaryUser.id !== newUser.id)});
       this.team2.push(newUser);
-      const team1names = this.getTeam1Names();
-      const team2names = this.getTeam2Names();
-      Object.keys(this.listeners).forEach(playerId => {
-        io.to(userSocketMap[playerId]).emit('TEAM 1', team1names, false, this.team1.length < this.numPlayers)
-        io.to(userSocketMap[playerId]).emit('TEAM 2', team2names, false, this.team2.length < this.numPlayers)
-      })
-      io.to(userSocketMap[this.ownerId]).emit('TEAM 1', team1names, true, this.team1.length < this.numPlayers)
-      io.to(userSocketMap[this.ownerId]).emit('TEAM 2', team2names, true, this.team2.length < this.numPlayers)
+      this.notifyTeamChange();
     }
+  }
+
+  notifyTeamChange() {
+    Object.keys(this.listeners).forEach(userId => {
+      this.emitTeam1(userId);
+      this.emitTeam2(userId);
+    })
+    this.emitTeam1(this.ownerId);
+    this.emitTeam2(this.ownerId);
+  }
+
+  emitTeam1(userId) {
+    const team1names = this.getTeam1Names();
+    this.io.to(userSocketMap[userId]).emit('TEAM 1', team1names, userId === this.ownerId, this.team1.length < this.numPlayers)
+  }
+
+  emitTeam2(userId) {
+    const team2names = this.getTeam2Names();
+    this.io.to(userSocketMap[userId]).emit('TEAM 2', team2names, userId === this.ownerId, this.team2.length < this.numPlayers)
   }
 
   exit(user) {

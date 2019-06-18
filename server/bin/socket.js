@@ -229,27 +229,13 @@ module.exports = {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        const team1names = match.getTeam1Names();
-        console.log(team1names.length, match.numPlayers);
-        console.log(team1names.length < match.numPlayers);
-        if (userId === match.ownerId) {
-          io.to(userSocketMap[userId]).emit('TEAM 1', team1names, false, team1names.length < match.numPlayers);
-        } else {
-          io.to(userSocketMap[userId]).emit('TEAM 1', team1names, true, team1names.length < match.numPlayers);
-        }
-
+        match.emitTeam1(userId);
       });
       socket.on('GET TEAM 2', async () => {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        const team2names = match.getTeam2Names();
-        if (userId === match.ownerId) {
-          io.to(userSocketMap[userId]).emit('TEAM 2', team2names, false, team2names.length < match.numPlayers);
-        } else {
-          io.to(userSocketMap[userId]).emit('TEAM 2', team2names, true, team2names.length < match.numPlayers);
-        }
-
+        match.emitTeam2(userId);
       });
       socket.on('START MATCH', async () => {
         const userId = socket.request.user.id;
