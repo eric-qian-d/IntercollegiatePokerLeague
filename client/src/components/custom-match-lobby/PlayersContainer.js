@@ -15,8 +15,8 @@ class PlayersContainer extends React.Component {
     const {renderJoin, renderKick, socket} = this.props;
     var playersList = this.props.players.map((p, i) => {
       return (
-        <div key = {i}>
-          <PlayerListing playerName = {p.name + ' ' + p.id} playerId = {p.id} status = 'lobby' renderKick = {renderKick} socket = {socket}/>
+        <div key = {p.id}>
+          <PlayerListing playerName = {p.name} playerId = {p.id} status = 'lobby' renderKick = {renderKick} socket = {socket}/>
         </div>
       )
 
