@@ -97,47 +97,50 @@ module.exports = class Match {
   }
 
   emitTeam1(userId) {
-    const team1names = this.getTeam1Names();
-    this.io.to(userSocketMap[userId]).emit('TEAM 1', team1names, userId === this.ownerId, this.team1.length < this.numPlayers)
+    const team1 = this.getTeam1Players();
+    this.io.to(userSocketMap[userId]).emit('TEAM 1', team1, userId === this.ownerId, this.team1.length < this.numPlayers)
   }
 
   emitTeam2(userId) {
-    const team2names = this.getTeam2Names();
-    this.io.to(userSocketMap[userId]).emit('TEAM 2', team2names, userId === this.ownerId, this.team2.length < this.numPlayers)
+    const team2 = this.getTeam2Players();
+    this.io.to(userSocketMap[userId]).emit('TEAM 2', team2, userId === this.ownerId, this.team2.length < this.numPlayers)
   }
 
-  exit(user) {
+  removePlayerFromLobby(userId) {
     const io = this.io;
-    this.team1 = this.team1.filter(secondaryUser => {return (secondaryUser.id !== user.id)});
-    this.team2 = this.team2.filter(secondaryUser => {return (secondaryUser.id !== user.id)});
-    const userId = user.id
+    this.team1 = this.team1.filter(secondaryUser => {return (secondaryUser.id !== userId)});
+    this.team2 = this.team2.filter(secondaryUser => {return (secondaryUser.id !== userId)});
     delete this.listeners[userId];
     userMatchMap[userId] = '';
     userGameMap[userId] = '';
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.CUSTOM_LISTINGS;
-    const team1names = this.getTeam1Names();
-    const team2names = this.getTeam2Names();
-    Object.keys(this.listeners).forEach(playerId => {
-      io.to(userSocketMap[playerId]).emit('TEAM 1', team1names, false, this.team1.length < this.numPlayers)
-      io.to(userSocketMap[playerId]).emit('TEAM 2', team2names, false, this.team2.length < this.numPlayers)
-    })
-    io.to(userSocketMap[this.ownerId]).emit('TEAM 1', team1names, true, this.team1.length < this.numPlayers)
-    io.to(userSocketMap[this.ownerId]).emit('TEAM 2', team2names, true, this.team2.length < this.numPlayers)
+    io.to(userSocketMap[userId]).emit('PAGE: CUSTOM LISTINGS');
+    this.notifyTeamChange();
   }
 
-  getTeam1Names() {
-    const team1names = this.team1.map(user => {
-      return (user.firstName + ' ' + user.lastName);
+  getTeam1Players() {
+    const team1 = this.team1.map(user => {
+      return (
+        {
+          name: user.firstName + ' ' + user.lastName,
+          id: user.id,
+        }
+      )
     });
-    return team1names;
+    return team1;
   }
 
-  getTeam2Names() {
-    const team2names = this.team2.map(user => {
-      return (user.firstName + ' ' + user.lastName);
+  getTeam2Players() {
+    const team2 = this.team2.map(user => {
+      return (
+        {
+          name: user.firstName + ' ' + user.lastName,
+          id: user.id,
+        }
+      )
     });
-    return team2names;
+    return team2;
   }
 
   end() {

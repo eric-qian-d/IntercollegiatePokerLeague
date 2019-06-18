@@ -248,13 +248,20 @@ module.exports = {
       })
       socket.on('RETURN TO LISTINGS', async () => {
         const userId = socket.request.user.id;
-        const userEmail = socket.request.user.email;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        match.exit(socket.request.user);
-        socket.join('CUSTOM LISTINGS');
+        match.removePlayerFromLobby(userId);
         io.to(userSocketMap[userId]).emit('PAGE: CUSTOM LISTINGS');
       });
+      socket.on('KICK PLAYER', async (kickedPlayerId) => {
+        const userId = socket.request.user.id;
+        const matchId = userMatchMap[userId];
+        const match = matchMap[matchId];
+        if (userStatus[userId] === constants.userStatus.CUSTOM_MATCH_OWNER && match.ownerId === userId) {
+          console.log('kickiing' + kickedPlayerId);
+          match.removePlayerFromLobby(kickedPlayerId);
+        }
+      })
 
       socket.on('GET GAME STATE', async () => {
         const userId = socket.request.user.id;

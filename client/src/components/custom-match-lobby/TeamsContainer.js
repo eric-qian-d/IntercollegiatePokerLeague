@@ -11,14 +11,16 @@ class TeamsContainer extends React.Component {
       team2 : [],
       renderJoin1: true,
       renderJoin2: true,
+      isOwner : false,
     }
   }
 
   render() {
+    const {team1, team2, renderJoin1, renderJoin2, renderKick} = this.state;
     return(
       <div className = 'TeamsContainer flex-container'>
-        <PlayersContainer players = {this.state.team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1} renderJoin = {this.state.renderJoin1}/>
-        <PlayersContainer players = {this.state.team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2} renderJoin = {this.state.renderJoin2}/>
+        <PlayersContainer players = {team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1} renderJoin = {renderJoin1} renderKick = {renderKick}/>
+        <PlayersContainer players = {team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2} renderJoin = {renderJoin2} renderKick = {renderKick}/>
       </div>
     )
   }
@@ -26,17 +28,19 @@ class TeamsContainer extends React.Component {
   componentDidMount() {
     getTeam1(this.props.socket);
     getTeam2(this.props.socket);
-    this.props.socket.on("TEAM 1", (updatedTeam1, isOwner, renderJoin1) => {
-      this.setState({team1 : updatedTeam1});
-      console.log('renderJoin1');
-      console.log(renderJoin1);
-      this.setState({renderJoin1: renderJoin1});
+    this.props.socket.on("TEAM 1", (updatedTeam1, renderKick, renderJoin1) => {
+      this.setState({
+        team1 : updatedTeam1,
+        renderJoin1: renderJoin1,
+        renderKick: renderKick,
+      });
     });
-    this.props.socket.on("TEAM 2", (updatedTeam2, isOwner, renderJoin2) => {
-      this.setState({team2 : updatedTeam2});
-      console.log('renderJoin2');
-      console.log(renderJoin2);
-      this.setState({renderJoin2: renderJoin2});
+    this.props.socket.on("TEAM 2", (updatedTeam2, renderKick, renderJoin2) => {
+      this.setState({
+        team2 : updatedTeam2,
+        renderJoin2: renderJoin2,
+        renderKick: renderKick,
+      });
     });
   }
 }

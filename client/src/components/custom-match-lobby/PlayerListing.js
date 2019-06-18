@@ -1,4 +1,5 @@
 import React from "react";
+import KickPlayerButton from './KickPlayerButton';
 
 class PlayerListing extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class PlayerListing extends React.Component {
 
   //eventually should make props pass in something that's not just a name
   render() {
-    const {player, status} = this.props;
+    const {playerName, status, renderKick, socket, playerId} = this.props;
     const statusColorMap = {
       'lobby': 'black',
       'in progress': 'yellow',
@@ -20,11 +21,21 @@ class PlayerListing extends React.Component {
       width: '200px',
     }
     style.borderColor = statusColorMap[status];
-    return (
-      <div style = {style}>
-        {player}
-      </div>
-    )
+    if (renderKick) {
+      return (
+        <div style = {style}>
+          {playerName}
+          <KickPlayerButton socket = {socket} playerId = {playerId}/>
+        </div>
+      )
+    } else {
+      return (
+        <div style = {style}>
+          {playerName}
+        </div>
+      )
+    }
+
   }
 }
 
