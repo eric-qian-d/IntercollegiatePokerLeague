@@ -43,7 +43,7 @@ class LoginForm extends React.Component {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          this.props.history.push("/games");
+          this.props.history.push("/");
         } else {
           alert("Login failed");
         }
