@@ -17,10 +17,11 @@ class TeamsContainer extends React.Component {
 
   render() {
     const {team1, team2, renderJoin1, renderJoin2, renderKick} = this.state;
+    const {ownerId} = this.props;
     return(
       <div className = 'TeamsContainer flex-container'>
-        <PlayersContainer players = {team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1} renderJoin = {renderJoin1} renderKick = {renderKick}/>
-        <PlayersContainer players = {team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2} renderJoin = {renderJoin2} renderKick = {renderKick}/>
+        <PlayersContainer players = {team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1} renderJoin = {renderJoin1} renderKick = {renderKick} ownerId = {ownerId}/>
+        <PlayersContainer players = {team2} socket = {this.props.socket} updateTeamFunction = {joinTeam2} renderJoin = {renderJoin2} renderKick = {renderKick} ownerId = {ownerId}/>
       </div>
     )
   }

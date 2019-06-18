@@ -8,7 +8,7 @@ class PlayerListing extends React.Component {
 
   //eventually should make props pass in something that's not just a name
   render() {
-    const {playerName, status, renderKick, socket, playerId} = this.props;
+    const {playerName, status, renderKick, socket, playerId, ownerId} = this.props;
     const statusColorMap = {
       'lobby': 'black',
       'in progress': 'yellow',
@@ -21,7 +21,7 @@ class PlayerListing extends React.Component {
       width: '200px',
     }
     style.borderColor = statusColorMap[status];
-    if (renderKick) {
+    if (renderKick && playerId !== ownerId) {
       return (
         <div style = {style}>
           {playerName}

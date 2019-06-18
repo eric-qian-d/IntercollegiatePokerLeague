@@ -253,11 +253,18 @@ module.exports = {
         match.removePlayerFromLobby(userId);
         io.to(userSocketMap[userId]).emit('PAGE: CUSTOM LISTINGS');
       });
+
+      socket.on('MATCH OWNER', async() => {
+        const userId = socket.request.user.id;
+        const matchId = userMatchMap[userId];
+        const match = matchMap[matchId];
+        io.to(userSocketMap[userId]).emit('MATCH OWNER', match.ownerName, match.ownerId);
+      })
       socket.on('KICK PLAYER', async (kickedPlayerId) => {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        if (userStatus[userId] === constants.userStatus.CUSTOM_MATCH_OWNER && match.ownerId === userId) {
+        if (userStatus[userId] === constants.userStatus.CUSTOM_MATCH_OWNER && match.ownerId === userId && kickPlayer !== match.ownerId) {
           console.log('kickiing' + kickedPlayerId);
           match.removePlayerFromLobby(kickedPlayerId);
         }

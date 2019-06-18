@@ -12,11 +12,11 @@ class PlayersContainer extends React.Component {
   }
 
   render() {
-    const {renderJoin, renderKick, socket} = this.props;
+    const {renderJoin, renderKick, socket, ownerId} = this.props;
     var playersList = this.props.players.map((p, i) => {
       return (
         <div key = {p.id}>
-          <PlayerListing playerName = {p.name} playerId = {p.id} status = 'lobby' renderKick = {renderKick} socket = {socket}/>
+          <PlayerListing playerName = {p.name} playerId = {p.id} status = 'lobby' renderKick = {renderKick} socket = {socket} ownerId = {ownerId}/>
         </div>
       )
 
