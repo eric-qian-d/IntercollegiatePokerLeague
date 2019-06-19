@@ -120,6 +120,7 @@ module.exports = class Game { // maybe rename this to be Table
         player.hand.push(this.deck.getNextCard());
         player.hand.push(this.deck.getNextCard());
         player.inHand = true;
+        player.investedInHand = 0;
       }
     });
     //moves button
@@ -210,9 +211,11 @@ module.exports = class Game { // maybe rename this to be Table
       if (player.stackSize - (needToCall) < 0) {
         //player goes all in to call: need to take care of side pots later on. Also need to take care of the case of all-ins
         player.investedStack += player.stackSize;
+        player.investedInHand += player.stackSize;
         player.stackSize = 0;
       } else {
         player.investedStack += needToCall;
+        player.investedInHand += needToCall;
         player.stackSize -= needToCall;
       }
       var advanced = false;
@@ -250,9 +253,11 @@ module.exports = class Game { // maybe rename this to be Table
         if (raiseDelta > player.stackSize) {
           //player needs to go all in to raise
           player.investedStack += player.stackSize;
+          player.investedInHand += player.stackSize;
           player.stackSize = 0;
         } else {
           player.investedStack += raiseDelta;
+          player.investedInHand += raiseDelta;
           player.stackSize -= raiseDelta;
         }
         this.lastRaiser = this.action;
@@ -332,6 +337,25 @@ module.exports = class Game { // maybe rename this to be Table
     } else {
       //makes sure animation happens in next clock tick - to change this so that there's no timing issues
       //resets variables for the next street
+      const inHandInvestedStacks = [];
+      Object.values(this.seatMap).forEach(player => {
+        if (player.inHand) {
+          inHandInvestedStacks.push(player.investedStack);
+        }
+      });
+      console.log(inHandInvestedStacks);
+      inHandInvestedStacks.sort(function(a, b){return b - a});
+      console.log(inHandInvestedStacks);
+      if (inHandInvestedStacks[0] !== inHandInvestedStacks[1]) {
+        //someone shoved over, and should get their money back
+        Object.values(this.seatMap).forEach(player => {
+          if (player.inHand && player.investedStack === inHandInvestedStacks[0]) {
+            player.stackSize += (inHandInvestedStacks[0] - inHandInvestedStacks[1]);
+            player.investedStack = inHandInvestedStacks[1];
+          }
+        })
+      }
+
       this.lastRaiseSize = 0;
       this.currentTotalRaise = 0;
       //adds outstanding bets to pot and
@@ -347,98 +371,93 @@ module.exports = class Game { // maybe rename this to be Table
         for(var i = 0; i < 3; i++) {
           this.board.push(this.deck.getNextCard())
         }
-        var advanced = false;
-        var firstTime = true;
 
-        this.action = this.buttonLocation;
-        //finds the player who is going first on the flop
-        while (!advanced) {
-          this.action = (this.action + 1) % this.numPlayers;
-          if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand && this.seatMap[this.action].stackSize > 0) {
-            //sets lastRaiser so that when it gets back to this player, nextStreet() is called
-            this.lastRaiser = this.action;
-            advanced = true;
-          }
-          //the circle has looped around and there is only one player in the pot
-          if (this.seatMap[this.action] === this.seatMap[(this.buttonLocation + 1) % this.numPlayers]) {
-            //logic for animating the rest
-            if (firstTime) {
-              firstTime = false;
-            } else {
-              //all in situation
-              this.action = null;
-              this.allIn = true;
+        if (Object.values(this.seatMap).filter(player => {
+          return player.stackSize > 0;
+        }).length <= 1) {
+          //only one player is left who can act
+          this.action = null;
+          this.allIn = true;
+          advanced = true;
+          setTimeout(() => {
+            this.emitAll();
+          }, 1000);
+          setTimeout(() => {
+            this.board.push(this.deck.getNextCard());
+            this.emitAll();
+          }, 2000);
+          setTimeout(() => {
+            this.board.push(this.deck.getNextCard());
+            this.emitAll();
+          }, 3000);
+          setTimeout(() => {
+            this.nextStreet();
+          }, 4000);
+        } else {
+          var advanced = false;
+          this.action = this.buttonLocation;
+          //finds the player who is going first on the flop
+          while (!advanced) {
+            this.action = (this.action + 1) % this.numPlayers;
+            if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand && this.seatMap[this.action].stackSize > 0) {
+              //sets lastRaiser so that when it gets back to this player, nextStreet() is called
+              this.lastRaiser = this.action;
               advanced = true;
-              setTimeout(() => {
-                this.emitAll();
-              }, 1000);
-              setTimeout(() => {
-                this.board.push(this.deck.getNextCard());
-                this.emitAll();
-              }, 2000);
-              setTimeout(() => {
-                this.board.push(this.deck.getNextCard());
-                this.emitAll();
-              }, 3000);
-              setTimeout(() => {
-                this.nextStreet();
-              }, 4000);
             }
-
           }
         }
+
+
+
       } else if (this.board.length === 3 || this.board.length === 4) {
         //flop finish
         //deal turn
         this.board.push(this.deck.getNextCard());
         console.log('in flop');
-        var advanced = false;
-        var firstTime = true;
-        this.action = this.buttonLocation;
-        //finds the player who is going first on the turn
-        while (!advanced) {
-          this.action = (this.action + 1) % this.numPlayers;
-          if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand && this.seatMap[this.action].stackSize > 0) {
-            //sets lastRaiser so that when it gets back to this player, nextStreet() is called
-            this.lastRaiser = this.action;
-            advanced = true;
+
+        if (Object.values(this.seatMap).filter(player => {
+          return player.stackSize > 0;
+        }).length <= 1) {
+          this.action = null;
+          this.allIn = true;
+          advanced = true;
+          if (this.board.length === 4) {
+            setTimeout(() => {
+              this.emitAll();
+            }, 1000);
+            setTimeout(() => {
+              this.board.push(this.deck.getNextCard());
+              this.emitAll();
+            }, 2000);
+            setTimeout(() => {
+              this.nextStreet();
+            }, 3000);
+          } else {
+            setTimeout(() => {
+              this.emitAll();
+            }, 1000);
+            setTimeout(() => {
+              this.nextStreet();
+            }, 2000);
           }
-          //the circle has looped around and there is only one player in the pot
-          if (this.seatMap[this.action] === this.seatMap[(this.buttonLocation + 1) % this.numPlayers]) {
-            //logic for animating the rest
-            if (firstTime) {
-              firstTime = false;
-            } else {
-              //all in situation
-              this.action = null;
-              this.allIn = true;
+        } else {
+          var advanced = false;
+          var firstTime = true;
+          this.action = this.buttonLocation;
+          //finds the player who is going first on the turn
+          while (!advanced) {
+            this.action = (this.action + 1) % this.numPlayers;
+            if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand && this.seatMap[this.action].stackSize > 0) {
+              //sets lastRaiser so that when it gets back to this player, nextStreet() is called
+              this.lastRaiser = this.action;
               advanced = true;
-              if (this.board.length === 4) {
-                setTimeout(() => {
-                  this.emitAll();
-                }, 1000);
-                setTimeout(() => {
-                  this.board.push(this.deck.getNextCard());
-                  this.emitAll();
-                }, 2000);
-                setTimeout(() => {
-                  this.nextStreet();
-                }, 3000);
-              } else {
-                setTimeout(() => {
-                  this.emitAll();
-                }, 1000);
-                setTimeout(() => {
-                  this.nextStreet();
-                }, 2000);
-              }
             }
           }
         }
-        console.log('out of here');
+
+
       } else if (this.board.length === 5) {
         //river finish
-
         //display both hands
         const info = this.getGameState(null, true);
         Object.values(this.seatMap).forEach(basePlayer => {

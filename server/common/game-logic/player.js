@@ -12,6 +12,7 @@ module.exports = class Player {
 		this.hand = [];
 		this.stackSize = initStack;
 		this.playerName = playerName
+		this.investedInHand = 0;
 		this.investedStack = 0;
 		this.inHand = true; //defaulted for HU matches where there's no posting
 	}

@@ -174,8 +174,8 @@ module.exports = class Match {
       if (Object.keys(this.games).length === 1) {
         //this only executes once, so it's fine
         Object.values(this.games).forEach((game, gameNumber) => {
-          const winner = game.winner === team1Player.id ? game.team1Player : game.team2Player;
-          const loser = game.winner === team1Player.id ? game.team2Player : game.team1Player;
+          const winner = game.winner === game.team1Player.id ? game.team1Player : game.team2Player;
+          const loser = game.winner === game.team1Player.id ? game.team2Player : game.team1Player;
           const [winnerElo, loserElo] = elo.findNewElo(winner.normalHURanking, loser.normalHURanking);
           models.User.update({normalHURanking: winnerElo}, {where: {id: winner.id}});
           models.User.update({normalHURanking: loserElo}, {where: {id: loser.id}});
