@@ -3,6 +3,6 @@ console.log(isProduction);
 
 module.exports = {
   protocol: 'http',
-  serverEndpoint: isProduction ? 'whateverwebsite' : 'localhost',
-  port: isProduction ? process.env.PORT  : 8081,
+  serverEndpoint: isProduction ? 'api.pokerzone.io' : 'localhost',
+  port: 8081,
 }
