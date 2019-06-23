@@ -24,7 +24,7 @@ app.set('port', 8081);
 app.use(cors({
   allowedHeaders: ['sessionId', 'Content-Type'],
   exposedHeader: ['sessionId'],
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:3000', 'http://pokerzone.io', 'http://www.pokerzone.io'],
   credentials: true
 }));
 
@@ -39,6 +39,7 @@ app.use('/api/rankings', rankings);
 
 //keep this here to keep passport modularized
 app.post('/login', function(req, res, next) {
+  console.log(req.session);
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       return next(err); // will generate a 500 error
@@ -51,6 +52,7 @@ app.post('/login', function(req, res, next) {
       if(err){
         return next(err);
       }
+      console.log(req.session);
       req.session.cookie.playerId = req.user.dataValues.id;
       return res.status(200).send({ success : true, message : 'authentication succeeded' });
     });
