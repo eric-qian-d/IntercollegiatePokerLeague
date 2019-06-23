@@ -47,14 +47,15 @@ module.exports = class Game { // maybe rename this to be Table
         obj.animateCtr--;
       }else {
         if (obj.finished) {
-          console.log('in timer but this is finished');
-          const info = obj.getGameState(null, true);
-          Object.values(obj.seatMap).forEach(basePlayer => {
-            // const allPlayerInfo = [];
-
-
-            obj.io.to(obj.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
-          })
+          clearInterval(obj.timer);
+          // console.log('in timer but this is finished');
+          // const info = obj.getGameState(null, true);
+          // Object.values(obj.seatMap).forEach(basePlayer => {
+          //   // const allPlayerInfo = [];
+          //
+          //
+          //   obj.io.to(obj.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+          // })
         } else {
           //just ticking waiting for player to act
           obj.time--;
