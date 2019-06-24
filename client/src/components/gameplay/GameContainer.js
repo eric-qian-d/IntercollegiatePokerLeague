@@ -8,7 +8,16 @@ class GameContainer extends React.Component {
     super(props);
     const {socket} = this.props;
     socket.on("GAME STATE", (gameInfo, allPlayerInfo) => {
-      this.setState({numPlayers: gameInfo[0], buttonLocation: gameInfo[1], action: gameInfo[2], pot: gameInfo[3], board: gameInfo[4], time: gameInfo[5], players: allPlayerInfo});
+      this.setState({
+        numPlayers: gameInfo.numPlayers,
+        buttonLocation: gameInfo.buttonLocation,
+        action: gameInfo.action,
+        pot: gameInfo.pot,
+        board: gameInfo.board,
+        time: gameInfo.time,
+        maxTime: gameInfo.maxTime,
+        players: allPlayerInfo,
+      });
     })
     socket.on("MATCH ENDED", () => {
       this.setState({finish: true});
@@ -22,6 +31,7 @@ class GameContainer extends React.Component {
       players: [],
       time: 0,
       finished: false,
+      maxTime: 0,
     }
   }
 
@@ -31,11 +41,11 @@ class GameContainer extends React.Component {
   }
 
   render() {
-    const {numPlayers, buttonLocation, action, pot, board, time, players} = this.state;
+    const {numPlayers, buttonLocation, action, pot, board, time, players, maxTime} = this.state;
     console.log(board);
     return (
       <div>
-        <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation} action = {action} pot = {pot} board = {board} players = {players}/>
+        <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation} action = {action} pot = {pot} board = {board} players = {players} time = {time} maxTime = {maxTime}/>
         <ButtonBox socket = {this.props.socket} />
         {time}
         <ReturnToLobbyButton socket = {this.props.socket} />

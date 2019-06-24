@@ -10,7 +10,7 @@ class Table extends React.Component {
 
   render() {
     //How do I render a table lol
-    const {numPlayers, buttonLocation, action, pot, players, board} = this.props;
+    const {numPlayers, buttonLocation, action, pot, players, board, time, maxTime} = this.props;
     const theta = [0];
     for(var i = 1; i < numPlayers; i++) {
       theta.push(Math.PI * 2 * i/numPlayers);
@@ -26,7 +26,7 @@ class Table extends React.Component {
       return (
         // <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.id} stackSize = {player.stackSize} action = {action} inHand = {player.inHand}/>
         <div className = "test" style = {style}>
-         <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.name} stackSize = {player.stackSize} action = {action} inHand = {player.inHand}/>
+         <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.name} stackSize = {player.stackSize} action = {seat === action} inHand = {player.inHand} time = {time} maxTime = {maxTime}/>
          </div>
       )
     })

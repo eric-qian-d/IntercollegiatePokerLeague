@@ -9,18 +9,18 @@ class PlayerContainer extends React.Component {
   }
 
   render() {
-    const {card1, card2, name, stackSize, inHand} = this.props;
+    const {card1, card2, name, stackSize, inHand, action, time, maxTime} = this.props;
     if (inHand) {
       return (
         <div className = "PlayerContainer" >
           <Hand card1 = {card1} card2 = {card2}/>
-          <PlayerInfo name = {name} stackSize = {stackSize}/>
+          <PlayerInfo name = {name} stackSize = {stackSize} action = {action} time = {time} maxTime = {maxTime}/>
         </div>
       )
     } else {
       return (
         <div className = "PlayerContainer" >
-          <PlayerInfo name = {name} stackSize = {stackSize}/>
+          <PlayerInfo name = {name} stackSize = {stackSize} action = {action} time = {time} maxTime = {maxTime}/>
         </div>
       )
     }

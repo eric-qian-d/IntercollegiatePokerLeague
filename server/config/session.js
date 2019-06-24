@@ -7,7 +7,7 @@ const client  = redis.createClient({host: redisHost, port: 6379});
 const connectTimeout = 24 * 60 * 60 * 1000;
 const maxRetryTime = 3 * 60 * 1000;
 
-const newStore = new redisStore({client: 'client', port: 6379, connect_timeout : connectTimeout})
+const newStore = new redisStore({client: client, port: 6379, connect_timeout : connectTimeout})
 
 
 client.on("error", function (err)

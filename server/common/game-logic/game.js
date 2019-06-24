@@ -26,6 +26,7 @@ module.exports = class Game { // maybe rename this to be Table
     this.deck = new Deck();
     this.board = [];
     this.time = 30;
+    this.maxTime = 30;
     this.userSocketMap = userSocketMap;
     this.animateNextStreet = false;
     this.animateWin = false;
@@ -564,7 +565,15 @@ module.exports = class Game { // maybe rename this to be Table
     const adaptedBoard = this.board.map(card => {
       return [card.rank, card.suit];
     });
-    const gameInfo = [this.numPlayers, this.buttonLocation, this.action, this.pot, adaptedBoard, this.time];
+    const gameInfo = {
+      numPlayers: this.numPlayers,
+      buttonLocation: this.buttonLocation,
+      action: this.action,
+      pot: this.pot,
+      board: adaptedBoard,
+      time: this.time,
+      maxTime: this.maxTime,
+    };
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
       var hand;
