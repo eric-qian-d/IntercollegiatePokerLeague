@@ -60,8 +60,8 @@ module.exports = class Match {
         userMatchMap[team2[i].id] = this.id;
         userGameMap[team1[i].id] = newGameId;
         userGameMap[team2[i].id] = newGameId;
-        io.to(userSocketMap[team1[i].id]).emit('PAGE: GAME');
-        io.to(userSocketMap[team2[i].id]).emit('PAGE: GAME');
+        io.to(userSocketMap[team1[i].id]).emit('PAGE', constants.userLocation.GAME);
+        io.to(userSocketMap[team2[i].id]).emit('PAGE', constants.userLocation.GAME);
       }
     }
   }
@@ -114,7 +114,7 @@ module.exports = class Match {
     userGameMap[userId] = '';
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.CUSTOM_LISTINGS;
-    io.to(userSocketMap[userId]).emit('PAGE: CUSTOM LISTINGS');
+    io.to(userSocketMap[userId]).emit(userLocation[userId]);
     this.notifyTeamChange();
   }
 

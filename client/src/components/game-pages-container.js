@@ -7,37 +7,15 @@ import MatchLobbyContainer from './match-lobby/MatchLobbyContainer';
 import MatchCreationPageContainer from './new-match/MatchCreationPageContainer';
 import {makeSocket} from '../js/socket';
 import vars from '../vars';
+import constants from '../constants';
 
 class GamePagesContainer extends React.Component {
   constructor(props) {
     super(props);
     const socket = makeSocket();
-    socket.on('PAGE: CUSTOM LISTINGS', () => {
-      this.setState({page : 'CUSTOM LISTINGS'});
+    socket.on('PAGE', (page) => {
+      this.setState({page : page});
     });
-    socket.on('PAGE: GAME', () => {
-      this.setState({page : 'GAME'});
-    });
-    socket.on('PAGE: CUSTOM MATCH LOBBY', () => {
-      this.setState({
-        page : 'CUSTOM MATCH LOBBY',
-      });
-    });
-    socket.on('PAGE: IN QUEUE', () => {
-      this.setState({
-        page: 'IN QUEUE',
-      })
-    })
-    socket.on('PAGE: MATCH LOBBY', () => {
-      this.setState({
-        page: 'MATCH LOBBY',
-      })
-    })
-    socket.on('PAGE: MATCH CREATION PAGE', () => {
-      this.setState({
-        page: 'MATCH CREATION PAGE',
-      })
-    })
     socket.emit('WHICH PAGE');
 
     this.state = {
@@ -59,28 +37,27 @@ class GamePagesContainer extends React.Component {
 
   render() {
     const {page, socket, matchId} = this.state;
-    console.log(page);
-    if (page === 'CUSTOM LISTINGS') {
+    if (page === constants.userLocation.CUSTOM_LISTINGS) {
       return (
         <CustomMatchListingsContainer socket = {socket} {...this.props}/>
       )
-    } else if (page === 'GAME') {
+    } else if (page === constants.userLocation.GAME) {
       return (
         <GameContainer socket = {socket} />
       )
-    } else if (page === 'CUSTOM MATCH LOBBY') {
+    } else if (page === constants.userLocation.CUSTOM_MATCH_LOBBY) {
       return (
         <CustomMatchLobbyContainer socket = {socket}/>
       )
-    } else if (page === 'IN QUEUE') {
+    } else if (page === constants.userLocation.QUEUE) {
       return (
         <QueueContainer socket = {socket} {...this.props} />
       )
-    } else if (page === 'MATCH LOBBY') {
+    } else if (page === constants.userLocation.MATCH_LOBBY) {
       return (
         <MatchLobbyContainer socket = {socket} {...this.props}/>
       )
-    } else if (page === 'MATCH CREATION PAGE'){
+    } else if (page === constants.userLocation.MATCH_CREATION){
       return (
         <MatchCreationPageContainer socket = {socket} />
       )
