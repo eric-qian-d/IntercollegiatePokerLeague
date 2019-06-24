@@ -41,7 +41,6 @@ module.exports = class Game { // maybe rename this to be Table
 
 
   timerLogic(obj) {
-      console.log('timer');
       if (obj.animateCtr > 0) {
         //waiting for animation to finish
         obj.animateCtr--;

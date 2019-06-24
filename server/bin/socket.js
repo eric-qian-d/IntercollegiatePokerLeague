@@ -263,7 +263,7 @@ module.exports = {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        if (userStatus[userId] === constants.userStatus.CUSTOM_MATCH_OWNER && match.ownerId === userId && kickPlayer !== match.ownerId) {
+        if (userStatus[userId] === constants.userStatus.CUSTOM_MATCH_OWNER && match.ownerId === userId && kickPlayerId !== match.ownerId) {
           match.removePlayerFromLobby(kickedPlayerId);
         }
       })
