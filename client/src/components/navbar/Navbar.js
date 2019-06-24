@@ -27,7 +27,7 @@ class Navbar extends React.Component {
             credentials : 'include',
             withCredentials : true,
           });
-          this.props.history.push('/');
+          this.props.history.push('/login');
         }
       }>
       Log out

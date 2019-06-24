@@ -1,46 +1,23 @@
-import React from "react";
-import {newHUMatch} from "../../js/custom-match-listings";
+import React from 'react';
+import {makeNewHUMatchRequest} from '../../js/custom-match-listings';
 
-class newHUMatchButton extends React.Component {
+class NewMatchButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: 'a',
-      numPlayers: '1',
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-    this.setState({[name]: value});
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    console.log("from new match button ")
-    newHUMatch(this.props.socket, this.state.name, this.state.numPlayers);
+  onClick() {
+    const {socket} = this.props;
+    makeNewHUMatchRequest(socket);
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Game Name:
-          <input type="text" name = "name" value={this.state.name} onChange={this.handleChange} />
-        </label>
-        <label>
-          Number of Players:
-          <input type="text" name = "numPlayers" value={this.state.numPlayers} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Make New Game" />
-      </form>
-    );
+      <button id = 'NewMatchButton' onClick = {() => {this.onClick();}}>
+        New Match
+      </button>
+    )
   }
 }
 
-export default newHUMatchButton;
+export default NewMatchButton;

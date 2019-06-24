@@ -4,6 +4,7 @@ import CustomMatchListingsContainer from './custom-match-listings/CustomMatchLis
 import CustomMatchLobbyContainer from './custom-match-lobby/CustomMatchLobbyContainer';
 import QueueContainer from './queue/QueueContainer';
 import MatchLobbyContainer from './match-lobby/MatchLobbyContainer';
+import MatchCreationPageContainer from './new-match/MatchCreationPageContainer';
 import {makeSocket} from '../js/socket';
 import vars from '../vars';
 
@@ -32,7 +33,11 @@ class GamePagesContainer extends React.Component {
         page: 'MATCH LOBBY',
       })
     })
-    console.log('should be emitting');
+    socket.on('PAGE: MATCH CREATION PAGE', () => {
+      this.setState({
+        page: 'MATCH CREATION PAGE',
+      })
+    })
     socket.emit('WHICH PAGE');
 
     this.state = {
@@ -74,6 +79,10 @@ class GamePagesContainer extends React.Component {
     } else if (page === 'MATCH LOBBY') {
       return (
         <MatchLobbyContainer socket = {socket} {...this.props}/>
+      )
+    } else if (page === 'MATCH CREATION PAGE'){
+      return (
+        <MatchCreationPageContainer socket = {socket} />
       )
     } else {
       return (

@@ -7,7 +7,7 @@ class GamesButton extends React.Component {
 
   render() {
     return (
-      <button className = 'GamesButton' onClick = {() => {this.props.history.push("/choose-game");}}>
+      <button id = 'GamesButton' onClick = {() => {this.props.history.push("/choose-game");}}>
         Back to Game Choices
       </button>
     )

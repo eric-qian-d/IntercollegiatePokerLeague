@@ -1,8 +1,6 @@
 import React from "react";
 import ListingsContainer from "./ListingsContainer";
-import NewMatchButton from "./NewMatchButton";
-import GamesButton from './GamesButton';
-// import {socket} from "../../js/socket";
+import OptionsContainer from './OptionsContainer';
 
 class CustomMatchListingsContainer extends React.Component {
   constructor(props) {
@@ -18,10 +16,11 @@ class CustomMatchListingsContainer extends React.Component {
   render() {
     const {socket} = this.props;
     return(
-      <div>
-        <NewMatchButton socket = {socket}/>
-        <GamesButton {...this.props} />
+      <div id = 'CustomMatchListingsContainer'>
+        Custom Match Listings
         <ListingsContainer socket = {socket}/>
+        <OptionsContainer socket = {socket}/>
+
       </div>
     )
   }

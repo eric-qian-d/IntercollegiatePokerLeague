@@ -155,6 +155,8 @@ module.exports = {
           io.to(userSocketMap[userId]).emit('PAGE: GAME');
         } else if (state === constants.userLocation.IN_QUEUE) {
           io.to(userSocketMap[userId]).emit('PAGE: IN QUEUE');
+        } else if (state === constants.userLocation.MATCH_CREATION) {
+          io.to(userSocketMap[userId]).emit('PAGE: MATCH CREATION PAGE');
         }
       });
 
@@ -195,6 +197,18 @@ module.exports = {
           io.to(userSocketMap[userId]).emit('PAGE: CUSTOM MATCH LOBBY');
         }
       });
+
+      socket.on('MAKE NEW HU MATCH REQ', async() => {
+        console.log('got new hu req');
+        const userId = socket.request.user.id;
+        if (userStatus[userId] !== constants.userStatus.AVAILABLE) {
+          io.to(userSocketMap[userId]).emit('CREATE FAILED', userStatus[userId]);
+        } else {
+          userLocation[userId] = constants.userStatus.MATCH_CREATION;
+          console.log('success');
+          io.to(userSocketMap[userId]).emit('PAGE: MATCH CREATION PAGE');
+        }
+      })
 
 
       //Custom Match Lobby Logic
