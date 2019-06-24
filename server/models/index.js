@@ -1,6 +1,7 @@
 const dbUser = process.env.DB_USER || 'postgres';
-const dbPassword = process.env.DB_PASSWORD || '';
-const dbEndpoint = process.env.DB_ENDPOINT || '127.0.0.1';
+const dbPassword = process.env.DB_PASS || '';
+const dbEndpoint = process.env.DB_HOST || '127.0.0.1';
+const dbName = process.env.DB_NAME || 'poker';
 
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +12,7 @@ Sequelize.Promise.config({
     longStackTraces: true
 });
 
-const sequelize = new Sequelize('poker', dbUser, dbPassword, {
+const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
         dialect: 'postgres',
         host: dbEndpoint,
     }),
