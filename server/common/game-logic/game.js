@@ -40,18 +40,16 @@ module.exports = class Game { // maybe rename this to be Table
   }
 
 
-  timerLogic(obj) {
-    if (obj.time == 0) {
+  timerLogic(game) {
+    if (game.time == 0) {
       //current player has run out of time
-      console.log(obj.seatMap);
-      console.log(obj.action);
-      const playerToAct = obj.seatMap[obj.action];
+      const playerToAct = game.seatMap[game.action];
       const playerToActId = playerToAct.id;
-      obj.fold(playerToActId);
+      game.fold(playerToActId);
     } else {
       //just ticking waiting for player to act
-      obj.time--;
-      obj.emitAll();
+      game.time--;
+      game.emitAll();
     }
   }
 

@@ -19,7 +19,7 @@ class CustomMatchListingsContainer extends React.Component {
       <div id = 'CustomMatchListingsContainer'>
         Custom Match Listings
         <ListingsContainer socket = {socket}/>
-        <OptionsContainer socket = {socket}/>
+        <OptionsContainer socket = {socket} {...this.props}/>
 
       </div>
     )
