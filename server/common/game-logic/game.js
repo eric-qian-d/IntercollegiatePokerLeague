@@ -428,7 +428,6 @@ module.exports = class Game { // maybe rename this to be Table
         //flop finish
         //deal turn
         this.board.push(this.deck.getNextCard());
-        console.log('in flop');
 
         if (Object.values(this.seatMap).filter(player => {
           return player.stackSize > 0;
@@ -483,7 +482,6 @@ module.exports = class Game { // maybe rename this to be Table
         var currentStrongestHandStrength = 0;
         var winners = [];
         playersInHandList.forEach(player => {
-          console.log(player.hand);
           const playerHandStrength = hand.getRanking(player.hand, this.board);
           if (playerHandStrength == currentStrongestHandStrength) {
             winners.push(player);
@@ -491,7 +489,6 @@ module.exports = class Game { // maybe rename this to be Table
             currentStrongestHandStrength = playerHandStrength;
             winners = [player];
           }
-          console.log('found strength');
         })
         //finds the value of the final pot
         Object.values(this.seatMap).forEach(player => {
@@ -500,15 +497,16 @@ module.exports = class Game { // maybe rename this to be Table
             player.investedStack = 0;
           }
         })
-        //todo: split so that not evenly divisible things
+        //todo: split so that not evenly divisible things as well as do multi-way pots eventually
         winners.forEach(player => {
           player.stackSize += Math.round(this.pot/winners.length);
         })
+        this.pot = 0;
         const listOfLivePlayers = Object.values(this.seatMap).filter(player => {
           return player.stackSize > 0;
         })
         if (listOfLivePlayers.length === 1) {
-          //we have a winner
+          //someone has won the match
           this.finished = true;
           const winnerId = listOfLivePlayers[0].id;
           if (this.parentMatch !== null) {
@@ -521,7 +519,7 @@ module.exports = class Game { // maybe rename this to be Table
               this.parentMatch.end();
             }
           }
-
+          this.emitAll(true);
         } else {
           setTimeout(() => {
             this.startHand();
@@ -536,9 +534,7 @@ module.exports = class Game { // maybe rename this to be Table
         // winner.stackSize += this.pot;
       }
       clearInterval(this.timer);
-      console.log('old interval cleared');
       if (!this.allIn) {
-        console.log('setting new interval');
         setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 1000);
       }
     }
@@ -600,7 +596,6 @@ module.exports = class Game { // maybe rename this to be Table
         hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
       }
 
-
       return (
         {
           name: secondaryPlayer.playerName,
@@ -614,7 +609,6 @@ module.exports = class Game { // maybe rename this to be Table
     });
     return [gameInfo, adjustedPlayersList];
   }
-
 
   getPlayerIds() {
     return Object.values(this.seatMap)
