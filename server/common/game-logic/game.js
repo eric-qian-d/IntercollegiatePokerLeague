@@ -115,6 +115,7 @@ module.exports = class Game { // maybe rename this to be Table
     this.pot = 0;
     this.board = [];
     this.toEnd = false;
+    this.lastRaiseSize = this.bigBlindValue;
     Object.values(this.seatMap).forEach(player => {
       if (player !== "") {
         player.hand = [];
