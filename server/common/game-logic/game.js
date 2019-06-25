@@ -116,6 +116,7 @@ module.exports = class Game { // maybe rename this to be Table
     this.board = [];
     this.toEnd = false;
     this.lastRaiseSize = this.bigBlindValue;
+    this.time = this.maxTime;
     Object.values(this.seatMap).forEach(player => {
       if (player !== "") {
         player.hand = [];
@@ -326,6 +327,7 @@ module.exports = class Game { // maybe rename this to be Table
   }
 
   nextStreet() {
+    this.time = this.maxTime;
     //gets a list of all the players still in the hand
     const playersInHandList = Object.values(this.seatMap).filter(player => {
       return player.inHand;
