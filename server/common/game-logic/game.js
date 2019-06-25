@@ -227,12 +227,14 @@ module.exports = class Game { // maybe rename this to be Table
           advanced = true;
         }
       }
-      this.time = 30; //adjust to make this correct
-      this.emitAll();
       if (this.action === this.lastRaiser) {
+        this.action = null;
+        this.emitAll();
         this.nextStreet();
+      } else {
+        this.time = this.maxTime;
+        this.emitAll();
       }
-
     }
   }
 
@@ -268,13 +270,18 @@ module.exports = class Game { // maybe rename this to be Table
         //finds the next player to act
         while (!advanced) {
           this.action = (this.action + 1) % this.numPlayers;
-          console.log(this.action);
           if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
             advanced = true;
           }
         }
-        this.time = 30;//adjust to make this is correct
-        this.emitAll();
+        if (this.action === this.lastRaiser) {
+          this.action = null;
+          this.emitAll();
+          this.nextStreet();
+        } else {
+          this.time = this.maxTime;
+          this.emitAll();
+        }
       } else {
         //illegal raise logic
       }
@@ -303,11 +310,15 @@ module.exports = class Game { // maybe rename this to be Table
       const playersInHandList = Object.values(this.seatMap).filter(player => {
         return player.inHand;
       });
-      this.time = 30;//adjust to make this correct
-      this.emitAll();
+
       const numPlayersInHand = playersInHandList.length;
       if (this.action === this.lastRaiser || numPlayersInHand == 1) {
+        this.action = null;
+        this.emitAll();
         this.nextStreet();
+      } else {
+        this.time = this.maxTime;
+        this.emitAll();
       }
 
     }
@@ -381,15 +392,15 @@ module.exports = class Game { // maybe rename this to be Table
           this.allIn = true;
           advanced = true;
           setTimeout(() => {
-            this.emitAll();
+            this.emitAll(true);
           }, 1000);
           setTimeout(() => {
             this.board.push(this.deck.getNextCard());
-            this.emitAll();
+            this.emitAll(true);
           }, 2000);
           setTimeout(() => {
             this.board.push(this.deck.getNextCard());
-            this.emitAll();
+            this.emitAll(true);
           }, 3000);
           setTimeout(() => {
             this.nextStreet();
@@ -424,18 +435,18 @@ module.exports = class Game { // maybe rename this to be Table
           advanced = true;
           if (this.board.length === 4) {
             setTimeout(() => {
-              this.emitAll();
+              this.emitAll(true);
             }, 1000);
             setTimeout(() => {
               this.board.push(this.deck.getNextCard());
-              this.emitAll();
+              this.emitAll(true);
             }, 2000);
             setTimeout(() => {
               this.nextStreet();
             }, 3000);
           } else {
             setTimeout(() => {
-              this.emitAll();
+              this.emitAll(true);
             }, 1000);
             setTimeout(() => {
               this.nextStreet();
@@ -548,10 +559,9 @@ module.exports = class Game { // maybe rename this to be Table
     return thisPlayerSeatNumber === this.action;
   }
 
-  emitAll() {
+  emitAll(all = false) {
     Object.values(this.seatMap).forEach(basePlayer => {
-      const info = this.getGameState(basePlayer.id);
-      // console.log(info[1]);
+      const info = this.getGameState(basePlayer.id, all);
       this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
     })
   }
