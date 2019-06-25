@@ -102,7 +102,6 @@ function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather
 }
 
 function emitUserLocation(userId) {
-  console.log('emitting new user location' + userLocation[userId]);
   io.to(userSocketMap[userId]).emit('PAGE', userLocation[userId]);
 }
 
@@ -203,7 +202,6 @@ module.exports = {
           io.to(userSocketMap[userId]).emit('CREATE FAILED', userStatus[userId]);
         } else {
           userLocation[userId] = constants.userLocation.MATCH_CREATION;
-          console.log(userLocation[userId]);
           emitUserLocation(userId);
         }
       })
@@ -258,6 +256,8 @@ module.exports = {
         const match = matchMap[matchId];
         if (userId === match.ownerId) {
           match.removeMatch();
+          emitUserLocation(userId);
+          notifyCustomMatchLobby();
         } else {
           match.removePlayerFromLobby(userId);
           emitUserLocation(userId);

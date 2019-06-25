@@ -149,6 +149,9 @@ module.exports = class Match {
       this.removePlayerFromLobby(userId);
     })
     this.removePlayerFromLobby(this.ownerId);
+    userStatus[this.ownerId] = constants.userStatus.AVAILABLE;
+    userLocation[this.ownerId] = constants.userLocation.CUSTOM_LISTINGS;
+    this.io.to(userSocketMap[this.ownerId]).emit(userLocation[this.ownerId]);
   }
 
   end() {
