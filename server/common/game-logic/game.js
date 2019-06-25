@@ -30,7 +30,6 @@ module.exports = class Game { // maybe rename this to be Table
     this.userSocketMap = userSocketMap;
     this.animateNextStreet = false;
     this.animateWin = false;
-    this.animateCtr = 1;
     this.io = io;
     this.finished = false;
     this.allIn = false;
@@ -42,33 +41,18 @@ module.exports = class Game { // maybe rename this to be Table
 
 
   timerLogic(obj) {
-      if (obj.animateCtr > 0) {
-        //waiting for animation to finish
-        obj.animateCtr--;
-      }else {
-        if (obj.finished) {
-          clearInterval(obj.timer);
-          // console.log('in timer but this is finished');
-          // const info = obj.getGameState(null, true);
-          // Object.values(obj.seatMap).forEach(basePlayer => {
-          //   // const allPlayerInfo = [];
-          //
-          //
-          //   obj.io.to(obj.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
-          // })
-        } else {
-          //just ticking waiting for player to act
-          obj.time--;
-          //logic for out of time
-
-          obj.emitAll();
-        }
-
-      }
-
-    // }
-
-
+    if (obj.time == 0) {
+      //current player has run out of time
+      console.log(obj.seatMap);
+      console.log(obj.action);
+      const playerToAct = obj.seatMap[obj.action];
+      const playerToActId = playerToAct.id;
+      obj.fold(playerToActId);
+    } else {
+      //just ticking waiting for player to act
+      obj.time--;
+      obj.emitAll();
+    }
   }
 
   animate() {
@@ -534,7 +518,7 @@ module.exports = class Game { // maybe rename this to be Table
         // winner.stackSize += this.pot;
       }
       clearInterval(this.timer);
-      if (!this.allIn) {
+      if (!this.allIn && !this.finished) {
         setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 1000);
       }
     }
