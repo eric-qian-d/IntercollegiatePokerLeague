@@ -237,7 +237,7 @@ module.exports = class Game { // maybe rename this to be Table
         return player.id === playerId;
       })[0];
       const raiseDelta = finalAmount - player.investedStack;
-      if (raiseDelta > player.stackSize || raiseDelta > this.lastRaiseSize) {
+      if (raiseDelta >= this.lastRaiseSize) {
         //legal raise
         if (raiseDelta > player.stackSize) {
           //player needs to go all in to raise
@@ -342,9 +342,7 @@ module.exports = class Game { // maybe rename this to be Table
           inHandInvestedStacks.push(player.investedStack);
         }
       });
-      console.log(inHandInvestedStacks);
       inHandInvestedStacks.sort(function(a, b){return b - a});
-      console.log(inHandInvestedStacks);
       if (inHandInvestedStacks[0] !== inHandInvestedStacks[1]) {
         //someone shoved over, and should get their money back
         Object.values(this.seatMap).forEach(player => {
@@ -355,7 +353,7 @@ module.exports = class Game { // maybe rename this to be Table
         })
       }
 
-      this.lastRaiseSize = 0;
+      this.lastRaiseSize = this.bigBlindValue;
       this.currentTotalRaise = 0;
       //adds outstanding bets to pot and
       Object.values(this.seatMap).forEach(player => {

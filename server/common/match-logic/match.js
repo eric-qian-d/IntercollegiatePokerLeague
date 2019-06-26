@@ -43,8 +43,8 @@ module.exports = class Match {
       for(var i = 0; i < team1.length; i++) {
         const newGameId = uuidv4();
         const newGame = new Game(newGameId, '', 2, 10, this.id, userSocketMap, io, this);
-        newGame.addPlayer(team1[i].id, 0, 10000, team1[i].firstName + ' ' + team1[i].lastName);
-        newGame.addPlayer(team2[i].id, 1, 10000, team2[i].firstName + ' ' + team2[i].lastName);
+        newGame.addPlayer(team1[i].id, 0, 1000, team1[i].firstName + ' ' + team1[i].lastName);
+        newGame.addPlayer(team2[i].id, 1, 1000, team2[i].firstName + ' ' + team2[i].lastName);
         games[newGameId] = {
           team1Player : team1[i],
           team2Player : team2[i],
