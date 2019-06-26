@@ -41,15 +41,17 @@ module.exports = class Game { // maybe rename this to be Table
 
 
   timerLogic(game) {
-    if (game.time == 0) {
-      //current player has run out of time
-      const playerToAct = game.seatMap[game.action];
-      const playerToActId = playerToAct.id;
-      game.fold(playerToActId);
-    } else {
-      //just ticking waiting for player to act
-      game.time--;
-      game.emitAll();
+    if (!game.finished) {
+      if (game.time == 0) {
+        //current player has run out of time
+        const playerToAct = game.seatMap[game.action];
+        const playerToActId = playerToAct.id;
+        game.fold(playerToActId);
+      } else {
+        //just ticking waiting for player to act
+        game.time--;
+        game.emitAll();
+      }
     }
   }
 
@@ -505,7 +507,6 @@ module.exports = class Game { // maybe rename this to be Table
         } else {
           setTimeout(() => {
             this.startHand();
-            this.timer = this.timer = setInterval(this.timerLogic, 1000, this);
           }, 1000);
         }
 

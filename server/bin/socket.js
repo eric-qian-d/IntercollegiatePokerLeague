@@ -277,6 +277,7 @@ module.exports = {
         const match = matchMap[matchId];
         if (userStatus[userId] === constants.userStatus.CUSTOM_MATCH_OWNER && match.ownerId === userId && kickedPlayerId !== match.ownerId) {
           match.removePlayerFromLobby(kickedPlayerId);
+          emitUserLocation(kickedPlayerId);
         }
       })
 

@@ -55,6 +55,14 @@ module.exports = {
         }
       }
     })
+  },
+
+  getLeaders: async () => {
+    return await models.User.findAll({
+      attributes: ['firstName', 'lastName', 'rankedHURanking', 'schoolName'],
+      raw: true,
+      order: [['rankedHURanking', 'desc']]
+    });
   }
 
 

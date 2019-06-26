@@ -9,10 +9,7 @@ router.get('/hu-leaderboard', async (req, res, next) => {
     raw: true,
     order: [['rankedHURanking', 'desc']]
   });
-  console.log(leadersList);
   const adjustedLeadersList = leadersList.map(user => {
-    console.log('in here');
-    console.log(user);
     return [user.firstName + ' ' + user.lastName, user.rankedHURanking, user.schoolName]
   })
   console.log(adjustedLeadersList);
