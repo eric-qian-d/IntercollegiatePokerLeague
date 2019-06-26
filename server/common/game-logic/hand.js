@@ -39,7 +39,6 @@ module.exports = {
 				rankMap[1]++;
 			}
 		}
-		console.log(suitMap);
 		var pair1 = 0;
 		var pair2 = 0;
 		var pair3 = 0;
@@ -101,12 +100,12 @@ module.exports = {
 				quad1 = i;
 			}
 		}
-
+		console.log(rankMap);
 		for(var i = 1; i < 15; i++) {
 			if (rankMap[i] > 0) {
 				//finds straights
 				straightCtr++;
-				if (straightCtr > 5) {
+				if (straightCtr >= 5) {
 					straight = true;
 					straightHigh = i;
 				}
