@@ -4,6 +4,7 @@ const states = require('../states');
 const constants = require('../constants');
 const models = require('../../models');
 const elo = require ('./elo');
+const userLogic = require('../userLogic');
 
 const gameMap = states.gameMap;
 const userLocation = states.userLocation;
@@ -162,11 +163,14 @@ module.exports = class Match {
       //logic to take care of adjusting player ratings
       if (Object.keys(this.games).length === 1) {
         //this only executes once, so it's fine
-        Object.values(this.games).forEach((game, gameNumber) => {
-          console.log(game);
-          const winner = game.winner === game.team1Player.id ? game.team1Player : game.team2Player;
-          const loser = game.winner === game.team1Player.id ? game.team2Player : game.team1Player;
-          const [winnerElo, loserElo] = elo.findNewElo(winner.rankedHURanking, loser.rankedHURanking);
+        Object.values(this.games).forEach(async (game, gameNumber) => {
+          const winnerId = game.winner === game.team1Player.id ? game.team1Player.id : game.team2Player.id;
+          const loserId = game.winner === game.team1Player.id ? game.team2Player.id : game.team1Player.id;
+          const winner = await userLogic.getUserById(winnerId);
+          const loser = await userLogic.getUserById(loserId);
+          const winnerOldElo = winner.rankedHURanking;
+          const loserOldElo = loser.rankedHURanking;
+          const [winnerElo, loserElo] = elo.findNewElo(winnerOldElo, loserOldElo);
           models.User.update({rankedHURanking: winnerElo}, {where: {id: winner.id}});
           models.User.update({rankedHURanking: loserElo}, {where: {id: loser.id}});
         })
@@ -176,10 +180,14 @@ module.exports = class Match {
       //logic to take care of adjusting player ratings
       if (Object.keys(this.games).length === 1) {
         //this only executes once, so it's fine
-        Object.values(this.games).forEach((game, gameNumber) => {
-          const winner = game.winner === game.team1Player.id ? game.team1Player : game.team2Player;
-          const loser = game.winner === game.team1Player.id ? game.team2Player : game.team1Player;
-          const [winnerElo, loserElo] = elo.findNewElo(winner.normalHURanking, loser.normalHURanking);
+        Object.values(this.games).forEach(async (game, gameNumber) => {
+          const winnerId = game.winner === game.team1Player.id ? game.team1Player.id : game.team2Player.id;
+          const loserId = game.winner === game.team1Player.id ? game.team2Player.id : game.team1Player.id;
+          const winner = await userLogic.getUserById(winnerId);
+          const loser = await userLogic.getUserById(loserId);
+          const winnerOldElo = winner.normalHURanking;
+          const loserOldElo = loser.normalHURanking;
+          const [winnerElo, loserElo] = elo.findNewElo(winnerOldElo, loserOldElo);
           models.User.update({normalHURanking: winnerElo}, {where: {id: winner.id}});
           models.User.update({normalHURanking: loserElo}, {where: {id: loser.id}});
         })

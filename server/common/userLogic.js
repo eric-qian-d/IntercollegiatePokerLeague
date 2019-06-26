@@ -36,6 +36,10 @@ module.exports = {
     return await models.User.findOne({ where: match, attributes: { exclude: ['password'] } });
   },
 
+  getUserById : async (id) => {
+    return await models.User.findOne({ where: {id: id}, attributes: { exclude: ['password'] }, raw: true });
+  },
+
   associateAllUsersWithSchools : async () => {
     const users = await models.User.findAll({attributes: ['email', 'id', 'schoolName'], raw: true});
     users.forEach(async (user) => {
