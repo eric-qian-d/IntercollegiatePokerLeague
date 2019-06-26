@@ -1,14 +1,11 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const models = require("../models");
+const models = require('../models');
+const userLogic = require('../common/userLogic');
 
 
 router.get('/hu-leaderboard', async (req, res, next) => {
-  const leadersList = await models.User.findAll({
-    attributes: ['firstName', 'lastName', 'rankedHURanking', 'schoolName'],
-    raw: true,
-    order: [['rankedHURanking', 'desc']]
-  });
+  const leadersList = await userLogic.getLeaders();
   const adjustedLeadersList = leadersList.map(user => {
     return [user.firstName + ' ' + user.lastName, user.rankedHURanking, user.schoolName]
   })
