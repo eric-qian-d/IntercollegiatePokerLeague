@@ -15,6 +15,7 @@ Sequelize.Promise.config({
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
         dialect: 'postgres',
         host: dbEndpoint,
+        logging: false,
     }),
     db = {};
 

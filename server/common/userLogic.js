@@ -62,12 +62,26 @@ module.exports = {
   },
 
   getLeaders: async () => {
-    return await models.User.findAll({
+    const leaders = await models.User.findAll({
       attributes: ['firstName', 'lastName', 'rankedHURanking', 'schoolName'],
       raw: true,
       order: [['rankedHURanking', 'desc']]
     });
-  }
+    return leaders; //can limit the number of leaders returned from here
+  },
+
+  getLeadersBySchool: async (schoolId) => {
+    const leaders = await models.User.findAll({
+      where: {schoolId: schoolId},
+      attributes: ['firstName', 'lastName', 'rankedHURanking', 'schoolName'],
+      raw: true,
+      order: [['rankedHURanking', 'desc']]
+    });
+    if (leaders.length >0) {
+      console.log(leaders);
+    }
+    return leaders; //can limit the number of leaders returned from here
+  },
 
 
 }
