@@ -1,7 +1,5 @@
 import React from 'react';
-import CustomGamesButton from './CustomGamesButton';
-import NormalHUGameButton from './NormalHUGameButton';
-import RankedHUGameButton from './RankedHUGameButton';
+import ChooseGameTypeButtonContainer from './ChooseGameTypeButtonContainer';
 import Navbar from '../navbar/Navbar';
 import vars from '../../vars';
 
@@ -25,9 +23,7 @@ class GamesContainer extends React.Component {
     return (
       <div className = 'GamesContainer'>
         <Navbar {...this.props}/>
-        <CustomGamesButton {...this.props} />
-        <NormalHUGameButton {...this.props}/>
-        <RankedHUGameButton {...this.props}/>
+        <ChooseGameTypeButtonContainer {...this.props}/>
       </div>
     )
 

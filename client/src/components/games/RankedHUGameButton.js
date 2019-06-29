@@ -25,8 +25,8 @@ class RankedHUGameButton extends React.Component {
 
   render() {
     return (
-      <button className = 'RankedHUGameButton' onClick = {() => {this.clickLogic()}}>
-        Ranked HU Game
+      <button id = 'RankedHUGameButton' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic()}}>
+        Ranked Heads Up
       </button>
     )
 

@@ -25,8 +25,8 @@ class NormalHUGameButton extends React.Component {
 
   render() {
     return (
-      <button className = 'NormalHUGameButton' onClick = {() => {this.clickLogic()}}>
-        Normal HU Game
+      <button id = 'NormalHUGameButton' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic()}}>
+        Normal Heads Up
       </button>
     )
 

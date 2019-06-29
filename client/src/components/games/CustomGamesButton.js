@@ -1,4 +1,5 @@
 import React from 'react';
+import './CustomGamesButton.css';
 
 class CustomGamesButton extends React.Component {
   constructor(props) {
@@ -7,8 +8,8 @@ class CustomGamesButton extends React.Component {
 
   render() {
     return (
-      <button className = 'CustomGamesButton' onClick = {() => {this.props.history.push("/games");}}>
-        Custom Games
+      <button id = 'CustomGamesButton' className = 'ChooseGameTypeButton' onClick = {() => {this.props.history.push("/games");}}>
+        Custom Match
       </button>
     )
   }
