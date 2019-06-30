@@ -21,7 +21,7 @@ class RawCustomGamesButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      test : 'CustomGame',
+      test : 'CustomMatch',
     }
   }
 
