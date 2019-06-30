@@ -1,38 +1,44 @@
 import React from 'react';
+import { connect } from "react-redux";
+
 import {joinMatch} from "../../js/custom-match-listings";
+import {changeGameType} from '../../actions/index';
 import './Listing.css';
 
-class Listing extends React.Component {
+function mapDispatchToProps(dispatch) {
+  return {
+    changeGameType: article => dispatch(changeGameType(article))
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    selectedCustomMatchId: state.selectedCustomMatchId,
+  }
+}
+
+class RawListing extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  joinMatchButtonLogic() {
-    joinMatch(this.props.socket, this.props.matchId);
+  // joinMatchButtonLogic() {
+  //   joinMatch(this.props.socket, this.props.matchId);
+  // }
+
+  clickLogic() {
+    const {matchId} = this.props;
+    console.log('clicked')
+    this.props.changeGameType({ selectedCustomMatchId: matchId });
+    //this.props.history.push("/games")
   }
 
 
   render() {
-    const {name, numPlayers, header} = this.props;
-    if (header) {
+    const {name, numPlayers, matchId, selectedCustomMatchId} = this.props;
+    if (matchId === selectedCustomMatchId) {
       return (
-        <div className = 'CustomListing'>
-          <div className = 'CustomListingInfo CustomListingName'>
-            Game Name
-          </div>
-          <div className = 'CustomListingInfo CustomListingOwnerName'>
-            Owner
-          </div>
-          <div className = 'CustomListingInfo CustomListingNumPlayers'>
-            Number of Players
-          </div>
-          <div className = 'JoinMatchButton'>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className = 'CustomListing'>
+        <div className = 'CustomListing' onClick = {() => {this.clickLogic();}}>
           <div className = 'CustomListingInfo CustomListingName'>
             {this.props.name}
           </div>
@@ -42,15 +48,30 @@ class Listing extends React.Component {
           <div className = 'CustomListingInfo CustomListingNumPlayers'>
             {this.props.numPlayers}
           </div>
-          <button className = "JoinMatchButton" onClick = {() => {this.joinMatchButtonLogic()}}>
-            {"Join"}
-          </button>
+          SELECTED
 
+        </div>
+      );
+    } else {
+      return (
+        <div className = 'CustomListing' onClick = {() => {this.clickLogic();}}>
+          <div className = 'CustomListingInfo CustomListingName'>
+            {this.props.name}
+          </div>
+          <div className = 'CustomListingInfo CustomListingOwnerName'>
+            {this.props.ownerName}
+          </div>
+          <div className = 'CustomListingInfo CustomListingNumPlayers'>
+            {this.props.numPlayers}
+          </div>
         </div>
       );
     }
 
   }
+
 }
+
+const Listing = connect(mapStateToProps, mapDispatchToProps)(RawListing);
 
 export default Listing;

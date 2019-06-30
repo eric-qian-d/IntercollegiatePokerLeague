@@ -1,5 +1,6 @@
 import React from 'react';
 import Listing from "./Listing";
+import ListingsInfo from './ListingsInfo';
 import './ListingsContainer.css';
 
 class ListingsContainer extends React.Component {
@@ -22,7 +23,7 @@ class ListingsContainer extends React.Component {
     return (
 
       <div id = "ListingsContainer">
-        <Listing header = {true}/>
+        <ListingsInfo/>
         {lines}
       </div>
     );
@@ -38,7 +39,7 @@ class ListingsContainer extends React.Component {
           var numPlayers =  matchesList[i].numPlayers;
           var id = matchesList[i].id;
           var ownerName = matchesList[i].ownerName;
-          tempMatches.push(<Listing name = {name} numPlayers = {numPlayers} socket = {this.props.socket} matchId = {id} ownerName = {ownerName} header = {false}/>);
+          tempMatches.push(<Listing name = {name} numPlayers = {numPlayers} socket = {this.props.socket} matchId = {id} ownerName = {ownerName}/>);
         }
       this.setState({matches: tempMatches});
     })
