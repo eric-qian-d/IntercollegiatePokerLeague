@@ -1,12 +1,20 @@
 const initialState = {
-  articles: []
+  articles: [],
+  gameType: 'none',
 };
 
 function rootReducer(state = initialState, action) {
   if (action.type === 'ADD_ARTICLE') {
-    const newState = Object.assign({}, state, {
-      articles: state.articles.concat(action.payload)
-    });
+    console.log(action.payload);
+    const newState = Object.assign({}, state,
+      action.payload
+    );
+    console.log(newState);
+    return newState;
+  } else if (action.type === 'CHANGE_GAME_TYPE') {
+    const newState = Object.assign({}, state,
+      action.payload
+    );
     console.log(newState);
     return newState;
   }

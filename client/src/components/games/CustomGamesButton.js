@@ -1,18 +1,56 @@
 import React from 'react';
-import './CustomGamesButton.css';
+import { connect } from "react-redux";
 
-class CustomGamesButton extends React.Component {
+import './CustomGamesButton.css';
+import {changeGameType} from '../../actions/index';
+
+function mapDispatchToProps(dispatch) {
+  return {
+    changeGameType: article => dispatch(changeGameType(article))
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    gameType: state.gameType,
+  }
+}
+
+
+class RawCustomGamesButton extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      test : 'CustomGame',
+    }
+  }
+
+  clickLogic() {
+    const {test} = this.state;
+    this.props.changeGameType({ gameType: test });
+    //this.props.history.push("/games")
   }
 
   render() {
-    return (
-      <button id = 'CustomGamesButton' className = 'ChooseGameTypeButton' onClick = {() => {this.props.history.push("/games");}}>
-        Custom Match
-      </button>
-    )
+    const {gameType} = this.props;
+    if (gameType === this.state.test) {
+      return (
+        <button id = 'CustomGamesButton' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic();}}>
+          Custom Match S
+        </button>
+      )
+    } else {
+      return (
+        <button id = 'CustomGamesButton' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic();}}>
+          Custom Match
+        </button>
+      )
+    }
+
+
   }
 }
+
+const CustomGamesButton = connect(mapStateToProps, mapDispatchToProps)(RawCustomGamesButton);
 
 export default CustomGamesButton;
