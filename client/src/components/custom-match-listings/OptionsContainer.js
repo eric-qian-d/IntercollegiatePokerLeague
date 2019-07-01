@@ -1,6 +1,7 @@
 import React from 'react';
 import NewMatchButton from "./NewMatchButton";
 import GamesButton from './GamesButton';
+import PlayButton from './PlayButton';
 
 class OptionsContainer extends React.Component {
   constructor(props) {
@@ -11,8 +12,10 @@ class OptionsContainer extends React.Component {
     const {socket} = this.props;
     return (
       <div id = 'OptionsContainer'>
-        <NewMatchButton socket = {socket}/>
         <GamesButton {...this.props} />
+        <PlayButton socket = {socket} />
+        <NewMatchButton socket = {socket}/>
+
       </div>
     )
   }

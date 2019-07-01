@@ -179,11 +179,13 @@ module.exports = {
           userLocation[userId] = constants.userLocation.CUSTOM_MATCH_LOBBY;
           userMatchMap[userId] = newMatchId;
           emitUserLocation(userId);
+          console.log(matchMap);
         }
       });
 
       //a user cannot be queued in anything else before they request to create a custom game
       socket.on('JOIN CUSTOM MATCH', async (matchId) => {
+        console.log(matchId);
         const userId = socket.request.user.id;
         if (userStatus[userId] !== constants.userStatus.AVAILABLE) {
           io.to(userSocketMap[userId]).emit('JOIN FAILED', userStatus[userId]);
@@ -204,6 +206,7 @@ module.exports = {
           userLocation[userId] = constants.userLocation.MATCH_CREATION;
           emitUserLocation(userId);
         }
+
       })
 
       //Custom Match Lobby Logic

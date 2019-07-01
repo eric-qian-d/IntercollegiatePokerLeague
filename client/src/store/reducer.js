@@ -1,6 +1,7 @@
 const initialState = {
   articles: [],
   gameType: 'none',
+  matchId: 'none',
 };
 
 function rootReducer(state = initialState, action) {
