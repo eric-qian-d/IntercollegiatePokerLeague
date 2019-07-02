@@ -2,26 +2,34 @@ const models = require('../models');
 const userLogic = require('./userLogic');
 
 module.exports = {
-  getLeaders: async () => {
+  getTopSchools: async () => {
     const schools = await models.School.findAll({
       attributes: ['id', 'name'],
       raw: true,
     });
-    const schoolsAndPlayers = {};
+    console.log(schools.length);
+    // const schoolsAndRanking = {};
+    var schoolNum = 0;
     const schoolRankings = [];
-    await schools.forEach(async (school) => {
-      const schoolPlayers = await userLogic.getLeadersBySchool(school.id);
-      if (schoolPlayers.length > 0) {
-        schoolsAndPlayers[school.name] = schoolPlayers;
-      }
+    const schoolPlayers = await Promise.all(schools.map(async (school) => {
+      return await userLogic.getTopUsersBySchool(school.id);
 
     })
-    console.log(schoolsAndPlayers);
-    Object.keys(schoolsAndPlayers).forEach(school => {
-      if (schoolsAndPlayers[school].length != 0) {
-        console.log(school);
-        console.log(schoolsAndPlayers[school]);
+  );
+    for (var i = 0; i < schools.length; i++) {
+      // console.log(i);
+      // console.log(schools[i]);
+      var ctr = 0;
+      var schoolRanking = 0;
+      while (ctr < 50 && ctr < schoolPlayers[i].length) {
+        schoolRanking = schoolRanking + (1- 0.01 * ctr) * schoolPlayers[i][ctr].rankedHURanking;
+        ctr++;
       }
-    })
+      schools[i].ranking = schoolRanking;
+    }
+
+    schools.sort((a, b) => (a.ranking > b.ranking) ? -1 : 1);
+    console.log(schools);
+    return schools;
   }
 }

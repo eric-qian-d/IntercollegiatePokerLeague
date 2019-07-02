@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 
 const hashRounds = 5;
 
+var ctr = 0;
+
 module.exports = {
   createUser : async (user) => {
     const email = user.email;
@@ -70,16 +72,19 @@ module.exports = {
     return leaders; //can limit the number of leaders returned from here
   },
 
-  getLeadersBySchool: async (schoolId) => {
+  getTopUsersBySchool: async (schoolId) => {
+    // console.log(schoolId);
     const leaders = await models.User.findAll({
       where: {schoolId: schoolId},
       attributes: ['firstName', 'lastName', 'rankedHURanking', 'schoolName'],
       raw: true,
       order: [['rankedHURanking', 'desc']]
     });
-    if (leaders.length >0) {
-      console.log(leaders);
-    }
+    // if (leaders.length >0) {
+    //   console.log(leaders);
+    // }
+    // console.log(ctr);
+    ctr++
     return leaders; //can limit the number of leaders returned from here
   },
 
