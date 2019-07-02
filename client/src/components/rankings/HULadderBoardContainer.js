@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import PlayerRanking from './PlayerRanking';
 import vars from '../../vars';
+import './HULadderBoardContainer.css';
 
 function mapStateToProps(state) {
   console.log(state);
@@ -52,7 +53,7 @@ class RawHULadderBoardContainer extends React.Component {
       )
     })
     return (
-      <div className = 'HULadderBoardContainer'>
+      <div id = 'HULadderBoardContainer'>
         <PlayerRanking header = {true}/>
         {huRankingsList}
       </div>
