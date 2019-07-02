@@ -6,15 +6,19 @@
 }
 
 .PlayerRankingPlace{
-  width: 20px;
+  width: 10%;
 }
 
 .PlayerRankingName{
-  width: 150px;
+  width: 25%;
 }
 
 .PlayerRankingSchool{
-  width: 500px;
+  width: 40%;
+}
+
+.PlayerRankingRanking{
+  width: 20%;
 }
 
 .PlayerRanking {
