@@ -29,8 +29,6 @@ class RawHULadderBoardContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps);
-    // debugger;
     if (prevProps.requestedLeaderboard !== this.props.requestedLeaderboard) {
       fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/rankings/' + this.props.requestedLeaderboard, {withCredentials: true, credentials: 'include'}, {
         })

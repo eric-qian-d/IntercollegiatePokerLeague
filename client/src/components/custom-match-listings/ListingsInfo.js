@@ -13,8 +13,6 @@ class ListingsInfo extends React.Component {
         <div className = 'CustomListingInfo CustomListingNumPlayers'>
           Number of Players
         </div>
-        <div className = 'JoinMatchButton'>
-        </div>
       </div>
     );
   }

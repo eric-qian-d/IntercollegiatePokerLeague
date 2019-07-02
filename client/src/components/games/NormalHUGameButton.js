@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux";
-
 import vars from '../../vars';
-
 import {changeGameType} from '../../actions/index';
+import './NormalHUGameButton.css';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -27,28 +26,16 @@ class RawNormalHUGameButton extends React.Component {
   }
 
   clickLogic() {
-    //should redirect to /games when loading
     const {test} = this.state;
     this.props.changeGameType({ gameType: test });
-    // fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/choose-game/join-normal', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(this.state),
-    //   credentials : 'include',
-    //   withCredentials : true,
-    // });
-    // this.props.history.push('/games');
   }
 
   render() {
     const {gameType} = this.props;
     if (gameType === this.state.test) {
       return (
-        <button id = 'NormalHUGameButton' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic()}}>
-          Normal Heads Up S
+        <button id = 'NormalHUGameButtonSelected' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic()}}>
+          Normal Heads Up
         </button>
       )
     } else {

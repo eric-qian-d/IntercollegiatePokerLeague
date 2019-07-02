@@ -35,8 +35,8 @@ class RawCustomGamesButton extends React.Component {
     const {gameType} = this.props;
     if (gameType === this.state.test) {
       return (
-        <button id = 'CustomGamesButton' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic();}}>
-          Custom Match S
+        <button id = 'CustomGamesButtonSelected' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic();}}>
+          Custom Match
         </button>
       )
     } else {

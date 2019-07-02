@@ -12,16 +12,8 @@ class ListingsContainer extends React.Component {
   }
 
   render() {
-    var lines = this.state.matches
-    .map(function (match, i) {
-      return (
-        <div key = {i}>
-          {match}
-        </div>
-      )
-    });
+    var lines = this.state.matches;
     return (
-
       <div id = "ListingsContainer">
         <ListingsInfo/>
         {lines}

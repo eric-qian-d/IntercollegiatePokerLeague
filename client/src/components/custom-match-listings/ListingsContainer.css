@@ -1,4 +1,6 @@
 #ListingsContainer {
-  width: 70%;
+  overflow-y: scroll;
+  height: 80vh;
+  width: 60%;
   margin: auto;
 }
