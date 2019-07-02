@@ -15,8 +15,8 @@ const rankings = require('./routes/rankings');
 // const userLogic = require('./common/userLogic');
 // userLogic.associateAllUsersWithSchools();
 
-const schoolLogic = require('./common/schoolLogic');
-schoolLogic.getTopSchools();
+// const schoolLogic = require('./common/schoolLogic');
+// schoolLogic.getTopSchools();
 
 passportConfigure.configure(passport);
 

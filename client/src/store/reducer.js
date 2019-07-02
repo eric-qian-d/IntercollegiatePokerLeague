@@ -18,6 +18,12 @@ function rootReducer(state = initialState, action) {
     );
     console.log(newState);
     return newState;
+  } else if (action.type === 'CHANGE_REQUESTED_LEADERBOARD') {
+    const newState = Object.assign({}, state,
+      action.payload
+    );
+    console.log(newState);
+    return newState;
   }
   return state;
 }

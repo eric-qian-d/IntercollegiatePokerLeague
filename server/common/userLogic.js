@@ -5,8 +5,6 @@ const bcrypt = require('bcrypt');
 
 const hashRounds = 5;
 
-var ctr = 0;
-
 module.exports = {
   createUser : async (user) => {
     const email = user.email;
@@ -80,11 +78,6 @@ module.exports = {
       raw: true,
       order: [['rankedHURanking', 'desc']]
     });
-    // if (leaders.length >0) {
-    //   console.log(leaders);
-    // }
-    // console.log(ctr);
-    ctr++
     return leaders; //can limit the number of leaders returned from here
   },
 
