@@ -1,16 +1,17 @@
 import React from 'react';
+import './SchoolsHUHeader.css';
 
 class SchoolsHUHeader extends React.Component {
   render() {
     return (
-      <div className = 'SchoolsHUHeader'>
-        <div className = 'PlayerRankingPlace PlayerRankingInfo'>
-          Rank
+      <div id = 'SchoolsHUHeader'>
+        <div className = 'SchoolRankingPlace SchoolHeaderInfo'>
+          Ranking
         </div>
-        <div className = 'PlayerRankingName PlayerRankingInfo'>
+        <div className = 'SchoolRankingName SchoolHeaderInfo'>
           Name
         </div>
-        <div className = 'PlayerRankingRanking PlayerRankingInfo'>
+        <div className = 'SchoolRankingRanking SchoolHeaderInfo'>
           Elo
         </div>
       </div>

@@ -1,19 +1,20 @@
 import React from 'react';
+import './IndividualsHUHeader.css'
 
 class IndividualsHUHeader extends React.Component {
   render() {
     return (
-      <div className = 'IndividualHUHeader'>
-        <div className = 'PlayerRankingPlace PlayerRankingInfo'>
+      <div id = 'IndividualsHUHeader'>
+        <div className = 'PlayerRankingPlace IndividualsHeaderInfo'>
           Rank
         </div>
-        <div className = 'PlayerRankingName PlayerRankingInfo'>
+        <div className = 'PlayerRankingName IndividualsHeaderInfo'>
           Name
         </div>
-        <div className = 'PlayerRankingSchool PlayerRankingInfo'>
+        <div className = 'PlayerRankingSchool IndividualsHeaderInfo'>
           School
         </div>
-        <div className = 'PlayerRankingRanking PlayerRankingInfo'>
+        <div className = 'PlayerRankingRanking IndividualsHeaderInfo'>
           Elo
         </div>
       </div>
