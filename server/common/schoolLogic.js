@@ -22,6 +22,9 @@ module.exports = {
         ctr++;
       }
       schools[i].ranking = Math.round(schoolRanking);
+      if (schools[i].name === 'Undetermined') {
+        schools[i].ranking = -1;
+      }
     }
 
     schools.sort((a, b) => (a.ranking > b.ranking) ? -1 : 1);
