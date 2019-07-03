@@ -1,0 +1,12 @@
+#LadderListingsContainer {
+  height: 80vh;
+  width: 70%;
+  margin: auto;
+
+}
+
+#LadderListings {
+  height: 75vh;
+  overflow-y: scroll;
+  border: 2px solid black;
+}

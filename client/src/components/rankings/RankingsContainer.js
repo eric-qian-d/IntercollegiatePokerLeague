@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from '../navbar/Navbar';
-import HULadderBoardContainer from './HULadderBoardContainer';
+import ListingsContainer from './ListingsContainer';
 import IndividualsHUButton from './IndividualsHUButton';
 import SchoolsHUButton from './SchoolsHUButton';
 
@@ -15,7 +15,7 @@ class RankingsContainer extends React.Component {
         <Navbar {...this.props}/>
         <IndividualsHUButton/>
         <SchoolsHUButton/>
-        <HULadderBoardContainer/>
+        <ListingsContainer/>
       </div>
     )
   }

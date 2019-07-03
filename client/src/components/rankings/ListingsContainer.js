@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from "react-redux";
 import PlayerRanking from './PlayerRanking';
 import SchoolRanking from './SchoolRanking';
+import IndividualsHUHeader from './IndividualsHUHeader';
+import SchoolsHUHeader from './SchoolsHUHeader';
 import vars from '../../vars';
-import './HULadderBoardContainer.css';
+import './ListingsContainer.css';
 
 function mapStateToProps(state) {
   console.log(state);
@@ -12,7 +14,7 @@ function mapStateToProps(state) {
   }
 }
 
-class RawHULadderBoardContainer extends React.Component {
+class RawListingsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,8 +56,12 @@ class RawHULadderBoardContainer extends React.Component {
         )
       })
       return (
-        <div id = 'HULadderBoardContainer'>
-          {huRankingsList}
+        <div id = 'LadderListingsContainer'>
+          <SchoolsHUHeader/>
+          <div id = 'LadderListings'>
+
+            {huRankingsList}
+          </div>
         </div>
       )
     } else {
@@ -65,14 +71,18 @@ class RawHULadderBoardContainer extends React.Component {
         )
       })
       return (
-        <div id = 'HULadderBoardContainer'>
-          {huRankingsList}
+        <div id = 'LadderListingsContainer'>
+          <IndividualsHUHeader/>
+          <div id = 'LadderListings'>
+
+            {huRankingsList}
+          </div>
         </div>
       )
     }
   }
 }
 
-const HULadderBoardContainer = connect(mapStateToProps)(RawHULadderBoardContainer);
+const ListingsContainer = connect(mapStateToProps)(RawListingsContainer);
 
-export default HULadderBoardContainer;
+export default ListingsContainer;

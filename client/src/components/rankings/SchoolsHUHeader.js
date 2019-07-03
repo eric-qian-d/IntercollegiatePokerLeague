@@ -1,6 +1,6 @@
 import React from 'react';
 
-class SchoolHUHeader extends React.Component {
+class SchoolsHUHeader extends React.Component {
   render() {
     return (
       <div className = 'SchoolsHUHeader'>
@@ -18,4 +18,4 @@ class SchoolHUHeader extends React.Component {
   }
 }
 
-export default = SchoolsHUHeader;
+export default SchoolsHUHeader;

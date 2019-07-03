@@ -21,4 +21,4 @@ class IndividualsHUHeader extends React.Component {
   }
 }
 
-export default = IndividualsHUHeader;
+export default IndividualsHUHeader;

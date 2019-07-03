@@ -1,7 +1,0 @@
-#HULadderBoardContainer {
-  overflow-y: scroll;
-  height: 80vh;
-  width: 70%;
-  margin: auto;
-  border: 2px solid black;
-}
