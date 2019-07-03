@@ -1,6 +1,11 @@
-#ListingsContainer {
-  overflow-y: scroll;
+#CustomListingsContainer {
   height: 80vh;
   width: 60%;
   margin: auto;
+}
+
+#CustomListings {
+  height: 70vh;
+  overflow-y: scroll;
+  border: 2px solid black;
 }

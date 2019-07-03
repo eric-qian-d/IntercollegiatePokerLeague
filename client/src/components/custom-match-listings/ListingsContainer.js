@@ -14,9 +14,11 @@ class ListingsContainer extends React.Component {
   render() {
     var lines = this.state.matches;
     return (
-      <div id = "ListingsContainer">
+      <div id = "CustomListingsContainer">
         <ListingsInfo/>
-        {lines}
+        <div id = 'CustomListings'>
+          {lines}
+        </div>
       </div>
     );
   }
