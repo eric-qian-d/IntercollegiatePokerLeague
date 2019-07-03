@@ -1,32 +1,24 @@
 import React from 'react';
-import './PlayerRanking.css';
 
-class PlayerRanking extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+class IndividualsHUHeader extends React.Component {
   render() {
-    const {name, place, ranking, school} = this.props;
     return (
-      <div className = 'PlayerRanking'>
+      <div className = 'IndividualHUHeader'>
         <div className = 'PlayerRankingPlace PlayerRankingInfo'>
-          {place}
+          Rank
         </div>
         <div className = 'PlayerRankingName PlayerRankingInfo'>
-          {name}
+          Name
         </div>
         <div className = 'PlayerRankingSchool PlayerRankingInfo'>
-          {school}
+          School
         </div>
         <div className = 'PlayerRankingRanking PlayerRankingInfo'>
-          {ranking}
+          Elo
         </div>
       </div>
     )
-
-
   }
 }
 
-export default PlayerRanking;
+export default = IndividualsHUHeader;

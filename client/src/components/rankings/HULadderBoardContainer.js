@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import PlayerRanking from './PlayerRanking';
+import SchoolRanking from './SchoolRanking';
 import vars from '../../vars';
 import './HULadderBoardContainer.css';
 
@@ -45,17 +46,30 @@ class RawHULadderBoardContainer extends React.Component {
 
   render() {
     const {huRankings} = this.state;
-    const huRankingsList = huRankings.map((listing, place) => {
+    const {requestedLeaderboard} = this.props;
+    if (requestedLeaderboard === 'hu-school-leaderboard') {
+      const huRankingsList = huRankings.map((listing, place) => {
+        return (
+          <SchoolRanking schoolName = {listing[0]} ranking = {listing[1]} place = {place + 1}/>
+        )
+      })
       return (
-        <PlayerRanking name = {listing[0]} ranking = {listing[1]} place = {place + 1} school = {listing[2]} header = {false}/>
+        <div id = 'HULadderBoardContainer'>
+          {huRankingsList}
+        </div>
       )
-    })
-    return (
-      <div id = 'HULadderBoardContainer'>
-        <PlayerRanking header = {true}/>
-        {huRankingsList}
-      </div>
-    )
+    } else {
+      const huRankingsList = huRankings.map((listing, place) => {
+        return (
+          <PlayerRanking name = {listing[0]} ranking = {listing[1]} place = {place + 1} school = {listing[2]}/>
+        )
+      })
+      return (
+        <div id = 'HULadderBoardContainer'>
+          {huRankingsList}
+        </div>
+      )
+    }
   }
 }
 

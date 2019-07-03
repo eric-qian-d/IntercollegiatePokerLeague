@@ -1,27 +1,23 @@
-.PlayerRankingInfo{
+.SchoolRankingInfo{
   margin-right: 50px;
   margin-left: 10px;
   display: inline-block;
   text-align: center;
 }
 
-.PlayerRankingPlace{
+.SchoolRankingPlace{
   width: 10%;
 }
 
-.PlayerRankingName{
-  width: 25%;
+.SchoolRankingName{
+  width: 55%;
 }
 
-.PlayerRankingSchool{
-  width: 40%;
-}
-
-.PlayerRankingRanking{
+.SchoolRankingRanking{
   width: 20%;
 }
 
-.PlayerRanking {
+.SchoolRanking {
   display: flex;
   border: 2px solid black;
   /* height: 30px; */
