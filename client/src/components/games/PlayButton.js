@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 
 import vars from '../../vars';
-import './CustomGamesButton.css';
+import './PlayButton.css';
 
 function mapStateToProps(state) {
   return {
@@ -53,13 +53,13 @@ class RawPlayButton extends React.Component {
     const {gameType} = this.props;
     if (gameType === 'none') {
       return (
-        <button id = 'PlayGameButton'>
+        <button id = 'ChooseGameTypeButton'>
           Choose Game
         </button>
       )
     } else {
       return (
-        <button id = 'PlayGameButton' onClick = {() => {this.clickLogic();}}>
+        <button id = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic();}}>
           Play
         </button>
       )
