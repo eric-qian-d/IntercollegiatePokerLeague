@@ -1,9 +1,10 @@
 import React from 'react';
+import './ListingsInfo.css';
 
 class ListingsInfo extends React.Component {
   render() {
     return (
-      <div className = 'CustomListing'>
+      <div id = 'CustomListingHeader'>
         <div className = 'CustomListingInfo CustomListingName'>
           Game Name
         </div>
