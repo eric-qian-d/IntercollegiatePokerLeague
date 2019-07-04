@@ -322,6 +322,7 @@ module.exports = class Game { // maybe rename this to be Table
 
   nextStreet() {
     this.time = this.maxTime;
+    clearInterval(this.timer);
     //gets a list of all the players still in the hand
     const playersInHandList = Object.values(this.seatMap).filter(player => {
       return player.inHand;
@@ -337,7 +338,6 @@ module.exports = class Game { // maybe rename this to be Table
         }
       })
       playersInHandList[0].stackSize += this.pot;
-      clearInterval(this.timer);
       setTimeout(() => {
         this.startHand();
         this.timer = setInterval(this.timerLogic, 1000, this);
@@ -416,7 +416,6 @@ module.exports = class Game { // maybe rename this to be Table
             }
           }
         }
-        clearInterval(this.timer);
         if (!this.allIn && !this.finished) {
           setTimeout(() => this.emitAll(), 500);
           setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 500);
@@ -477,12 +476,6 @@ module.exports = class Game { // maybe rename this to be Table
       } else if (this.board.length === 5) {
         //river finish
         //display both hands
-        // const info = this.getGameState(null, true);
-        // Object.values(this.seatMap).forEach(basePlayer => {
-        //   // const allPlayerInfo = [];
-        //   this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
-        // })
-        clearInterval(this.timer);
         this.emitAll(true);
         var currentStrongestHandStrength = 0;
         var winners = [];
