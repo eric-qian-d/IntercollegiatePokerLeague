@@ -92,15 +92,18 @@ module.exports = class Game { // maybe rename this to be Table
 
   /**
    * Begins new hand. Moves the button and deals cards to everyone that was present at the Table
-   * when this function was first called
+   * when this function was first called.
+   *
+   * Resets all round metadata
    */
   startHand() {
-    //deals players hands
+    //resets round data
     this.pot = 0;
     this.board = [];
-    this.toEnd = false;
+    this.allIn = false;
     this.lastRaiseSize = this.bigBlindValue;
     this.time = this.maxTime;
+    //deals players hands
     Object.values(this.seatMap).forEach(player => {
       if (player !== "") {
         player.hand = [];
@@ -130,6 +133,7 @@ module.exports = class Game { // maybe rename this to be Table
       advanced = false;
       var nextPlayer = this.buttonLocation;
       while (!advanced) {
+        //finds the next player, who will be the big blind
         nextPlayer = (nextPlayer + 1) % this.numPlayers;
         if (this.seatMap[nextPlayer] !== "") {
           this.seatMap[nextPlayer].stackSize -= this.bigBlindValue;
@@ -140,7 +144,7 @@ module.exports = class Game { // maybe rename this to be Table
         }
       }
     } else {
-      //>2 people logic
+      //>2 people setup logic
       this.action = this.buttonLocation;
       var advanced = 0;
       var nextPlayer = this.buttonLocation;
@@ -148,9 +152,11 @@ module.exports = class Game { // maybe rename this to be Table
         this.nextPlayer = (this.nextPlayer + 1) % this.numPlayers;
         if (this.seatMap[nextPlayer] !== "") {
           if (advanced === 0) {
+            //finds the next player, who will be the small blind
             this.seatMap[nextPlayer].stackSize -= this.bigBlindValue/2;
             this.seatMap[nextPlayer].investedStack += this.bigBlindValue/2;
           } else {
+            //finds the next player, who will be the big blind
             this.seatMap[nextPlayer].stackSize -= this.bigBlindValue;
             this.seatMap[nextPlayer].investedStack += this.bigBlindValue;
             this.lastRaiser = nextPlayer;
@@ -168,18 +174,22 @@ module.exports = class Game { // maybe rename this to be Table
         //legal check
         var advanced = false;
         while (!advanced) {
+          //finds the next player to act
           this.action = (this.action + 1) % this.numPlayers;
           if (this.seatMap[this.action] !== "" && this.seatMap[this.action].inHand) {
             advanced = true;
           }
         }
         if (this.action === this.lastRaiser) {
+          //everyone has acted
           this.nextStreet();
         }
         const adaptedBoard = this.board.map(card => {
           return [card.suit, card.rank];
         });
         this.emitAll();
+      } else {
+        //illegal check
       }
     }
   }
@@ -196,7 +206,7 @@ module.exports = class Game { // maybe rename this to be Table
       })[0];
       const needToCall = this.currentTotalRaise - player.investedStack;
       if (player.stackSize - (needToCall) < 0) {
-        //player goes all in to call: need to take care of side pots later on. Also need to take care of the case of all-ins
+        //player goes all in to call: need to take care of side pots later on
         player.investedStack += player.stackSize;
         player.investedInHand += player.stackSize;
         player.stackSize = 0;
@@ -336,6 +346,10 @@ module.exports = class Game { // maybe rename this to be Table
     } else {
       //makes sure animation happens in next clock tick - to change this so that there's no timing issues
       //resets variables for the next street
+      this.lastRaiseSize = this.bigBlindValue;
+      this.currentTotalRaise = 0;
+
+      //all in stack logic
       const inHandInvestedStacks = [];
       Object.values(this.seatMap).forEach(player => {
         if (player.inHand) {
@@ -353,9 +367,8 @@ module.exports = class Game { // maybe rename this to be Table
         })
       }
 
-      this.lastRaiseSize = this.bigBlindValue;
-      this.currentTotalRaise = 0;
-      //adds outstanding bets to pot and
+
+      //adds outstanding bets to pot. TODO take care of side bets
       Object.values(this.seatMap).forEach(player => {
         if (player.investedStack > 0) {
           this.pot += player.investedStack;
@@ -403,7 +416,11 @@ module.exports = class Game { // maybe rename this to be Table
             }
           }
         }
-
+        clearInterval(this.timer);
+        if (!this.allIn && !this.finished) {
+          setTimeout(() => this.emitAll(), 500);
+          setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 500);
+        }
 
 
       } else if (this.board.length === 3 || this.board.length === 4) {
@@ -449,18 +466,24 @@ module.exports = class Game { // maybe rename this to be Table
               advanced = true;
             }
           }
+          clearInterval(this.timer);
+          if (!this.allIn && !this.finished) {
+            setTimeout(() => this.emitAll(), 500);
+            setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 500);
+          }
         }
 
 
       } else if (this.board.length === 5) {
         //river finish
         //display both hands
-        const info = this.getGameState(null, true);
-        Object.values(this.seatMap).forEach(basePlayer => {
-          // const allPlayerInfo = [];
-          this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
-        })
-
+        // const info = this.getGameState(null, true);
+        // Object.values(this.seatMap).forEach(basePlayer => {
+        //   // const allPlayerInfo = [];
+        //   this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+        // })
+        clearInterval(this.timer);
+        this.emitAll(true);
         var currentStrongestHandStrength = 0;
         var winners = [];
         playersInHandList.forEach(player => {
@@ -505,19 +528,12 @@ module.exports = class Game { // maybe rename this to be Table
         } else {
           setTimeout(() => {
             this.startHand();
-          }, 1000);
+          }, 2000);
+          setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 2000);
         }
-
-        this.allIn = false;
-        this.pot = 0;
         this.animateWin = true;
+      }
 
-        // winner.stackSize += this.pot;
-      }
-      clearInterval(this.timer);
-      if (!this.allIn && !this.finished) {
-        setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 1000);
-      }
     }
 
   }
