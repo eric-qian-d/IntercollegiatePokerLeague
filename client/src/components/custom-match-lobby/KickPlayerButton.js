@@ -14,7 +14,7 @@ class KickPlayerButton extends React.Component {
 
   render() {
     return (
-      <button className = 'KickPlayerButton' Click = {() => {this.handleClick()}}>
+      <button className = 'KickPlayerButton' onClick = {() => {this.handleClick()}}>
         Kick
       </button>
     )
