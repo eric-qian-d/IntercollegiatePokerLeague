@@ -25,7 +25,7 @@ class PlayersContainer extends React.Component {
       return (
           <div className = 'PlayersContainer'>
             {playersList}
-            <button onClick = {() => {this.joinTeamLogic()}}>
+            <button className = 'JoinTeamButton' onClick = {() => {this.joinTeamLogic()}}>
               Join Team
             </button>
           </div>

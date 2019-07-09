@@ -1,3 +1,8 @@
 .PlayersContainer {
   width: 220px;
 }
+
+.JoinTeamButton {
+  margin: auto;
+  display: block;
+}

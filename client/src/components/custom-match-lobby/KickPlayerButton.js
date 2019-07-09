@@ -1,5 +1,6 @@
 import React from 'react';
 import {kickPlayer} from '../../js/custom-match-lobby';
+import './KickPlayerButton.css';
 
 class KickPlayerButton extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class KickPlayerButton extends React.Component {
 
   render() {
     return (
-      <button onClick = {() => {this.handleClick()}}>
+      <button className = 'KickPlayerButton' Click = {() => {this.handleClick()}}>
         Kick
       </button>
     )

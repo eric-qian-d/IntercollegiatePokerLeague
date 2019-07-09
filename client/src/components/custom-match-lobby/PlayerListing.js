@@ -1,5 +1,6 @@
 import React from "react";
 import KickPlayerButton from './KickPlayerButton';
+import './PlayerListing.css';
 
 class PlayerListing extends React.Component {
   constructor(props) {
@@ -23,14 +24,14 @@ class PlayerListing extends React.Component {
     style.borderColor = statusColorMap[status];
     if (renderKick && playerId !== ownerId) {
       return (
-        <div style = {style}>
+        <div style = {style} className = 'CustomMatchPlayerListing'>
           {playerName}
           <KickPlayerButton socket = {socket} playerId = {playerId}/>
         </div>
       )
     } else {
       return (
-        <div style = {style}>
+        <div style = {style} className = 'CustomMatchPlayerListing'>
           {playerName}
         </div>
       )
