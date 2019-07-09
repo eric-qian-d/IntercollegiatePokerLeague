@@ -1,5 +1,6 @@
 import React from "react";
 import {addNewHUMatch} from "../../js/new-match";
+import './NewMatchForm.css';
 
 class newHUMatchForm extends React.Component {
   constructor(props) {
@@ -28,16 +29,16 @@ class newHUMatchForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
+      <form onSubmit={this.handleSubmit} id = 'NewMatchForm'>
+        <label className = 'NewMatchLabel'>
           Game Name:
-          <input type="text" name = "name" value={this.state.name} onChange={this.handleChange} />
+          <input type="text" name = "name" className = 'NewMatchInput' value={this.state.name} onChange={this.handleChange} />
         </label>
-        <label>
+        <label className = 'NewMatchLabel'>
           Number of Players:
-          <input type="text" name = "numPlayers" value={this.state.numPlayers} onChange={this.handleChange} />
+          <input type="text" name = "numPlayers" className = 'NewMatchInput' value={this.state.numPlayers} onChange={this.handleChange} />
         </label>
-        <input type="submit" value="Make New Game" />
+        <input type="submit" value="Make New Game" id = 'CreateNewMatchButton'/>
       </form>
     );
   }

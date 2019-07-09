@@ -744,7 +744,7 @@ uidaho.edu: University of Idaho
 uindy.edu: University of Indianapolis
 uiowa.edu: The University of Iowa
 uiu.edu: Upper Iowa University
-uiuc.edu: University of Illinois at Urbana-Champaign
+illinois.edu: University of Illinois at Urbana-Champaign
 uky.edu: University of Kentucky
 umass.edu: University of Massachusetts Amherst
 umassd.edu: University of Massachusetts Dartmouth

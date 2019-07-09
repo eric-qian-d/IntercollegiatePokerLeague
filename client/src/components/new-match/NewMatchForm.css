@@ -1,4 +1,4 @@
-#LoginForm {
+#NewMatchForm {
   height: 250px;
   width: 300px;
   border: 2px solid black;
@@ -6,7 +6,7 @@
   margin: auto;
 }
 
-.LoginLabel{
+.NewMatchLabel{
   margin: auto;
   display: block;
   width: 250px;
@@ -15,7 +15,7 @@
   font-size: 20px;
 }
 
-.LoginInput{
+.NewMatchInput {
   margin: auto;
   display: block;
   width: 250px;
@@ -23,9 +23,10 @@
   font-size: 18px;
 }
 
-.FormButton {
+#CreateNewMatchButton {
   display: block;
   height: 30px;
   border-radius:6px;
+  margin: auto;
   /* border: 2px solid black; */
 }
