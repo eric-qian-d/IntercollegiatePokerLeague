@@ -1,4 +1,5 @@
 import React from "react";
+import './PlayerListing.css';
 
 //NOTE THAT THIS IS THE SAME AS THE PLAYER LISTING IN CUSTOM-MATCH-LOBBY
 class PlayerListing extends React.Component {
@@ -18,11 +19,11 @@ class PlayerListing extends React.Component {
     const style = {
       borderStyle: 'solid',
       borderWidth: '3px',
-      width: '200px',
+      // width: '200px',
     }
     style.borderColor = statusColorMap[status];
     return (
-      <div style = {style}>
+      <div style = {style} className = 'MatchResultPlayerListing'>
         {player}
       </div>
     )
