@@ -1,6 +1,10 @@
 #ChooseGameTypeButtonContainer {
-  margin: auto;
-  width: 20%
+  margin: 5vh auto;
+  width: 20%;
+  min-width: 200px;
+  max-width: 300px;
+  text-align: center;
+  font-size: 30px;
 }
 
 .ChooseGameTypeButton {
