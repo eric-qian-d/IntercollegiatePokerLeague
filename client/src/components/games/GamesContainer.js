@@ -1,7 +1,9 @@
 import React from 'react';
 import ChooseGameTypeButtonContainer from './ChooseGameTypeButtonContainer';
 import Navbar from '../navbar/Navbar';
+import Helmet from 'react-helmet';
 import vars from '../../vars';
+import './GamesContainer.css';
 
 class GamesContainer extends React.Component {
   constructor(props) {
@@ -21,7 +23,8 @@ class GamesContainer extends React.Component {
 
   render() {
     return (
-      <div className = 'GamesContainer'>
+      <div id = 'GamesContainer'>
+        <Helmet bodyAttributes={{style: 'background-color : #000000'}}/>
         <Navbar {...this.props}/>
         <ChooseGameTypeButtonContainer {...this.props}/>
       </div>

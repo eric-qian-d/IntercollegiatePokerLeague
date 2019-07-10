@@ -13,4 +13,10 @@
   height: 100px;
   margin: 20px auto 0 auto;
   width: 60%;
+  background-color: rgb(128, 0, 0);
+  color: white;
+}
+
+::selection {
+  color: white;
 }
