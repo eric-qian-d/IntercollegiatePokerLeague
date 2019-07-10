@@ -19,7 +19,7 @@ class TeamsContainer extends React.Component {
     const {team1, team2, renderJoin1, renderJoin2, renderKick} = this.state;
     const {ownerId} = this.props;
     return(
-      <div className = 'TeamsContainer flex-container'>
+      <div id = 'TeamsContainer'>
         <div className = 'TeamContainer'>
           Team 1
           <PlayersContainer players = {team1} socket = {this.props.socket} updateTeamFunction = {joinTeam1} renderJoin = {renderJoin1} renderKick = {renderKick} ownerId = {ownerId}/>

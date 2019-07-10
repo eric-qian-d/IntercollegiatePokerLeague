@@ -1,4 +1,14 @@
-.flex-container {
+#TeamsContainer {
   display: flex;
   justify-content: center;
+  width: 70%;
+  margin: auto;
+  height: 50vh;
+  font-size: 30px;
+  text-align: center;
+}
+
+.TeamContainer {
+  margin: 10vh auto;
+  height: 40vh;
 }

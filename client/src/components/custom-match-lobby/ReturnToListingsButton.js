@@ -1,5 +1,6 @@
 import React from "react";
 import {returnToListings} from "../../js/custom-match-lobby";
+import './ReturnToListingsButton.css';
 
 class ReturnToListingsButton extends React.Component {
   constructor(props) {
@@ -12,11 +13,9 @@ class ReturnToListingsButton extends React.Component {
 
   render() {
     return(
-      <div>
-        <button onClick = {() => {this.beginMatchLogic()}}>
+        <button id = 'ReturnToListingsButton' onClick = {() => {this.beginMatchLogic()}}>
           Return to Listings
         </button>
-      </div>
     )
   }
 }

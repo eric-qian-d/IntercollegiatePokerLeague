@@ -2,7 +2,7 @@ import React from "react";
 import TeamsContainer from "./TeamsContainer";
 import BeginMatchButton from "./BeginMatchButton";
 import ReturnToListingsButton from "./ReturnToListingsButton";
-
+import './CustomMatchLobbyContainer.css';
 
 class CustomMatchLobbyContainer extends React.Component {
   constructor(props) {
@@ -39,15 +39,19 @@ class CustomMatchLobbyContainer extends React.Component {
         return (
           <div>
             <TeamsContainer socket = {socket} isOwner = {isOwner} ownerId = {ownerId}/>
-            <BeginMatchButton socket = {socket} isOwner = {isOwner}/>
-            <ReturnToListingsButton socket = {socket} isOwner = {isOwner}/>
+            <div id = 'CustomMatchButtonBox'>
+              <BeginMatchButton socket = {socket} isOwner = {isOwner}/>
+              <ReturnToListingsButton socket = {socket} isOwner = {isOwner}/>
+            </div>
           </div>
         )
       } else {
         return (
           <div>
             <TeamsContainer socket = {socket} isOwner = {isOwner}/>
-            <ReturnToListingsButton socket = {socket} isOwner = {isOwner}/>
+            <div id = 'CustomMatchButtonBox'>
+              <ReturnToListingsButton socket = {socket} isOwner = {isOwner}/>
+            </div>
           </div>
         )
       }
