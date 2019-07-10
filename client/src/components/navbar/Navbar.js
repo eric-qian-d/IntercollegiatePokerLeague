@@ -16,7 +16,7 @@ class Navbar extends React.Component {
         <li><a href="/">Home</a></li>
         <li><a href="/choose-game">Games</a></li>
         <li><a href="/rankings">Rankings</a></li>
-        <button onClick = {()=> {
+        <li id = 'LogoutButton' onClick = {()=> {
           fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/logout', {
             method: 'POST',
             headers: {
@@ -31,7 +31,7 @@ class Navbar extends React.Component {
         }
       }>
       Log out
-      </button>
+      </li>
       </ul>
     )
   }

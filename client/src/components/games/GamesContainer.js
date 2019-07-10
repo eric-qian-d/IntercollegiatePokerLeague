@@ -24,7 +24,7 @@ class GamesContainer extends React.Component {
   render() {
     return (
       <div id = 'GamesContainer'>
-        <Helmet bodyAttributes={{style: 'background-color : #000000'}}/>
+        <Helmet bodyAttributes={{style: 'background-color : #000000; margin: 0 !important' }}/>
         <Navbar {...this.props}/>
         <ChooseGameTypeButtonContainer {...this.props}/>
       </div>

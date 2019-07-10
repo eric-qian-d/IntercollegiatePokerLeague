@@ -1,9 +1,23 @@
 li {
   display: inline;
-  margin: 20px;
+  padding: 20px;
+  background-color: white;
+  height: 20px;
+  text-align: center;
 }
 
-ul {
-  margin: auto;
-  width: 400px;
+a {
+  display: inline-block;
+}
+
+#LogoutButton {
+  color: black;
+}
+
+#nav {
+  top: 0;
+  margin-top: 0px;
+  padding-top: 0px;
+  height:5vh;
+  background-color: white;
 }
