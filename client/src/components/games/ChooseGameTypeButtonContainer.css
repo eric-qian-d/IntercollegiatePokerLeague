@@ -15,8 +15,12 @@
   width: 60%;
   background-color: rgb(128, 0, 0);
   color: white;
+  border-width: 0px;
 }
 
+.ChooseGameTypeButton:focus {
+  outline: 0;
+}
 ::selection {
   color: white;
 }
