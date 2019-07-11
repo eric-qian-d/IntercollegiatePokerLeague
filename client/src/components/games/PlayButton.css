@@ -6,6 +6,7 @@
   background-color: black;
   color:white;
   height: 4vh;
+  font-size: 1vh;
 }
 
 #ChooseGameTypeButton:hover {

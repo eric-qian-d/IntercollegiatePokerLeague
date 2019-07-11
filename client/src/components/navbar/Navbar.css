@@ -21,3 +21,16 @@ a {
   height:5vh;
   background-color: white;
 }
+
+
+.mr-auto {
+  margin: auto;
+}
+
+.Navbar {
+  background-color: rgb(128, 0, 0);
+}
+
+.NavbarItem {
+  color:white !important;
+}
