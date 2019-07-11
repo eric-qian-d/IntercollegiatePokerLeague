@@ -4,6 +4,8 @@
   /* height: 30px; */
   /* margin-top: 5px; */
   padding: 5px;
+  background-color: white;
+  color:black;
 }
 
 .IndividualsHeaderInfo{
@@ -12,4 +14,5 @@
   display: inline-block;
   text-align: center;
   font-size: 2.5vh;
+
 }
