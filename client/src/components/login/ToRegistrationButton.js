@@ -10,7 +10,7 @@ class ToRegistrationButton extends React.Component {
     return(
       <div className = 'ToRegistrationContainer'>
         Don't have an account yet?
-        <button onClick = {() => {this.props.history.push("/registration");}}>
+        <button id = 'ToRegistrationButton' onClick = {() => {this.props.history.push("/registration");}}>
           Register
         </button>
       </div>

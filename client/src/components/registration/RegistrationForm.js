@@ -59,7 +59,6 @@ class RegistrationForm extends React.Component {
   render() {
     return (
       <form  onSubmit={this.handleSubmit} className = 'RegistrationForm'>
-      Register
         <label className = 'RegistrationLabel'>
           First Name:
           <input className = 'RegistrationInput' type="text" name = "firstName" value={this.state.firstName} onChange={this.handleChange} />

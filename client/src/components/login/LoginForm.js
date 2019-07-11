@@ -55,7 +55,6 @@ class LoginForm extends React.Component {
     return (
 
       <form onSubmit={this.handleSubmit} id = 'LoginForm'>
-      Account Login
         <label className = 'LoginLabel'>
           <div className = 'InputContainer'>
             Email:
