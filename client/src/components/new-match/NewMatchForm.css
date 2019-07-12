@@ -4,6 +4,12 @@
   border: 2px solid black;
   font-size: 25px;
   margin: auto;
+  color:white;
+  background-color: rgb(128,0,0);
+  transform: translate(-50%,-50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 .NewMatchLabel{
