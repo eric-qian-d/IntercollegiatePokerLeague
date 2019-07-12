@@ -2,4 +2,8 @@
   text-align: center;
   height:5vh;
   font-size: 20px;
+  border: solid white;
+  border-width: 1px;
+  background-color: rgb(128, 0, 0);
+  color: white;
 }
