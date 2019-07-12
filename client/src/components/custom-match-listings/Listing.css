@@ -3,6 +3,10 @@
   border: 2px solid black;
   /* margin-top: 5px; */
   padding: 5px;
+  border: solid white;
+  border-width: 1px;
+  background-color: rgb(128, 0, 0);
+  color: white;
 }
 
 .SelectedCustomListing{

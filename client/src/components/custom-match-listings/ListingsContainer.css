@@ -3,6 +3,10 @@
   width: 60%;
   margin: auto;
   font-size: 3vh;
+  color: white;
+  border-color: white;
+  border-width: 3px;
+  border: solid;
 }
 
 #CustomListings {
