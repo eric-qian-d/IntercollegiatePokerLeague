@@ -16,6 +16,7 @@ class GameContainer extends React.Component {
         board: gameInfo.board,
         time: gameInfo.time,
         maxTime: gameInfo.maxTime,
+        checkable: gameInfo.checkable,
         players: allPlayerInfo,
       });
     })
@@ -32,6 +33,7 @@ class GameContainer extends React.Component {
       time: 0,
       finished: false,
       maxTime: 0,
+      checkable: 0,
     }
   }
 
@@ -41,12 +43,12 @@ class GameContainer extends React.Component {
   }
 
   render() {
-    const {numPlayers, buttonLocation, action, pot, board, time, players, maxTime} = this.state;
+    const {numPlayers, buttonLocation, action, pot, board, time, players, maxTime, checkable} = this.state;
     console.log(board);
     return (
       <div>
         <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation} action = {action} pot = {pot} board = {board} players = {players} time = {time} maxTime = {maxTime}/>
-        <ButtonBox socket = {this.props.socket} />
+        <ButtonBox socket = {this.props.socket} checkable = {checkable}/>
         {time}
         <ReturnToLobbyButton socket = {this.props.socket} />
       </div>

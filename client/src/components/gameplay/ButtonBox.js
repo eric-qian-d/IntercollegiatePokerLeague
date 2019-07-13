@@ -16,7 +16,7 @@ class ButtonBox extends React.Component {
           <FoldButton socket = {this.props.socket}/>
         </div>
         <div className = "CallButtonDiv">
-          <CallButton  socket = {this.props.socket}/>
+          <CallButton  socket = {this.props.socket} checkable = {this.props.checkable}/>
         </div>
         <div className = "RaiseButtonDiv">
           <RaiseButton socket = {this.props.socket}/>

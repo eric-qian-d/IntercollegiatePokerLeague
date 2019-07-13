@@ -556,12 +556,22 @@ module.exports = class Game { // maybe rename this to be Table
     })
   }
 
+  getPlayerSeatById(playerId) {
+    var playerSeatNumber = 0;
+    Object.values(this.seatMap).forEach((player, seatNumber) => {
+      if (player.id === playerId) {
+        playerSeatNumber =  seatNumber;
+      }
+    })
+    return playerSeatNumber;
+  }
+
   /**
    * Returns a String representing the game state as defined in wire-protocol.txt
    * @param  {String} playerId the UUID of the player
    * @return {String}          a representation of the game state for the SPECIFIC PLAYER as defined in wire-protocol.txt
    */
-  getGameState(playerId, all = false){
+  getGameState(playerId, all = false) {
     const adaptedBoard = this.board.map(card => {
       return [card.rank, card.suit];
     });
@@ -573,6 +583,7 @@ module.exports = class Game { // maybe rename this to be Table
       board: adaptedBoard,
       time: this.time,
       maxTime: this.maxTime,
+      checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
     };
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
