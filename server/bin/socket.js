@@ -264,6 +264,9 @@ module.exports = {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
+        console.log('leave rq');
+        console.log(match.ownerId);
+        console.log(userId);
         if (userId === match.ownerId) {
           match.removeMatch();
           emitUserLocation(userId);

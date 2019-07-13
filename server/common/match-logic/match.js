@@ -115,7 +115,7 @@ module.exports = class Match {
     userGameMap[userId] = '';
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.CUSTOM_LISTINGS;
-    io.to(userSocketMap[userId]).emit(userLocation[userId]);
+    io.to(userSocketMap[userId]).emit('PAGE', userLocation[userId]);
     this.notifyTeamChange();
   }
 
@@ -146,6 +146,7 @@ module.exports = class Match {
   removeMatch() {
     //TODO MAKE SURE USERS CAN'T ACCIDENTALY JOIN RIGHT AS A MATCH IS BEING DESTROYED
     this.status = constants.matchStates.REMOVED;
+    console.log(this.listeners);
     Object.keys(this.listeners).forEach(userId => {
       this.removePlayerFromLobby(userId);
     })
