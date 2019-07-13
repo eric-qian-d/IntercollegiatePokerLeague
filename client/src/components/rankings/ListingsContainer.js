@@ -19,6 +19,7 @@ class RawListingsContainer extends React.Component {
     super(props);
     this.state = {
       huRankings: [],
+      loading: true,
     }
   }
 
@@ -27,17 +28,18 @@ class RawListingsContainer extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
-        this.setState({huRankings: data.huRankings });
+        this.setState({huRankings: data.huRankings, loading: false });
       });
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.requestedLeaderboard !== this.props.requestedLeaderboard) {
+      this.setState({loading: true});
       fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/rankings/' + this.props.requestedLeaderboard, {withCredentials: true, credentials: 'include'}, {
         })
         .then(response => response.json())
         .then(data => {
-          this.setState({huRankings: data.huRankings });
+          this.setState({huRankings: data.huRankings, loading: false });
         });
     }
   }
@@ -47,8 +49,15 @@ class RawListingsContainer extends React.Component {
   }
 
   render() {
-    const {huRankings} = this.state;
+    const {huRankings, loading} = this.state;
     const {requestedLeaderboard} = this.props;
+    if (loading) {
+      return (
+        <div>
+          loading!
+        </div>
+      )
+    }
     if (requestedLeaderboard === 'hu-school-leaderboard') {
       const huRankingsList = huRankings.map((listing, place) => {
         return (
