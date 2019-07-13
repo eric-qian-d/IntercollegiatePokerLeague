@@ -22,7 +22,7 @@ const gameMap = states.gameMap; //maps from gameId to Game object
 //from https://stackoverflow.com/questions/10834796/validate-that-a-string-is-a-positive-integer
 function isNormalInteger(str) {
     var n = Math.floor(Number(str));
-    return n !== Infinity && String(n) === str && n >= 0;
+    return n !== Infinity && String(n) === str && n > 0;
 }
 
 function addCustomMatch(matchId, name, numPlayers, ownerId, ownerName) {
@@ -179,13 +179,14 @@ module.exports = {
         if (userStatus[userId] !== constants.userStatus.AVAILABLE) {
           io.to(userSocketMap[userId]).emit('CREATE FAILED', userStatus[userId]);
         } else {
-          userStatus[userId] = constants.userStatus.CUSTOM_MATCH_OWNER;
-          const newMatchId = uuidv4();
-          addCustomMatch(newMatchId, name, numPlayers, userId, userName);
-          userLocation[userId] = constants.userLocation.CUSTOM_MATCH_LOBBY;
-          userMatchMap[userId] = newMatchId;
-          emitUserLocation(userId);
-          console.log(matchMap);
+          if (isNormalInteger(numPlayers)) {
+            userStatus[userId] = constants.userStatus.CUSTOM_MATCH_OWNER;
+            const newMatchId = uuidv4();
+            addCustomMatch(newMatchId, name, numPlayers, userId, userName);
+            userLocation[userId] = constants.userLocation.CUSTOM_MATCH_LOBBY;
+            userMatchMap[userId] = newMatchId;
+            emitUserLocation(userId);
+          }
         }
       });
 
