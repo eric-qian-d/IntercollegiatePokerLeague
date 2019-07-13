@@ -43,7 +43,7 @@ module.exports = {
   associateAllUsersWithSchools : async () => {
     const users = await models.User.findAll({attributes: ['email', 'id', 'schoolName'], raw: true});
     users.forEach(async (user) => {
-      if (user.schoolName === 'Undetermined') {
+      // if (user.schoolName !== 'Undetermined') {
         const email = user.email;
         const domain = email.split('@')[1];
         const school = await models.School.findOne({ where: {domain: domain} , raw: true});
@@ -57,7 +57,7 @@ module.exports = {
           const schoolId = school.id;
           models.User.update({schoolName: schoolName, schoolId: schoolId}, {where: {id: user.id}});
         }
-      }
+      // }
     })
   },
 

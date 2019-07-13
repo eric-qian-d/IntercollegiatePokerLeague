@@ -35,7 +35,7 @@ Object.keys(db).forEach(function(modelName) {
 });
 
 // seedSchools.createAllSchools();
-// userLogic.associateAllUsersWithSchools();
+//userLogic.associateAllUsersWithSchools();
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
