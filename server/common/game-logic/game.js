@@ -106,9 +106,10 @@ module.exports = class Game { // maybe rename this to be Table
     //deals players hands
     Object.values(this.seatMap).forEach(player => {
       if (player !== "") {
-        player.hand = [];
-        player.hand.push(this.deck.getNextCard());
-        player.hand.push(this.deck.getNextCard());
+        const newHand = [];
+        newHand.push(this.deck.getNextCard());
+        newHand.push(this.deck.getNextCard());
+        player.hand = newHand;
         player.inHand = true;
         player.investedInHand = 0;
       }
@@ -575,6 +576,7 @@ module.exports = class Game { // maybe rename this to be Table
     };
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
+      //TODO: CASE WHERE THEY REFRESH BUT PLAYERS HAVE NO HAND
       var hand;
       if (!all) {
         if (secondaryPlayer.id === playerId) {
