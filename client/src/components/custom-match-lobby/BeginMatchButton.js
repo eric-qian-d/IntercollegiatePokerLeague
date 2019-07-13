@@ -13,7 +13,7 @@ class BeginMatchButton extends React.Component {
 
   render() {
     return(
-        <button id = 'BeginMatchButton' Click = {() => {this.beginMatchLogic()}}>
+        <button id = 'BeginMatchButton' onClick = {() => {this.beginMatchLogic()}}>
           Begin Match
         </button>
     )
