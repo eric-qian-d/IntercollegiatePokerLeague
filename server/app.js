@@ -23,7 +23,7 @@ app.set('port', 8081);
 app.use(cors({
   allowedHeaders: ['sessionId', 'Content-Type'],
   exposedHeader: ['sessionId'],
-  origin: ['http://localhost:3000', 'http://pokerzone.io', 'http://www.pokerzone.io'],
+  origin: ['http://localhost:3000', 'http://pokerzone.io', 'http://www.pokerzone.io', 'https://pokerzone.io', 'https://www.pokerzone.io'],
   credentials: true
 }));
 
