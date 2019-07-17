@@ -6,17 +6,17 @@ const fs = require('fs');
  * @param {Array} list List containing the school information where list[0] is the school domain and list[1] is the school name
  */
 async function addSchool(list) {
-  const existingSchool = await models.School.findOne({where : {name : list[1]}});
-  if (!existingSchool) {
-    console.log('creating');
-    console.log(list);
+  // const existingSchool = await models.School.findOne({where : {name : list[1]}});
+  // if (!existingSchool) {
+    // console.log('creating');
+    // console.log(list);
     await models.School.create(
       {
         name: list[1],
         domain: list[0]
       },
     );
-  }
+  // }
 }
 
 module.exports = {
@@ -36,27 +36,32 @@ module.exports = {
     //us schools: 2160
     //total schools: 9684
 
-    await models.School.destroy({
-      where: {},
-      truncate: true
-    });
+    // await models.School.destroy({
+    //   where: {},
+    //   truncate: true
+    // });
 
     var content = fs.readFileSync('./config/world_universities_and_domains.json');
     var jsonContent = JSON.parse(content);
     // console.log(jsonContent);
     var ctr = 0;
     const uniqueDomains = {}
-    jsonContent.forEach(school => {
+    jsonContent.forEach(async school => {
       // console.log(school);
       if (school.country === 'United States') {
-        const split = [school.domains[0], school.name];
-        addSchool(split)
-
-        if (uniqueDomains.hasOwnProperty(school.domains[0])) {
-          uniqueDomains[school.domains[0]]++;
-        } else {
-          uniqueDomains[school.domains[0]] = 1;
+        ctr++;
+        // console.log(ctr);
+        if (ctr > 1200) {
+          const split = [school.domains[0], school.name];
+          await addSchool(split)
         }
+
+
+        // if (uniqueDomains.hasOwnProperty(school.domains[0])) {
+        //   uniqueDomains[school.domains[0]]++;
+        // } else {
+        //   uniqueDomains[school.domains[0]] = 1;
+        // }
 
         // if (school.domains.length > 1)  {
         //   console.log(school.name);

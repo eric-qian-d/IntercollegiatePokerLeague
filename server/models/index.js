@@ -16,6 +16,10 @@ const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
         dialect: 'postgres',
         host: dbEndpoint,
         logging: false,
+        max: 4000,
+        min: 0,
+        idle: 2000000000,
+        acquire: 2000000000000000
     }),
     db = {};
 
