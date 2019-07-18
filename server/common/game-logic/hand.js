@@ -100,7 +100,7 @@ module.exports = {
 				quad1 = i;
 			}
 		}
-		console.log(rankMap);
+
 		for(var i = 1; i < 15; i++) {
 			if (rankMap[i] > 0) {
 				//finds straights
@@ -142,13 +142,6 @@ module.exports = {
 					}
 				}
 			}
-			console.log(flush1);
-			console.log(flush2);
-			console.log(flush3);
-			console.log(flush4);
-			console.log(flush5);
-			console.log(flush6);
-			console.log(flush7);
 
 			if(flush1 - flush5 === 4) {
 				straightFlush = true;
@@ -166,27 +159,20 @@ module.exports = {
 			}
 		}
 		if (straightFlush) {
-			console.log('straight flush');
 			return straightFlushHigh * 10000000000000000
 		} else if (quad1 > 0) {
-			console.log('quads');
 			const singleVal = Math.max(single1, pair1, triple1);
 			return quad1 * 100000000000000 + singleVal;
 		} else if (triple1 > 0 && (triple2 > 0 || pair1 > 0)) {
-			console.log('house');
 			const pairVal = triple2 > pair1 ? triple2 : pair1;
 			return triple1 * 1000000000000 + pairVal;
 		} else if (flush) {
-			console.log('flush');
 			return flush1 * 10000000000 + 100000000 * flush2 + 1000000 * flush3 + 10000 * flush4 + 100 * flush5;
 		} else if (straight) {
-			console.log('straight');
 			return straightHigh * 100000000;
 		} else if (triple1 > 0) {
-			console.log('set');
 			return triple1 * 1000000 + single1 + single2;
 		} else if (pair1 > 0 && pair2 > 0) {
-			console.log('two pair');
 			const singleVal = pair3 > single1 ? pair3 : single1;
 			return pair1 * 10000 + pair2 * 100 + singleVal;
 		} else if (pair1 > 0) {

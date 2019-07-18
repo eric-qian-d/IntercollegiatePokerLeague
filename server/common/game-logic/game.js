@@ -542,7 +542,6 @@ module.exports = class Game { // maybe rename this to be Table
     var thisPlayerSeatNumber;
     Object.values(this.seatMap).forEach(player => {
       if (player.id === playerId) {
-        // console.log(player.seatNumber);
         thisPlayerSeatNumber = player.seatNumber;
       }
     })
@@ -591,7 +590,7 @@ module.exports = class Game { // maybe rename this to be Table
       var hand;
       if (!all) {
         if (secondaryPlayer.id === playerId) {
-          if (hand.length == 2) {
+          if (secondaryPlayer.hand.length == 2) {
             hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
           } else {
             hand = [["none", "none"], ["none", "none"]];

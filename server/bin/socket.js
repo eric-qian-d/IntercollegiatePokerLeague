@@ -192,7 +192,6 @@ module.exports = {
 
       //a user cannot be queued in anything else before they request to create a custom game
       socket.on('JOIN CUSTOM MATCH', async (matchId) => {
-        console.log(matchId);
         const userId = socket.request.user.id;
         if (userStatus[userId] !== constants.userStatus.AVAILABLE) {
           io.to(userSocketMap[userId]).emit('JOIN FAILED', userStatus[userId]);
@@ -264,9 +263,6 @@ module.exports = {
         const userId = socket.request.user.id;
         const matchId = userMatchMap[userId];
         const match = matchMap[matchId];
-        console.log('leave rq');
-        console.log(match.ownerId);
-        console.log(userId);
         if (userId === match.ownerId) {
           match.removeMatch();
           emitUserLocation(userId);
