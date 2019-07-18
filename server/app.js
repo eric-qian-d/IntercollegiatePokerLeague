@@ -39,7 +39,6 @@ app.use('/api/rankings', rankings);
 
 //keep this here to keep passport modularized
 app.post('/login', function(req, res, next) {
-  console.log(req.session);
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       return next(err); // will generate a 500 error

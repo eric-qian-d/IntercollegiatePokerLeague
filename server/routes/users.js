@@ -9,8 +9,6 @@ router.post('/registration', async (req, res, next) => {
   //check for valid email
   if (splitEmail.length === 2 && splitEmail[1].slice(-4) === '.edu') {
     const existingUser = await userLogic.getUserByEmail(email);
-    console.log("existing user");
-    console.log(existingUser);
     const newUser = req.body;
     //make sure the email isn't already in use
     if (!existingUser) {
