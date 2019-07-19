@@ -12,7 +12,7 @@ module.exports = class Game { // maybe rename this to be Table
       parentMatchId: the parent match's id
       parentMatch: the Match that wraps the Game
       buttonLocation: the seat number that the button is currently at
-      seatMap: map where keys are integers representing seats, and values are Player objects or null if no player is sitting there
+      seatMap: map where keys are integers representing seats, and values are Player objects or "" if no player is sitting there
       currentTotalRaise: the current maximum amount of money that was raised on the current street
       lastRaiseSize: the difference between the latest raise and the second to last raise
       action: the seat number of the player who is up to act
@@ -26,7 +26,7 @@ module.exports = class Game { // maybe rename this to be Table
       finished: whether or not the Game has ended
       allIn: whether or not only one player has the ability to act (same thing as 'should automatically run the next streets')
       timer: the object that will be doing the countdown, this is reset often
-      
+
    */
 
   /**
@@ -62,7 +62,10 @@ module.exports = class Game { // maybe rename this to be Table
     };
   }
 
-
+  /**
+   * The logic to execute every second
+   * @param  {Game} game the Game object that the timer is operating on
+   */
   timerLogic(game) {
     if (!game.finished) {
       if (game.time == 0) {
@@ -86,6 +89,7 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {Boolean} true if the player was added successfuly and false otherwise
    */
   addPlayer(playerId, seatNumber, stackSize, playerName) {
+    //Will eventually need to do the check for multithreading
     if (seatNumber < this.numPlayers && (this.seatMap[seatNumber] === "")) {
       this.seatMap[seatNumber] = new Player(playerId, seatNumber, stackSize, playerName);
     }
@@ -126,6 +130,7 @@ module.exports = class Game { // maybe rename this to be Table
     Object.values(this.seatMap).forEach(player => {
       if (player !== "") {
         const newHand = [];
+        //separate this to prevent a player's hand from being empty at any given time
         newHand.push(this.deck.getNextCard());
         newHand.push(this.deck.getNextCard());
         player.hand = newHand;
@@ -221,6 +226,7 @@ module.exports = class Game { // maybe rename this to be Table
    */
   call(playerId) {
     if (this.isPlayersTurn(playerId)) {
+      clearInterval(this.timer);
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
       })[0];
@@ -250,6 +256,7 @@ module.exports = class Game { // maybe rename this to be Table
       } else {
         this.time = this.maxTime;
         this.emitAll();
+        this.timer = setInterval(this.timerLogic, 1000, this);
       }
     }
   }
@@ -267,7 +274,8 @@ module.exports = class Game { // maybe rename this to be Table
         return player.id === playerId;
       })[0];
       const raiseDelta = finalAmount - player.investedStack;
-      if (raiseDelta >= this.lastRaiseSize) {
+      if (finalAmount - this.currentTotalRaise >= this.lastRaiseSize) {
+        clearInterval(this.timer)
         //legal raise
         if (raiseDelta > player.stackSize) {
           //player needs to go all in to raise
@@ -297,6 +305,7 @@ module.exports = class Game { // maybe rename this to be Table
         } else {
           this.time = this.maxTime;
           this.emitAll();
+          this.timer = setInterval(this.timerLogic, 1000, this);
         }
       } else {
         //illegal raise logic
@@ -558,9 +567,11 @@ module.exports = class Game { // maybe rename this to be Table
    */
   isPlayersTurn(playerId) {
     var thisPlayerSeatNumber;
+    var playerInHand = false;
     Object.values(this.seatMap).forEach(player => {
       if (player.id === playerId) {
         thisPlayerSeatNumber = player.seatNumber;
+        playerInHand = player.inHand;
       }
     })
     return thisPlayerSeatNumber === this.action;
