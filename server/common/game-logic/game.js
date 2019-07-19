@@ -14,8 +14,19 @@ module.exports = class Game { // maybe rename this to be Table
       buttonLocation: the seat number that the button is currently at
       seatMap: map where keys are integers representing seats, and values are Player objects or null if no player is sitting there
       currentTotalRaise: the current maximum amount of money that was raised on the current street
-      lastRaiseSize:  
-
+      lastRaiseSize: the difference between the latest raise and the second to last raise
+      action: the seat number of the player who is up to act
+      pot: the current size of the pot, not including bets/raises on the current street
+      deck: the game's Deck
+      board: array representing the cards
+      time: the time remaining for the current player's action
+      maxTime: the time that each player has to act
+      userSocketMap: global map of userId's to socketId's
+      io: the io Object that is used for communication
+      finished: whether or not the Game has ended
+      allIn: whether or not only one player has the ability to act (same thing as 'should automatically run the next streets')
+      timer: the object that will be doing the countdown, this is reset often
+      
    */
 
   /**
@@ -42,8 +53,6 @@ module.exports = class Game { // maybe rename this to be Table
     this.time = 30;
     this.maxTime = 30;
     this.userSocketMap = userSocketMap;
-    this.animateNextStreet = false;
-    this.animateWin = false;
     this.io = io;
     this.finished = false;
     this.allIn = false;
@@ -535,7 +544,6 @@ module.exports = class Game { // maybe rename this to be Table
           }, 2000);
           setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 2000);
         }
-        this.animateWin = true;
       }
 
     }
