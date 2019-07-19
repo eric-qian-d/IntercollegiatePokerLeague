@@ -126,6 +126,7 @@ module.exports = class Game { // maybe rename this to be Table
     this.allIn = false;
     this.lastRaiseSize = this.bigBlindValue;
     this.time = this.maxTime;
+    this.deck = new Deck();
     //deals players hands
     Object.values(this.seatMap).forEach(player => {
       if (player !== "") {
@@ -323,6 +324,7 @@ module.exports = class Game { // maybe rename this to be Table
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
       })[0];
+      clearInterval(this.timer);
       player.inHand = false;
       var advanced = false;
       //finds the next player to act
@@ -344,6 +346,7 @@ module.exports = class Game { // maybe rename this to be Table
       } else {
         this.time = this.maxTime;
         this.emitAll();
+        this.timer = setInterval(this.timerLogic, 1000, this);
       }
 
     }
@@ -351,7 +354,6 @@ module.exports = class Game { // maybe rename this to be Table
 
   nextStreet() {
     this.time = this.maxTime;
-    clearInterval(this.timer);
     //gets a list of all the players still in the hand
     const playersInHandList = Object.values(this.seatMap).filter(player => {
       return player.inHand;
@@ -412,12 +414,10 @@ module.exports = class Game { // maybe rename this to be Table
         }
 
         if (Object.values(this.seatMap).filter(player => {
-          return player.stackSize > 0;
+          return player !== "" && player.inHand && player.stackSize > 0;
         }).length <= 1) {
           //only one player is left who can act
-          this.action = null;
           this.allIn = true;
-          advanced = true;
           setTimeout(() => {
             this.emitAll(true);
           }, 1000);
@@ -457,11 +457,9 @@ module.exports = class Game { // maybe rename this to be Table
         this.board.push(this.deck.getNextCard());
 
         if (Object.values(this.seatMap).filter(player => {
-          return player.stackSize > 0;
+          return player !== "" && player.inHand && player.stackSize > 0;
         }).length <= 1) {
-          this.action = null;
           this.allIn = true;
-          advanced = true;
           if (this.board.length === 4) {
             setTimeout(() => {
               this.emitAll(true);

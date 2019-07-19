@@ -47,6 +47,10 @@ module.exports = class Deck{
 	getNextCard() {
 		const nextCard = this.cards[this.currentCardIndex];
 		this.currentCardIndex++;
+		if (nextCard === undefined) {
+			console.log('NEXT CARD UNDEFINED');
+			console.log(this);
+		}
 		return nextCard;
 	}
 };
