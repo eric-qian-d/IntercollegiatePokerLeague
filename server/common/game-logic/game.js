@@ -4,6 +4,20 @@ var gameType = require("./gameType");
 var hand = require("./hand");
 
 module.exports = class Game { // maybe rename this to be Table
+  /*
+      gameId: UUID representing the game's id
+      type: gameType representing the type of game
+      numPlayers: the maximum number of players the game can hold
+      bigBlindValue: the BB
+      parentMatchId: the parent match's id
+      parentMatch: the Match that wraps the Game
+      buttonLocation: the seat number that the button is currently at
+      seatMap: map where keys are integers representing seats, and values are Player objects or null if no player is sitting there
+      currentTotalRaise: the current maximum amount of money that was raised on the current street
+      lastRaiseSize:  
+
+   */
+
   /**
    * Creates a new poker game
    * @param {String} gameId UUID of the game
@@ -53,10 +67,6 @@ module.exports = class Game { // maybe rename this to be Table
         game.emitAll();
       }
     }
-  }
-
-  animate() {
-
   }
 
 
