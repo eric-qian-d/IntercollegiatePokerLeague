@@ -1,17 +1,15 @@
 #LadderListingsContainer {
-  height: 86vh;
+  height: 83vh;
   width: 70%;
   margin: auto;
   font-size: 3vh;
   color: white;
-  border-color: white;
-  border-width: 3px;
-  border: solid;
+  /* border: 15px solid lightgrey; */
 }
 
 #LadderListings {
   height: 75vh;
   overflow-y: scroll;
   font-size: 2vh;
-  border: 2px solid black;
+  /* border: 2px solid black; */
 }

@@ -15,7 +15,7 @@ import Helmet from 'react-helmet';
 const routing = (
   <Provider store = {store}>
     <Router>
-        <Helmet bodyAttributes={{style: 'background-color : #1A1A1D; margin: 0 !important' }}/>
+        <Helmet bodyAttributes={{style: 'background-color : rgb(44,81,154); margin: 0 !important; font-family: Roboto, sans-serif' }}/>
         <Route exact path = "/" component = {HomeContainer}/>
         <Route path = "/registration" component = {RegistrationContainer}/>
         <Route path = "/login" component = {LoginContainer}/>

@@ -40,7 +40,7 @@ class RawNormalHUGameButton extends React.Component {
       )
     } else {
       return (
-        <button id = 'NormalHUGameButton' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic()}}>
+        <button id = 'NormalHUGameButton' className = 'ChooseGameTypeButton BackgroundDiv' onClick = {() => {this.clickLogic()}}>
           Normal Heads Up
         </button>
       )

@@ -4,7 +4,7 @@ import './SchoolsHUHeader.css';
 class SchoolsHUHeader extends React.Component {
   render() {
     return (
-      <div id = 'SchoolsHUHeader'>
+      <div id = 'SchoolsHUHeader' className = 'DarkDiv'>
         <div className = 'SchoolRankingPlace SchoolHeaderInfo'>
           Ranking
         </div>

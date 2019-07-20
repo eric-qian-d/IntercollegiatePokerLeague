@@ -3,6 +3,7 @@
   margin-left: 10px;
   display: inline-block;
   text-align: center;
+  line-height: 5vh;
 }
 
 .PlayerRankingPlace{
@@ -23,12 +24,13 @@
 
 .PlayerRanking {
   display: flex;
-  border: 2px solid black;
+  border: 1px solid lightgrey;
   /* height: 30px; */
   /* margin-top: 5px; */
   padding: 5px;
-  border: solid white;
+  /* border: solid white;
   border-width: 1px;
   background-color: rgb(128, 0, 0);
-  color: white;
+  color: white; */
+  height: 6vh;
 }

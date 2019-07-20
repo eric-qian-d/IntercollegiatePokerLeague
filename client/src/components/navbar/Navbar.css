@@ -1,6 +1,6 @@
 li {
   display: inline;
-  padding: 20px;
+  padding: 60px;
   background-color: white;
   height: 20px;
   text-align: center;
@@ -8,6 +8,7 @@ li {
 
 a {
   display: inline-block;
+  margin: 10px 30px;
 }
 
 #LogoutButton {
@@ -28,7 +29,7 @@ a {
 }
 
 .Navbar {
-  background-color: rgb(128, 0, 0);
+  background-color: rgb(19,33,69);
 }
 
 .NavbarItem {

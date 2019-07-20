@@ -12,13 +12,13 @@ class PlayerInfo extends React.Component {
     if (action) {
       const style = {
         'height': `5px`,
-        'width': 120 * time/maxTime + 'px',
+        'width': 118 * time/maxTime + 'px',
         'position': `absolute`,
         'border': '2px solid black'
       };
 
       return (
-        <div className = "PlayerInfo" >
+        <div className = "PlayerInfo" style = { {'box-shadow': '0px 0px 0px 3px maroon' } }>
           <div className = "PlayerName">
             {name}
           </div>
@@ -31,7 +31,7 @@ class PlayerInfo extends React.Component {
       )
     } else {
       return (
-        <div className = "PlayerInfo" >
+        <div className = "PlayerInfo" style = { {'box-shadow': '0px 0px 0px 1px white', } }>
           <div className = "PlayerName">
             {name}
           </div>

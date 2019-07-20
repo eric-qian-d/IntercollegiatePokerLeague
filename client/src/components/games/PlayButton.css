@@ -1,4 +1,4 @@
-#ChooseGameTypeButton {
+/* #ChooseGameTypeButton {
   display: block;
   margin: 40px auto;
   width: 40%;
@@ -7,7 +7,7 @@
   color:white;
   height: 4vh;
   font-size: 1vh;
-}
+} */
 
 #ChooseGameTypeButton:hover {
   background-color: white;

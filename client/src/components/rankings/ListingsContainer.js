@@ -66,7 +66,6 @@ class RawListingsContainer extends React.Component {
       })
       return (
         <div id = 'LadderListingsContainer'>
-          Top Schools
           <SchoolsHUHeader/>
           <div id = 'LadderListings'>
             {huRankingsList}
@@ -81,7 +80,6 @@ class RawListingsContainer extends React.Component {
       })
       return (
         <div id = 'LadderListingsContainer'>
-          Top Individuals
           <IndividualsHUHeader/>
           <div id = 'LadderListings'>
 

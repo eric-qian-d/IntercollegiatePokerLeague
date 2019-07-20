@@ -53,13 +53,13 @@ class RawPlayButton extends React.Component {
     const {gameType} = this.props;
     if (gameType === 'none') {
       return (
-        <button id = 'ChooseGameTypeButton'>
+        <button id = 'ChooseGameTypeButton' className = 'LightDiv'>
           Choose Game
         </button>
       )
     } else {
       return (
-        <button id = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic();}}>
+        <button id = 'ChooseGameTypeButton' className = 'LightDiv' onClick = {() => {this.clickLogic();}}>
           Play
         </button>
       )

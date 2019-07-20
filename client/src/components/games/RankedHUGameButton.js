@@ -38,7 +38,7 @@ class RawRankedHUGameButton extends React.Component {
       )
     } else {
       return (
-        <button id = 'RankedHUGameButton' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic()}}>
+        <button id = 'RankedHUGameButton' className = 'ChooseGameTypeButton BackgroundDiv' onClick = {() => {this.clickLogic()}}>
           Ranked Heads Up
         </button>
       )

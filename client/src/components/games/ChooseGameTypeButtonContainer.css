@@ -8,14 +8,37 @@
 }
 
 .ChooseGameTypeButton {
-  font-size: 25px;
+  font-size: 2vh;
   display: block;
   height: 100px;
   margin: 20px auto 0 auto;
   width: 60%;
-  background-color: rgb(128, 0, 0);
+  border-radius: 30px;
+}
+
+.BackgroundDiv {
+  background-color: rgb(44,81,154);
   color: white;
-  border-width: 0px;
+  border: 1px solid white;
+}
+
+.LightDiv {
+  background-color: white;
+  color: rgb(44,81,154);
+  height: 4vh;
+  margin: 40px auto;
+  font-size: 2vh;
+  border: 0px;
+}
+
+.DarkDiv {
+  background-color: rgb(35,50,82);
+  color: white;
+}
+
+.WhiteDiv {
+  background-color: white;
+  color: black
 }
 
 .ChooseGameTypeButton:focus {
