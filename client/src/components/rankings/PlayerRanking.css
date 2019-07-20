@@ -8,6 +8,7 @@
 
 .PlayerRankingPlace{
   width: 10%;
+  font-size: 2.5vh;
 }
 
 .PlayerRankingName{
@@ -24,7 +25,9 @@
 
 .PlayerRanking {
   display: flex;
-  border: 1px solid lightgrey;
+  /* border: 1px solid lightgrey; */
+  margin-top: 10px;
+  border-radius: 10px;
   /* height: 30px; */
   /* margin-top: 5px; */
   padding: 5px;

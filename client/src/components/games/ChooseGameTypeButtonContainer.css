@@ -25,14 +25,19 @@
 .LightDiv {
   background-color: white;
   color: rgb(44,81,154);
-  height: 4vh;
-  margin: 40px auto;
-  font-size: 2vh;
-  border: 0px;
+}
+
+.GreyDiv {
+  background-color: rgb(87,104,136);
+}
+
+.MediumDiv {
+  background-color: rgb(35,50,82);
+  color: white;
 }
 
 .DarkDiv {
-  background-color: rgb(35,50,82);
+  background-color: rgb(19,33,69);
   color: white;
 }
 

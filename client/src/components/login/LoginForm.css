@@ -1,11 +1,11 @@
 #LoginForm {
   height: 300px;
   width: 300px;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   font-size: 25px;
   margin: auto;
-  color:white;
-  background-color: rgb(128,0,0);
+  /* color:white;
+  background-color: rgb(128,0,0); */
   transform: translate(-50%,-50%);
   position: absolute;
   top: 50%;
