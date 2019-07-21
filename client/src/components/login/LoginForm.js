@@ -56,10 +56,10 @@ class LoginForm extends React.Component {
     return (
       <div id = 'LoginFormWrapper'>
       <form onSubmit={this.handleSubmit} id = 'LoginForm' >
-        <div id = 'LoginTitle'>
+        <div id = 'LoginTitle' className = 'FormTitle'>
           PokerZone
         </div>
-        <div id = 'LoginDescription'>
+        <div id = 'LoginDescription' className = 'FormDescription'>
           Login to your account
         </div>
         <label className = 'LoginLabel'>
@@ -75,7 +75,6 @@ class LoginForm extends React.Component {
           </div>
         </label>
         <input id = 'LoginButton' className = 'FormButton MediumDiv' type="submit" value="Login" />
-
         <ToRegistrationButton {...this.props}/>
       </form>
 

@@ -10,9 +10,9 @@ class ToLoginButton extends React.Component {
     return(
       <div className = 'ToLoginButtonContainer'>
         Already have an account?
-        <button id = 'ToLoginButton' onClick = {() => {this.props.history.push("/login");}}>
+        <div id = 'ToLoginButton' onClick = {() => {this.props.history.push("/login");}}>
           Login
-        </button>
+        </div>
       </div>
     )
   }

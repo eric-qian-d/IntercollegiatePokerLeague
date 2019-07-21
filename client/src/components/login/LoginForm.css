@@ -3,7 +3,7 @@
 
   position: relative;
   width: 400px;
-  height: 500px;
+  height: 510px;
   top: calc(50% - 250px);
   left: calc(50% - 200px);
   background: inherit;
@@ -53,6 +53,14 @@
 	color:#fff;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+}
+
 .LoginInput{
   color: white;
   /* margin: 40px auto; */
@@ -67,13 +75,6 @@
 
 .FormButton {
   display: block;
-  height: 30px;
-  border-radius:6px;
-  margin-top: 50px;
-  /* border: 2px solid black; */
-}
-
-#LoginButton {
   margin: 50px auto;
   width: 300px;
   height: 50px;
@@ -82,11 +83,11 @@
   border: 0px;
 }
 
-#LoginTitle {
+.FormTitle {
   font-size: 30px;
   margin-bottom: 30px;
 }
 
-#LoginDescription {
+.FormDescription {
   margin-bottom: 60px;
 }

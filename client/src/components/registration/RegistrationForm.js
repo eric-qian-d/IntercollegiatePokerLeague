@@ -58,30 +58,33 @@ class RegistrationForm extends React.Component {
 
   render() {
     return (
-      <form  onSubmit={this.handleSubmit} className = 'RegistrationForm'>
-        <label className = 'RegistrationLabel'>
-          First Name:
-          <input className = 'RegistrationInput' type="text" name = "firstName" value={this.state.firstName} onChange={this.handleChange} />
-        </label>
-        <label className = 'RegistrationLabel'>
-          Last Name:
-          <input className = 'RegistrationInput' type="text" name = "lastName" value={this.state.lastName} onChange={this.handleChange} />
-        </label>
-        <label className = 'RegistrationLabel'>
-          Email:
-          <input className = 'RegistrationInput' type="text" name = "email" value={this.state.email} onChange={this.handleChange} />
-        </label>
-        <label className = 'RegistrationLabel'>
-          Password:
-          <input className = 'RegistrationInput' type="password" name = "password" value={this.state.password} onChange={this.handleChange} />
-        </label>
-        <label className = 'RegistrationLabel'>
-          Reenter password:
-          <input className = 'RegistrationInput' type="password" name = "reenteredPassword" value={this.state.reenteredPassword} onChange={this.handleChange} />
-        </label>
-      <input className = 'RegistrationInput' type="submit" value="Register" />
-      <ToLoginButton {...this.props}/>
-      </form>
+      <div id = 'RegistrationFormWrapper'>
+        <form  onSubmit={this.handleSubmit} id = 'RegistrationForm'>
+          <div id = 'RegistrationTitle' className = 'FormTitle'>
+            PokerZone
+          </div>
+          <div id = 'RegistrationDescription' className = 'FormDescription'>
+            Create an account
+          </div>
+          <label className = 'RegistrationLabel'>
+            <input className = 'RegistrationInput' type="text" name = "firstName" placeholder = 'First Name' value={this.state.firstName} onChange={this.handleChange} />
+          </label>
+          <label className = 'RegistrationLabel'>
+            <input className = 'RegistrationInput' type="text" name = "lastName" placeholder = 'Last Name' value={this.state.lastName} onChange={this.handleChange} />
+          </label>
+          <label className = 'RegistrationLabel'>
+            <input className = 'RegistrationInput' type="text" name = "email" placeholder = 'Email' value={this.state.email} onChange={this.handleChange} />
+          </label>
+          <label className = 'RegistrationLabel'>
+            <input className = 'RegistrationInput' type="password" name = "password" placeholder = 'Password' value={this.state.password} onChange={this.handleChange} />
+          </label>
+          <label className = 'RegistrationLabel'>
+            <input className = 'RegistrationInput' type="password" name = "reenteredPassword" placeholder = 'Reenter Password' value={this.state.reenteredPassword} onChange={this.handleChange} />
+          </label>
+        <input id = 'RegistrationButton' className = 'FormButton MediumDiv' type="submit" value="Register" />
+        <ToLoginButton {...this.props}/>
+        </form>
+      </div>
     )
   }
 }

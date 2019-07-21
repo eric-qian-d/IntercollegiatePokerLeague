@@ -2,6 +2,7 @@ import React from "react";
 import RegistrationForm from "./RegistrationForm";
 import ToLoginButton from "./ToLoginButton";
 import vars from '../../vars';
+import './RegistrationContainer.css';
 
 class RegistrationContainer extends React.Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class RegistrationContainer extends React.Component {
 
   render() {
     return (
-      <div className = "RegistrationContainer">
+      <div id = "RegistrationContainer">
         <RegistrationForm {...this.props}/>
 
       </div>

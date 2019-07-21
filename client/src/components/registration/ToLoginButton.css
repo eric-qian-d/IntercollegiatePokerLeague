@@ -6,6 +6,8 @@
 }
 
 #ToLoginButton {
-  display: block;
-  margin: auto;
+  display: inline-block;
+  margin: 5px;
+  color: lightgrey;
+  text-decoration: underline;
 }
