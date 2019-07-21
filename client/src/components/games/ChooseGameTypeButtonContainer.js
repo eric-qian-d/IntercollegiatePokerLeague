@@ -10,14 +10,15 @@ class ChooseGameTypeButtonContainer extends React.Component {
     super(props);
   }
 
+
+
   render() {
     return (
       <div id = 'ChooseGameTypeButtonContainer'>
-        Game Type
-        <NormalHUGameButton />
-        <RankedHUGameButton />
-        <CustomGamesButton  />
-        <PlayButton {...this.props} />
+          <NormalHUGameButton />
+          <RankedHUGameButton />
+          <CustomGamesButton  />
+
       </div>
     )
 

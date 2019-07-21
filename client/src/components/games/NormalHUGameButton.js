@@ -34,15 +34,25 @@ class RawNormalHUGameButton extends React.Component {
     const {gameType} = this.props;
     if (gameType === this.state.test) {
       return (
-        <button id = 'NormalHUGameButtonSelected' className = 'ChooseGameTypeButton' onClick = {() => {this.clickLogic()}}>
-          Normal Heads Up
-        </button>
+        <div id = 'NormalHUGameButtonSelected' className = 'ChooseGameTypePanel' onClick = {() => {this.clickLogic()}}>
+          <div className = 'ChooseGameTypeHeader DarkDiv'>
+            Normal Heads Up
+          </div>
+          <div className = 'ChooseGameTypeBody WhiteDiv'>
+            Play against random opponent
+          </div>
+        </div>
       )
     } else {
       return (
-        <button id = 'NormalHUGameButton' className = 'ChooseGameTypeButton BackgroundDiv' onClick = {() => {this.clickLogic()}}>
-          Normal Heads Up
-        </button>
+        <div id = 'NormalHUGameButton' className = 'ChooseGameTypePanel' onClick = {() => {this.clickLogic()}}>
+          <div className = 'ChooseGameTypeHeader BackgroundDiv'>
+            Normal Heads Up
+          </div>
+          <div className = 'ChooseGameTypeBody WhiteDiv'>
+            Play against random opponent
+          </div>
+        </div>
       )
     }
 

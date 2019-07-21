@@ -1,5 +1,6 @@
 import React from 'react';
 import ChooseGameTypeButtonContainer from './ChooseGameTypeButtonContainer';
+import PlayButton from './PlayButton';
 import Navbar from '../navbar/Navbar';
 import Helmet from 'react-helmet';
 import vars from '../../vars';
@@ -23,10 +24,13 @@ class GamesContainer extends React.Component {
 
   render() {
     return (
-      <div id = 'GamesContainer'>
-        
+      <div id = 'GamesContainer' className = 'MediumDiv'>
         <Navbar {...this.props}/>
+        <div id = 'ChooseGameHeader'>
+          Game Type
+        </div>
         <ChooseGameTypeButtonContainer {...this.props}/>
+        <PlayButton {...this.props} />
       </div>
     )
 

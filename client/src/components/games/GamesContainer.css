@@ -2,4 +2,13 @@
   color: white;
   top: 0px;
   margin-top: 0px;
+  height: 100vh;
+}
+
+#ChooseGameHeader {
+  font-size: 5vh;
+  width: 50%;
+  text-align: center;
+  margin: 10vh auto;
+
 }
