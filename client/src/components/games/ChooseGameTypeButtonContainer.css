@@ -15,6 +15,7 @@
   margin: auto;
   width: 25%;
   border: 1px solid transparent;
+  border-radius: 5px;
 }
 
 .ChooseGameTypePanel:hover {
@@ -22,12 +23,17 @@
 }
 
 .ChooseGameTypeHeader {
-  height: 50px;
+  height: 8vh;
   font-size: 30px;
+  border: 0px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .ChooseGameTypeBody {
   height: 30vh;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 

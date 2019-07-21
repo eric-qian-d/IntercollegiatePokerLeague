@@ -47,7 +47,7 @@ class RawRankedHUGameButton extends React.Component {
           <div className = 'ChooseGameTypeHeader BackgroundDiv'>
             Ranked Heads Up
           </div>
-          <div className = 'ChooseGameTypeBody WhiteDiv'>
+          <div id = 'RankedHUGameButtonBody' className = 'ChooseGameTypeBody WhiteDiv'>
             Play against random opponent
           </div>
         </div>
