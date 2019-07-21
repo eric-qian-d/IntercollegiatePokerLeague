@@ -59,7 +59,7 @@ class RawPlayButton extends React.Component {
       )
     } else {
       return (
-        <button id = 'SelectGameTypeAndPlayButton' className = 'BackgroundDiv' onClick = {() => {this.clickLogic();}}>
+        <button id = 'SelectGameTypeAndPlayButtonPlay' className = 'BackgroundDiv' onClick = {() => {this.clickLogic();}}>
           Play
         </button>
       )

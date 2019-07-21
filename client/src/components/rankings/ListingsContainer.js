@@ -8,7 +8,6 @@ import vars from '../../vars';
 import './ListingsContainer.css';
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     requestedLeaderboard: state.requestedLeaderboard,
   }
