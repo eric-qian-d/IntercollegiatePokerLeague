@@ -1,5 +1,6 @@
 import React from 'react';
 import vars from '../../vars';
+import './QuitSearchButton.css';
 
 class QuitSearchButton extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class QuitSearchButton extends React.Component {
 
   render() {
     return (
-      <button className = 'QuitSearchButton' onClick = {() => {this.onClick();}}>
+      <button id = 'QuitSearchButton' className = 'BackgroundDiv' onClick = {() => {this.onClick();}}>
         Quit Searching
       </button>
     )
