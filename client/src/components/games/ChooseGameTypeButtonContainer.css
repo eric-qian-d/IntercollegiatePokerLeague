@@ -46,9 +46,6 @@
   color: black
 }
 
-.ChooseGameTypeButton:focus {
+:focus {
   outline: 0;
-}
-::selection {
-  color: white;
 }

@@ -1,32 +1,68 @@
-#LoginForm {
-  height: 300px;
-  width: 300px;
-  /* border: 2px solid black; */
-  font-size: 25px;
-  margin: auto;
-  /* color:white;
-  background-color: rgb(128,0,0); */
-  transform: translate(-50%,-50%);
-  position: absolute;
-  top: 50%;
-  left: 50%;
+#LoginFormWrapper {
+
+
+  position: relative;
+  width: 400px;
+  height: 500px;
+  top: calc(50% - 250px);
+  left: calc(50% - 200px);
+  background: inherit;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
+#LoginFormWrapper:before {
+  content: '';
+ width: 600px;
+ height: 600px;
+ background: inherit;
+ position: absolute;
+ left: -25px;
+ /* left position */
+ right: 0;
+ top: -25px;
+ /* top position */
+ bottom: 0;
+ box-shadow: inset 8000px 800px 0 200000px rgba(255,255,255,0.2);
+ filter: blur(10px);
+}
+
+#LoginForm {
+  font: serif;
+  position: relative;
+  margin-top: 50px;
+  text-align: center;
+  z-index: 1;
+  color: white;
+}
+/* #LoginForm {
+  background: inherit;
+} */
+
 .LoginLabel{
+
   margin: 30px auto;
   display: block;
-  width: 250px;
+  width: 300px;
   height: 40px;
   /* border: 2px solid black; */
   font-size: 20px;
 }
 
+::placeholder{
+	color:#fff;
+}
+
 .LoginInput{
-  margin: auto;
+  color: white;
+  /* margin: 40px auto; */
   display: block;
-  width: 250px;
-  height: 20px;
+  width: 300px;
+  height: 30px;
   font-size: 18px;
+  border: 0px;
+  border-bottom: 1px white solid;
+  background-color:rgba(0, 0, 0, 0) !important;
 }
 
 .FormButton {
@@ -35,4 +71,22 @@
   border-radius:6px;
   margin-top: 50px;
   /* border: 2px solid black; */
+}
+
+#LoginButton {
+  margin: 50px auto;
+  width: 300px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 50px;
+  border: 0px;
+}
+
+#LoginTitle {
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+#LoginDescription {
+  margin-bottom: 60px;
 }

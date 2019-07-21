@@ -20,10 +20,12 @@ class LoginContainer extends React.Component {
     });
   }
 
+  // <Helmet bodyAttributes={{style: 'background: url(/images/Login.jpg) no-repeat center center fixed !important; background-size: cover; margin: 0 !important; font-family: Roboto, sans-serif' }}/>
+
   render() {
     return (
       <div id = "LoginContainer">
-        <Helmet bodyAttributes={{style: 'background: url(/images/Login.jpg) no-repeat center center fixed !important; background-size: cover; margin: 0 !important; font-family: Roboto, sans-serif' }}/>
+
         <LoginForm {...this.props}/>
 
       </div>

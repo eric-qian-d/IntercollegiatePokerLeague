@@ -51,26 +51,35 @@ class LoginForm extends React.Component {
     }
   }
 
+
   render() {
     return (
+      <div id = 'LoginFormWrapper'>
+      <form onSubmit={this.handleSubmit} id = 'LoginForm' >
+        <div id = 'LoginTitle'>
+          PokerZone
+        </div>
+        <div id = 'LoginDescription'>
+          Login to your account
+        </div>
+        <label className = 'LoginLabel'>
+          <div className = 'InputContainer'>
 
-      <form onSubmit={this.handleSubmit} id = 'LoginForm' className = 'MediumDiv'>
-        <label className = 'LoginLabel'>
-          <div className = 'InputContainer'>
-            Email:
-            <input className = 'LoginInput' type="text" name = "email" value={this.state.email} onChange={this.handleChange} />
+            <input className = 'LoginInput' type="text" name = "email" placeholder = 'Email' value={this.state.email} onChange={this.handleChange} />
           </div>
         </label>
         <label className = 'LoginLabel'>
           <div className = 'InputContainer'>
-            Password:
-            <input className = 'LoginInput' type="password" name = "password" value={this.state.password} onChange={this.handleChange} />
+
+            <input className = 'LoginInput' type="password" name = "password" placeholder = 'Password' value={this.state.password} onChange={this.handleChange} />
           </div>
         </label>
-        <input className = 'FormButton LoginInput' type="submit" value="Login" />
+        <input id = 'LoginButton' className = 'FormButton MediumDiv' type="submit" value="Login" />
 
         <ToRegistrationButton {...this.props}/>
       </form>
+
+      </div>
     )
   }
 }
