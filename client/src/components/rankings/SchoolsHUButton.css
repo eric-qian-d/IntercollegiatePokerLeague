@@ -1,0 +1,8 @@
+#SchoolsHUButton {
+  display: inline-block;
+  margin: auto;
+}
+
+#SchoolsHUButton:hover {
+  color: black;
+}

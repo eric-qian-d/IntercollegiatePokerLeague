@@ -1,13 +1,13 @@
 .RankingHeader {
   display: flex;
   height: 8vh;
-  border: 2px solid white;
+  /* border: 2px solid white; */
   /* height: 30px; */
   /* margin-top: 5px; */
   padding: 5px;
   /* background-color: white;
   color:black; */
-  border-radius: 10px;
+  /* border-radius: 10px; */
 }
 
 .IndividualsHeaderInfo{

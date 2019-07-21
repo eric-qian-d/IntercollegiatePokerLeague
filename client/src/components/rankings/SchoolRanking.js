@@ -9,7 +9,7 @@ class SchoolRanking extends React.Component {
   render() {
     const {place, ranking, schoolName} = this.props;
     return (
-      <div className = 'SchoolRanking RankingItem MediumDiv'>
+      <div className = 'SchoolRanking RankingItem GreyDiv'>
         <div className = 'SchoolRankingPlace SchoolRankingInfo'>
           {place}
         </div>

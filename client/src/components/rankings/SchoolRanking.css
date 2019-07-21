@@ -21,7 +21,7 @@
 
 .SchoolRanking {
   display: flex;
-  border: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
   /* height: 30px; */
   /* margin-top: 5px; */
   padding: 5px;

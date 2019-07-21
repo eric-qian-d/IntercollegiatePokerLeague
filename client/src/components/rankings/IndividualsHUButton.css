@@ -1,0 +1,9 @@
+#IndividualsHUButton {
+  display: inline-block;
+  margin: auto;
+  width: 40%;
+}
+
+#IndividualsHUButton:hover {
+  color: black;
+}

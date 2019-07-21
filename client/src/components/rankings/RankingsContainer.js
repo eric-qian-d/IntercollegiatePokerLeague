@@ -3,6 +3,7 @@ import Navbar from '../navbar/Navbar';
 import ListingsContainer from './ListingsContainer';
 import IndividualsHUButton from './IndividualsHUButton';
 import SchoolsHUButton from './SchoolsHUButton';
+import Helmet from 'react-helmet';
 import './RankingsContainer.css';
 
 class RankingsContainer extends React.Component {
@@ -12,11 +13,15 @@ class RankingsContainer extends React.Component {
 
   render() {
     return(
-      <div className = 'RankingsContainer'>
+      <div id = 'RankingsContainer'>
         <Navbar {...this.props}/>
-        <div id = 'ListingsContainerWrapper' className = 'BackgroundDiv'>
-          <IndividualsHUButton/>
-          <SchoolsHUButton/>
+        <div id = 'ListingsWrapper'>
+          <div id = 'ListingsHeader' className = ''>
+            <div id = 'ChooseRankingsContainer'>
+              <IndividualsHUButton/>
+              <SchoolsHUButton/>
+            </div>
+          </div>
           <ListingsContainer/>
         </div>
       </div>

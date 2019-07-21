@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
+import './SchoolsHUButton.css';
 
 import {changeRequestedLeaderboard} from '../../actions/index';
 
@@ -21,9 +22,9 @@ class RawSchoolsHUButton extends React.Component {
 
   render() {
     return (
-      <button id = 'SchoolsHUButton' onClick = {() => {this.clickLogic();}}>
+      <div id = 'SchoolsHUButton' onClick = {() => {this.clickLogic();}}>
         Top Schools
-      </button>
+      </div>
     )
 
   }

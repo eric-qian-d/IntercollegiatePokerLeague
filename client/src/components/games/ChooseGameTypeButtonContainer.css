@@ -51,6 +51,10 @@
   color: rgb(44,81,154);
 }
 
+.LightGreyDiv {
+  background-color: lightgrey;
+}
+
 .GreyDiv {
   background-color: rgb(87,104,136);
 }

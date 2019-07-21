@@ -67,7 +67,7 @@ class RawListingsContainer extends React.Component {
       return (
         <div id = 'LadderListingsContainer'>
           <SchoolsHUHeader/>
-          <div id = 'LadderListings'>
+          <div id = 'LadderListings' className = 'MediumDiv'>
             {huRankingsList}
           </div>
         </div>
@@ -81,7 +81,7 @@ class RawListingsContainer extends React.Component {
       return (
         <div id = 'LadderListingsContainer'>
           <IndividualsHUHeader/>
-          <div id = 'LadderListings'>
+          <div id = 'LadderListings' className = 'MediumDiv'>
 
             {huRankingsList}
           </div>

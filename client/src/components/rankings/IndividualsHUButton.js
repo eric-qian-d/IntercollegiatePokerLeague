@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
+import './IndividualsHUButton.css';
 
 import {changeRequestedLeaderboard} from '../../actions/index';
 
@@ -21,9 +22,9 @@ class RawIndividualsHUButton extends React.Component {
 
   render() {
     return (
-      <button id = 'IndividualsHUButton' onClick = {() => {this.clickLogic();}}>
+      <div id = 'IndividualsHUButton' onClick = {() => {this.clickLogic();}}>
         Top Individuals
-      </button>
+      </div>
     )
 
   }
