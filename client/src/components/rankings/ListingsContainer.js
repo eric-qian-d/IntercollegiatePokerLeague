@@ -81,7 +81,6 @@ class RawListingsContainer extends React.Component {
         <div id = 'LadderListingsContainer'>
           <IndividualsHUHeader/>
           <div id = 'LadderListings' className = 'MediumDiv'>
-
             {huRankingsList}
           </div>
         </div>

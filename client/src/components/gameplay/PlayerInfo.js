@@ -18,7 +18,7 @@ class PlayerInfo extends React.Component {
       };
 
       return (
-        <div className = "PlayerInfo" style = { {'box-shadow': '0px 0px 0px 3px maroon' } }>
+        <div className = "PlayerInfo" style = { {'box-shadow': '0px 0px 0px 3px rgb(44,81,154)' } }>
           <div className = "PlayerName">
             {name}
           </div>

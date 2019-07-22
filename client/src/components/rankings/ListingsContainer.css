@@ -1,18 +1,19 @@
 #LadderListingsContainer {
   /* height: 100%; */
-  font-size: 3vh;
+  font-size: 1em;
   color: white;
   position: absolute;
   top: 80px;
   left: 5%;
   width: 95%;
   box-shadow: 0px 0px 10px black;
+  height: 60%;
   /* border: 15px solid lightgrey; */
 }
 
 #LadderListings {
-  height: 50vh;
+  height: 100%;
   overflow-y: scroll;
-  font-size: 2vh;
+  font-size: 1em;
   /* border: 2px solid black; */
 }
