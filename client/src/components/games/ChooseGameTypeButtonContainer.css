@@ -1,7 +1,9 @@
 #ChooseGameTypeButtonContainer {
-  margin: 5vh auto;
+  margin: auto;
   width: 90%;
+  height: 15em;
   min-width: 200px;
+  min-height: 300px;
   /* max-width: 00px; */
   text-align: center;
   font-size: 30px;
@@ -9,13 +11,13 @@
 }
 
 .ChooseGameTypePanel {
-  font-size: 2vh;
+  /* font-size: 2vh; */
   display: inline-block;
-  /* height: 100px; */
   margin: auto;
   width: 25%;
   border: 1px solid transparent;
   border-radius: 5px;
+
 }
 
 .ChooseGameTypePanel:hover {
@@ -23,23 +25,21 @@
 }
 
 .ChooseGameTypeHeader {
-  height: 8vh;
-  font-size: 30px;
+  height: 2em;
+  font-size: 1em;
   border: 0px;
+  min-width: 200px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
 
 .ChooseGameTypeBody {
-  height: 30vh;
+  height: 15em;
+  font-size: 0.6em;
+  min-width: 200px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-
-
-
-
-
 
 .BackgroundDiv {
   background-color: rgb(44,81,154);
