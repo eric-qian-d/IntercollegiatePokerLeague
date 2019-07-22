@@ -1,8 +1,8 @@
 #CustomListingsContainer {
-  height: 86vh;
+  height: 80%;
   width: 60%;
-  margin: auto;
-  font-size: 3vh;
+  margin: 2% auto;
+  font-size: 1.5em;
   color: white;
   border-color: white;
   border-width: 3px;
@@ -10,8 +10,8 @@
 }
 
 #CustomListings {
-  height: 70vh;
+  height: 80%;
   overflow-y: scroll;
-  font-size: 2vh;
+  font-size: 4em;
   border: 2px solid black;
 }

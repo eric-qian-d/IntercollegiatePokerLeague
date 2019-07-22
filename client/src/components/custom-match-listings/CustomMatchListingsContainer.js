@@ -1,5 +1,6 @@
 import React from "react";
 import ListingsContainer from "./ListingsContainer";
+import './CustomMatchListingsContainer.css';
 
 
 class CustomMatchListingsContainer extends React.Component {

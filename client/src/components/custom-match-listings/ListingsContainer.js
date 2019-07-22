@@ -17,7 +17,6 @@ class ListingsContainer extends React.Component {
     const {socket} = this.props;
     return (
       <div id = "CustomListingsContainer">
-        Custom Match Listings
         <ListingsInfo/>
         <div id = 'CustomListings'>
           {lines}
