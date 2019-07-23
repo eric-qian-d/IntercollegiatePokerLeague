@@ -20,9 +20,12 @@ class GameContainer extends React.Component {
         players: allPlayerInfo,
         minBet: gameInfo.minBet,
         maxBet: gameInfo.maxBet,
-        bigBlindValue: gameInfo.bigBlindValue,
-        currentTotalRaise: gameInfo.currentTotalRaise,
-        potPlusRaises: gameInfo.potPlusRaises,
+        smallBet: gameInfo.smallBet,
+        mediumBet: gameInfo.mediumBet,
+        largeBet: gameInfo.largeBet,
+        smallBetText: gameInfo.smallBetText,
+        mediumBetText: gameInfo.mediumBetText,
+        largeBetText: gameInfo.largeBetText,
       });
     })
     socket.on("MATCH ENDED", () => {
@@ -41,9 +44,12 @@ class GameContainer extends React.Component {
       checkable: 0,
       minBet: 0,
       maxBet: 0,
-      bigBlindValue: 0,
-      currentTotalRaise: 0,
-      potPlusRaises: 0,
+      smallBet: 0,
+      mediumBet: 0,
+      largeBet: 0,
+      smallBetText: '1/2 Pot',
+      mediumBetText: '2/3 Pot',
+      largeBetText: 'Pot'
     }
   }
 
@@ -54,16 +60,17 @@ class GameContainer extends React.Component {
 
   render() {
     const {numPlayers, buttonLocation, action, pot, board, time, players,
-      maxTime, checkable, minBet, maxBet, bigBlindValue,
-      currentTotalRaise, potPlusRaises} = this.state;
+      maxTime, checkable, minBet, maxBet, smallBet, mediumBet, largeBet,
+      smallBetText, mediumBetText, largeBetText} = this.state;
     return (
       <div>
         <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation}
           action = {action} pot = {pot} board = {board} players = {players}
           time = {time} maxTime = {maxTime}/>
         <ButtonBox socket = {this.props.socket} checkable = {checkable}
-          minBet = {minBet} maxBet = {maxBet} bigBlindValue = {bigBlindValue}
-          currentTotalRaise = {currentTotalRaise} potPlusRaises = {potPlusRaises}/>
+          minBet = {minBet} maxBet = {maxBet} smallBet = {smallBet}
+          mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
+          mediumBetText = {mediumBetText} largeBetText = {largeBetText} />
         <ReturnToLobbyButton socket = {this.props.socket} />
       </div>
     )

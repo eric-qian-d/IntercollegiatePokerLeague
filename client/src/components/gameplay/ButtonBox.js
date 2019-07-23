@@ -1,7 +1,7 @@
 import React from 'react';
 import CallButton from "./CallButton";
 import FoldButton from "./FoldButton";
-import RaiseButton from "./RaiseButton";
+import RaiseContainer from "./RaiseContainer";
 
 import './ButtonBox.css';
 
@@ -10,16 +10,21 @@ class ButtonBox extends React.Component {
     super(props);
   }
   render() {
+    const {socket, checkable, minBet, maxBet, smallBet, mediumBet, largeBet,
+    smallBetText, mediumBetText, largeBetText} = this.props;
     return (
       <div className = "ButtonBox">
         <div className = "FoldButtonDiv">
-          <FoldButton socket = {this.props.socket}/>
+          <FoldButton socket = {socket}/>
         </div>
         <div className = "CallButtonDiv">
-          <CallButton  socket = {this.props.socket} checkable = {this.props.checkable}/>
+          <CallButton  socket = {socket} checkable = {checkable}/>
         </div>
         <div className = "RaiseButtonDiv">
-          <RaiseButton socket = {this.props.socket}/>
+          <RaiseContainer socket = {socket} minBet = {minBet}
+          maxBet = {maxBet} smallBet = {smallBet}
+          mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
+          mediumBetText = {mediumBetText} largeBetText = {largeBetText}/>
         </div>
       </div>
 

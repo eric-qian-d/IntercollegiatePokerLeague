@@ -608,6 +608,7 @@ module.exports = class Game { // maybe rename this to be Table
     const potPlusRaises = this.pot + Object.values(this.seatMap).reduce(((accumulator, player) => {
       return accumulator + player.investedStack;
     }), 0);
+    const maxBet = parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize);
     const gameInfo = {
       numPlayers: this.numPlayers,
       buttonLocation: this.buttonLocation,
@@ -618,10 +619,14 @@ module.exports = class Game { // maybe rename this to be Table
       maxTime: this.maxTime,
       checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
       minBet: 2 * this.currentTotalRaise - this.lastRaiseSize,
-      maxBet: parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize),
-      bigBlindValue: this.bigBlindValue,
-      currentTotalRaise: this.currentTotalRaise,
-      potPlusRaises: potPlusRaises,
+      maxBet: maxBet,
+      smallBet: Math.max(Math.round(potPlusRaises * 0.5) + this.currentTotalRaise, maxBet),
+      mediumBet: Math.max(Math.round(potPlusRaises * 2/3) + this.currentTotalRaise, maxBet),
+      largeBet: Math.max(potPlusRaises + this.currentTotalRaise, maxBet),
+      smallBetText: '1/2 Pot',
+      mediumBetText: '2/3 Pot',
+      largeBetText: 'Pot',
+
     };
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
