@@ -24,7 +24,6 @@ class Table extends React.Component {
         'position': `absolute`,
       };
       return (
-        // <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.id} stackSize = {player.stackSize} action = {action} inHand = {player.inHand}/>
         <div className = "test" style = {style}>
          <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.name} stackSize = {player.stackSize} action = {seat === action} inHand = {player.inHand} time = {time} maxTime = {maxTime}/>
          </div>
@@ -39,7 +38,6 @@ class Table extends React.Component {
         'position': `absolute`,
       };
       return (
-        // <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.id} stackSize = {player.stackSize} action = {action} inHand = {player.inHand}/>
         <div className = "test" style = {style}>
           {player.investedStack}
          </div>

@@ -43,8 +43,8 @@ module.exports = class Game { // maybe rename this to be Table
     this.parentMatch = parentMatch;
     this.buttonLocation = 0;
     this.seatMap = {};
-    this.currentTotalRaise = 0;
-    this.lastRaiseSize = bigBlindValue;
+    this.currentTotalRaise = bigBlindValue;
+    this.lastRaiseSize = 0;
     this.lastRaiser = 1; //default for HU, needs to be changed
     this.action = 0; //default for HU, needs to be changed
     this.pot = 0;
@@ -124,7 +124,8 @@ module.exports = class Game { // maybe rename this to be Table
     this.pot = 0;
     this.board = [];
     this.allIn = false;
-    this.lastRaiseSize = this.bigBlindValue;
+    this.currentTotalRaise = this.bigBlindValue;
+    this.lastRaiseSize = 0;
     this.time = this.maxTime;
     this.deck = new Deck();
     //deals players hands
@@ -275,7 +276,10 @@ module.exports = class Game { // maybe rename this to be Table
         return player.id === playerId;
       })[0];
       const raiseDelta = finalAmount - player.investedStack;
-      if (finalAmount - this.currentTotalRaise >= this.lastRaiseSize) {
+      // console.log(this.currentTotalRaise);
+      // console.log(this.lastRaiseSize);
+      // console.log(2 * this.currentTotalRaise - this.lastRaiseSize);
+      if (finalAmount >= 2 * this.currentTotalRaise - this.lastRaiseSize) {
         clearInterval(this.timer)
         //legal raise
         if (raiseDelta > player.stackSize) {
@@ -289,7 +293,7 @@ module.exports = class Game { // maybe rename this to be Table
           player.stackSize -= raiseDelta;
         }
         this.lastRaiser = this.action;
-        this.lastRaiseSize = raiseDelta;
+        this.lastRaiseSize = this.currentTotalRaise;
         this.currentTotalRaise = finalAmount;
         var advanced = false;
         //finds the next player to act
@@ -610,6 +614,8 @@ module.exports = class Game { // maybe rename this to be Table
       time: this.time,
       maxTime: this.maxTime,
       checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
+      // minBet: ,
+      // maxBet: ,
     };
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
