@@ -605,6 +605,9 @@ module.exports = class Game { // maybe rename this to be Table
     const adaptedBoard = this.board.map(card => {
       return [card.rank, card.suit];
     });
+    const potPlusRaises = this.pot + Object.values(this.seatMap).reduce(((accumulator, player) => {
+      return accumulator + player.investedStack;
+    }), 0);
     const gameInfo = {
       numPlayers: this.numPlayers,
       buttonLocation: this.buttonLocation,
@@ -614,8 +617,11 @@ module.exports = class Game { // maybe rename this to be Table
       time: this.time,
       maxTime: this.maxTime,
       checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
-      // minBet: ,
-      // maxBet: ,
+      minBet: 2 * this.currentTotalRaise - this.lastRaiseSize,
+      maxBet: parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize),
+      bigBlindValue: this.bigBlindValue,
+      currentTotalRaise: this.currentTotalRaise,
+      potPlusRaises: potPlusRaises,
     };
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
