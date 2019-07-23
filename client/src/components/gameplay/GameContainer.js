@@ -18,6 +18,11 @@ class GameContainer extends React.Component {
         maxTime: gameInfo.maxTime,
         checkable: gameInfo.checkable,
         players: allPlayerInfo,
+        minBet: gameInfo.minBet,
+        maxBet: gameInfo.maxBet,
+        bigBlindValue: gameInfo.bigBlindValue,
+        currentTotalRaise: gameInfo.currentTotalRaise,
+        potPlusRaises: gameInfo.potPlusRaises,
       });
     })
     socket.on("MATCH ENDED", () => {
@@ -34,6 +39,11 @@ class GameContainer extends React.Component {
       finished: false,
       maxTime: 0,
       checkable: 0,
+      minBet: 0,
+      maxBet: 0,
+      bigBlindValue: 0,
+      currentTotalRaise: 0,
+      potPlusRaises: 0,
     }
   }
 
@@ -43,11 +53,17 @@ class GameContainer extends React.Component {
   }
 
   render() {
-    const {numPlayers, buttonLocation, action, pot, board, time, players, maxTime, checkable} = this.state;
+    const {numPlayers, buttonLocation, action, pot, board, time, players,
+      maxTime, checkable, minBet, maxBet, bigBlindValue,
+      currentTotalRaise, potPlusRaises} = this.state;
     return (
       <div>
-        <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation} action = {action} pot = {pot} board = {board} players = {players} time = {time} maxTime = {maxTime}/>
-        <ButtonBox socket = {this.props.socket} checkable = {checkable}/>
+        <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation}
+          action = {action} pot = {pot} board = {board} players = {players}
+          time = {time} maxTime = {maxTime}/>
+        <ButtonBox socket = {this.props.socket} checkable = {checkable}
+          minBet = {minBet} maxBet = {maxBet} bigBlindValue = {bigBlindValue}
+          currentTotalRaise = {currentTotalRaise} potPlusRaises = {potPlusRaises}/>
         <ReturnToLobbyButton socket = {this.props.socket} />
       </div>
     )

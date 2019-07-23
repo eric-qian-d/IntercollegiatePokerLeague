@@ -625,7 +625,6 @@ module.exports = class Game { // maybe rename this to be Table
     };
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
-      //TODO: CASE WHERE THEY REFRESH BUT PLAYERS HAVE NO HAND
       var hand;
       if (!all) {
         if (secondaryPlayer.id === playerId) {
@@ -634,7 +633,6 @@ module.exports = class Game { // maybe rename this to be Table
           } else {
             hand = [["none", "none"], ["none", "none"]];
           }
-          // hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
         } else {
           hand = [["none", "none"], ["none", "none"]];
         }
