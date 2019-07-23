@@ -1,11 +1,7 @@
-export function addArticle(payload) {
-  return { type: "ADD_ARTICLE", payload }
-};
-
 export function changeGameType(payload) {
-  return { type: 'CHANGE_GAME_TYPE', payload }
+  return { type: 'CHANGE_STATE', payload }
 };
 
 export function changeRequestedLeaderboard(leaderBoardType) {
-  return { type: 'CHANGE_REQUESTED_LEADERBOARD', payload: {requestedLeaderboard: leaderBoardType} }
+  return { type: 'CHANGE_STATE', payload: {requestedLeaderboard: leaderBoardType} }
 }
