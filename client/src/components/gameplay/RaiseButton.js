@@ -1,10 +1,23 @@
 import React from 'react';
 import {raise} from "../../js/gameplay";
-
+import { connect } from "react-redux";
 import './RaiseButton.css';
+import {changeGameType} from '../../actions/index';
 
 
-class RaiseButton extends React.Component {
+function mapDispatchToProps(dispatch) {
+  return {
+    changeGameType: article => dispatch(changeGameType(article))
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    raiseSize: state.raiseSize,
+  }
+}
+
+class RawRaiseButton extends React.Component {
   //from https://reactjs.org/docs/forms.html
   constructor(props) {
     super(props);
@@ -16,24 +29,26 @@ class RaiseButton extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.props.changeGameType({raiseSize: event.target.value});
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    raise(this.props.socket, this.state.value);
-    this.setState({value: ''});
+    console.log(this.props.raiseSize)
+    raise(this.props.socket, this.props.raiseSize);
+    // this.setState({value: ''});
   }
 
   render() {
     return (
       <form className = 'RaiseButton' onSubmit={this.handleSubmit}>
-      <input className = 'RaiseButtonButton' type="submit" value="Raise to" />
-      <input className = 'RaiseButtonInput' type="text" value={this.state.value} onChange={this.handleChange} />
+        <input className = 'RaiseButtonButton' type="submit" value="Raise to" />
+        <input className = 'RaiseButtonInput' type="text" value={this.props.raiseSize} onChange={this.handleChange} />
 
       </form>
     );
   }
 }
 
+const RaiseButton = connect(mapStateToProps, mapDispatchToProps)(RawRaiseButton);
 export default RaiseButton;

@@ -2,8 +2,16 @@ import React from "react";
 import Table from "./Table";
 import ButtonBox from "./ButtonBox";
 import ReturnToLobbyButton from "./ReturnToLobbyButton";
+import { connect } from "react-redux";
+import {changeGameType} from '../../actions/index';
 
-class GameContainer extends React.Component {
+function mapDispatchToProps(dispatch) {
+  return {
+    changeGameType: article => dispatch(changeGameType(article))
+  };
+}
+
+class RawGameContainer extends React.Component {
   constructor(props) {
     super(props);
     const {socket} = this.props;
@@ -77,4 +85,5 @@ class GameContainer extends React.Component {
   }
 }
 
+const GameContainer = connect(null, mapDispatchToProps)(RawGameContainer);
 export default GameContainer;

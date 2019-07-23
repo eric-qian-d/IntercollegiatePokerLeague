@@ -275,6 +275,8 @@ module.exports = class Game { // maybe rename this to be Table
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
       })[0];
+      console.log('raise req');
+      console.log(finalAmount);
       const raiseDelta = finalAmount - player.investedStack;
       // console.log(this.currentTotalRaise);
       // console.log(this.lastRaiseSize);
@@ -620,9 +622,9 @@ module.exports = class Game { // maybe rename this to be Table
       checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
       minBet: 2 * this.currentTotalRaise - this.lastRaiseSize,
       maxBet: maxBet,
-      smallBet: Math.max(Math.round(potPlusRaises * 0.5) + this.currentTotalRaise, maxBet),
-      mediumBet: Math.max(Math.round(potPlusRaises * 2/3) + this.currentTotalRaise, maxBet),
-      largeBet: Math.max(potPlusRaises + this.currentTotalRaise, maxBet),
+      smallBet: Math.min(Math.round(potPlusRaises * 0.5) + this.currentTotalRaise, maxBet),
+      mediumBet: Math.min(Math.round(potPlusRaises * 2/3) + this.currentTotalRaise, maxBet),
+      largeBet: Math.min(potPlusRaises + this.currentTotalRaise, maxBet),
       smallBetText: '1/2 Pot',
       mediumBetText: '2/3 Pot',
       largeBetText: 'Pot',

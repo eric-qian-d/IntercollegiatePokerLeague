@@ -20,6 +20,7 @@ const matchMap = states.matchMap; //maps from matchId to Match object
 const gameMap = states.gameMap; //maps from gameId to Game object
 
 //from https://stackoverflow.com/questions/10834796/validate-that-a-string-is-a-positive-integer
+//str MUST BE STRING
 function isNormalInteger(str) {
     var n = Math.floor(Number(str));
     return n !== Infinity && String(n) === str && n > 0;
@@ -314,7 +315,7 @@ module.exports = {
       socket.on('RAISE', async (finalAmount) => {
         const userId = socket.request.user.id;
         if (userStatus[userId] === constants.userStatus.IN_GAME) {
-          if (isNormalInteger(finalAmount)) {
+          if (isNormalInteger(finalAmount.toString(10))) {
             raise(userId, finalAmount);
           }
         }

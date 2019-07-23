@@ -1,7 +1,7 @@
 const initialState = {
   gameType: 'none',
   matchId: 'none',
-  raiseSize: 'none'
+  raiseSize: 0
 };
 
 function rootReducer(state = initialState, action) {
@@ -9,6 +9,7 @@ function rootReducer(state = initialState, action) {
     const newState = Object.assign({}, state,
       action.payload
     );
+    console.log(newState);
     return newState;
   }
   return state;
