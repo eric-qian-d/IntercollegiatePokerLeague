@@ -630,6 +630,8 @@ module.exports = class Game { // maybe rename this to be Table
       return accumulator + player.investedStack;
     }), 0);
     const maxBet = parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize);
+    console.log(this.buttonLocation);
+    console.log(this.seatMap);
     const gameInfo = {
       numPlayers: this.numPlayers,
       buttonLocation: this.buttonLocation,
