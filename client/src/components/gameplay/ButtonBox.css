@@ -1,12 +1,12 @@
 .ButtonBox{
   bottom: 100px;
   position: fixed;
-  margin: auto;
+  /* margin: auto; */
   min-width: 400px;
   max-width: 600px;
   width: 80%;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 10%;
+  /* transform: translateX(-30%); */
 }
 
 #ActionButtonContainer {

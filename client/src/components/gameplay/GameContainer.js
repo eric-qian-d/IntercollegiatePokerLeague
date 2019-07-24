@@ -71,7 +71,7 @@ class RawGameContainer extends React.Component {
       maxTime, checkable, minBet, maxBet, smallBet, mediumBet, largeBet,
       smallBetText, mediumBetText, largeBetText} = this.state;
     return (
-      <div>
+      <div id = 'GameContainer'>
         <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation}
           action = {action} pot = {pot} board = {board} players = {players}
           time = {time} maxTime = {maxTime}/>
