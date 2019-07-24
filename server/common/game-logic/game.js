@@ -508,8 +508,6 @@ module.exports = class Game { // maybe rename this to be Table
 
       } else if (this.board.length === 5) {
         //river finish
-        //display both hands
-        this.emitAll(true);
         var currentStrongestHandStrength = 0;
         var winners = [];
         playersInHandList.forEach(player => {
@@ -521,6 +519,24 @@ module.exports = class Game { // maybe rename this to be Table
             winners = [player];
           }
         })
+        //hacky solution that currently only works for 2 players
+        console.log(winners.length);
+        console.log(this.getPlayerSeatById(winners[0].id));
+        console.log(this.lastRaiser);
+        if (winners.length === 1) {
+          if (this.getPlayerSeatById(winners[0].id) === this.lastRaiser) {
+            console.log('emitting from here');
+            this.emitAll(false, true, [this.lastRaiser])
+          } else {
+            this.emitAll(true);
+          }
+        } else {
+          this.emitAll(true);
+        }
+
+
+
+
         //finds the value of the final pot
         Object.values(this.seatMap).forEach(player => {
           if (player.investedStack > 0) {
@@ -581,9 +597,9 @@ module.exports = class Game { // maybe rename this to be Table
     return thisPlayerSeatNumber === this.action;
   }
 
-  emitAll(all = false) {
+  emitAll(all = false, specificPlayers = false, whichPlayers = []) {
     Object.values(this.seatMap).forEach(basePlayer => {
-      const info = this.getGameState(basePlayer.id, all);
+      const info = this.getGameState(basePlayer.id, all, specificPlayers, whichPlayers);
       this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
     })
   }
@@ -603,7 +619,10 @@ module.exports = class Game { // maybe rename this to be Table
    * @param  {String} playerId the UUID of the player
    * @return {String}          a representation of the game state for the SPECIFIC PLAYER as defined in wire-protocol.txt
    */
-  getGameState(playerId, all = false) {
+  getGameState(playerId, all = false, specificPlayers = false, whichPlayers = []) {
+    // console.log(all);
+    // console.log(specificPlayers);
+    // console.log(whichPlayers);
     const adaptedBoard = this.board.map(card => {
       return [card.rank, card.suit];
     });
@@ -631,18 +650,33 @@ module.exports = class Game { // maybe rename this to be Table
 
     };
     const allPlayerInfo = [];
-    const adjustedPlayersList = Object.values(this.seatMap).map(secondaryPlayer => {
+    const adjustedPlayersList = Object.values(this.seatMap).map((secondaryPlayer, playerSeatNumber) => {
       var hand;
       if (!all) {
-        if (secondaryPlayer.id === playerId) {
-          if (secondaryPlayer.hand.length == 2) {
-            hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
+        if (!specificPlayers) {
+          if (secondaryPlayer.id === playerId) {
+            if (secondaryPlayer.hand.length == 2) {
+              hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
+            } else {
+              hand = [["none", "none"], ["none", "none"]];
+            }
           } else {
             hand = [["none", "none"], ["none", "none"]];
           }
         } else {
-          hand = [["none", "none"], ["none", "none"]];
+          console.log(playerId);
+          console.log(whichPlayers.includes(playerSeatNumber));
+          if (secondaryPlayer.id === playerId || whichPlayers.includes(playerSeatNumber)) {
+            if (secondaryPlayer.hand.length == 2) {
+              hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
+            } else {
+              hand = [["none", "none"], ["none", "none"]];
+            }
+          } else {
+            hand = [["none", "none"], ["none", "none"]];
+          }
         }
+
       } else {
         hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
       }
