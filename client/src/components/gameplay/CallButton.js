@@ -11,13 +11,13 @@ class CallButton extends React.Component {
     const {checkable} = this.props;
     if (!checkable) {
       return (
-        <button className = "CallButton" onClick = {() => {call(this.props.socket)}}>
+        <button id = "CallButton" className = 'ActionButton BackgroundDiv' onClick = {() => {call(this.props.socket)}}>
           {"Call"}
         </button>
       )
     } else {
       return (
-        <button className = "CheckButton" onClick = {() => {call(this.props.socket)}}>
+        <button id = "CheckButton" className = 'ActionButton BackgroundDiv' onClick = {() => {call(this.props.socket)}}>
           {"Check"}
         </button>
       )

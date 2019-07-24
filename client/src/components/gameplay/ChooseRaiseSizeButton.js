@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import {changeGameType} from '../../actions/index';
-
+import './ChooseRaiseSizeButton.css';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -23,9 +23,9 @@ class RawChooseRaiseSizeButton extends React.Component {
   render() {
     const {buttonText} = this.props;
     return(
-      <div className = 'ChooseRaiseSizeButton' onClick = {() => {this.clickLogic()}}>
+      <button className = 'ChooseRaiseSizeButton DarkDiv' onClick = {() => {this.clickLogic()}}>
         {buttonText}
-      </div>
+      </button>
     )
   }
 }

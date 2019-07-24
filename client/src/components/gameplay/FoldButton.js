@@ -10,7 +10,7 @@ class FoldButton extends React.Component {
 
   render() {
     return (
-      <button className = "FoldButton" onClick = {() => {fold(this.props.socket)}}>
+      <button id = "FoldButton" className = 'ActionButton BackgroundDiv' onClick = {() => {fold(this.props.socket)}}>
         {"Fold"}
       </button>
     )

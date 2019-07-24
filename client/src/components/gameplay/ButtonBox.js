@@ -1,6 +1,8 @@
 import React from 'react';
 import CallButton from "./CallButton";
 import FoldButton from "./FoldButton";
+import RaiseButton from './RaiseButton';
+import RaiseInput from './RaiseInput';
 import RaiseContainer from "./RaiseContainer";
 
 import './ButtonBox.css';
@@ -14,17 +16,16 @@ class ButtonBox extends React.Component {
     smallBetText, mediumBetText, largeBetText} = this.props;
     return (
       <div className = "ButtonBox">
-        <div className = "FoldButtonDiv">
+        <RaiseContainer minBet = {minBet}
+        maxBet = {maxBet} smallBet = {smallBet}
+        mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
+        mediumBetText = {mediumBetText} largeBetText = {largeBetText}/>
+
+        <div id = 'ActionButtonContainer'>
           <FoldButton socket = {socket}/>
-        </div>
-        <div className = "CallButtonDiv">
           <CallButton  socket = {socket} checkable = {checkable}/>
-        </div>
-        <div className = "RaiseButtonDiv">
-          <RaiseContainer socket = {socket} minBet = {minBet}
-          maxBet = {maxBet} smallBet = {smallBet}
-          mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
-          mediumBetText = {mediumBetText} largeBetText = {largeBetText}/>
+          <RaiseButton socket = {socket}/>
+          <RaiseInput/>
         </div>
       </div>
 

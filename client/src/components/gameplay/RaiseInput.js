@@ -1,9 +1,8 @@
 import React from 'react';
 import {raise} from "../../js/gameplay";
 import { connect } from "react-redux";
-import './RaiseButton.css';
 import {changeGameType} from '../../actions/index';
-
+import './RaiseInput.css';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -17,7 +16,7 @@ function mapStateToProps(state) {
   }
 }
 
-class RawRaiseButton extends React.Component {
+class RawRaiseInput extends React.Component {
   //from https://reactjs.org/docs/forms.html
   constructor(props) {
     super(props);
@@ -25,26 +24,19 @@ class RawRaiseButton extends React.Component {
       value : '',
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.props.changeGameType({raiseSize: event.target.value});
   }
 
-  handleSubmit() {
-    raise(this.props.socket, this.props.raiseSize);
-    // this.setState({value: ''});
-  }
 
   render() {
     return (
-        <button id = 'RaiseButton' className = 'ActionButton BackgroundDiv' onClick = {() => this.handleSubmit()}>
-          Raise to
-        </button>
+        <input id = 'RaiseInput' type="text" value={this.props.raiseSize} onChange={this.handleChange} />
     );
   }
 }
 
-const RaiseButton = connect(mapStateToProps, mapDispatchToProps)(RawRaiseButton);
-export default RaiseButton;
+const RaiseInput = connect(mapStateToProps, mapDispatchToProps)(RawRaiseInput);
+export default RaiseInput;

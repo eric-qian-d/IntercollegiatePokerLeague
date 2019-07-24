@@ -2,26 +2,22 @@
   bottom: 100px;
   position: fixed;
   margin: auto;
-  width: 400px;
+  min-width: 400px;
+  max-width: 600px;
+  width: 80%;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.RaiseButtonDiv {
-  display: inline-block;
-  position: fixed;
-  right: 0px;
+#ActionButtonContainer {
+  width: 100%;
 }
 
-.CallButtonDiv {
-  display: inline-block;
-  position: absolute;
-  /* margin: auto; */
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.FoldButtonDiv {
-  display: inline-block;
-  left: 0px;
+.ActionButton {
+  width: 20%;
+  text-align: center;
+  border-radius: 5px;
+  border: solid white 1px;
+  height: 3em;
+  margin: 2px;
 }

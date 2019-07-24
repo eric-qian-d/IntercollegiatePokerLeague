@@ -1,6 +1,6 @@
 import React from 'react';
-import RaiseButton from './RaiseButton';
 import ChooseRaiseSizeButton from './ChooseRaiseSizeButton';
+import './RaiseContainer.css';
 
 class RaiseContainer extends React.Component {
   constructor(props) {
@@ -12,12 +12,11 @@ class RaiseContainer extends React.Component {
     smallBetText, mediumBetText, largeBetText} = this.props;
     return (
       <div id = 'RaiseContainer'>
-        <ChooseRaiseSizeButton raiseSize = {minBet} buttonText = {'Min'}/>
-        <ChooseRaiseSizeButton raiseSize = {smallBet} buttonText = {smallBetText}/>
-        <ChooseRaiseSizeButton raiseSize = {mediumBet} buttonText = {mediumBetText}/>
-        <ChooseRaiseSizeButton raiseSize = {largeBet} buttonText = {largeBetText}/>
-        <ChooseRaiseSizeButton raiseSize = {maxBet} buttonText = {'Max'}/>
-        <RaiseButton socket = {socket} />
+          <ChooseRaiseSizeButton raiseSize = {minBet} buttonText = {'Min'}/>
+          <ChooseRaiseSizeButton raiseSize = {smallBet} buttonText = {smallBetText}/>
+          <ChooseRaiseSizeButton raiseSize = {mediumBet} buttonText = {mediumBetText}/>
+          <ChooseRaiseSizeButton raiseSize = {largeBet} buttonText = {largeBetText}/>
+          <ChooseRaiseSizeButton raiseSize = {maxBet} buttonText = {'Max'}/>
       </div>
     )
   }
