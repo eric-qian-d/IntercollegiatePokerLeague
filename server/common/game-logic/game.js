@@ -620,18 +620,16 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {String}          a representation of the game state for the SPECIFIC PLAYER as defined in wire-protocol.txt
    */
   getGameState(playerId, all = false, specificPlayers = false, whichPlayers = []) {
-    // console.log(all);
-    // console.log(specificPlayers);
-    // console.log(whichPlayers);
+    const playerSeat = this.getPlayerSeatById(playerId);
     const adaptedBoard = this.board.map(card => {
       return [card.rank, card.suit];
     });
     const potPlusRaises = this.pot + Object.values(this.seatMap).reduce(((accumulator, player) => {
       return accumulator + player.investedStack;
     }), 0);
+    const callDelta = (this.currentTotalRaise - this.seatMap[playerSeat].investedStack)
+
     const maxBet = parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize);
-    console.log(this.buttonLocation);
-    console.log(this.seatMap);
     const gameInfo = {
       numPlayers: this.numPlayers,
       buttonLocation: this.buttonLocation,
@@ -643,9 +641,9 @@ module.exports = class Game { // maybe rename this to be Table
       checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
       minBet: 2 * this.currentTotalRaise - this.lastRaiseSize,
       maxBet: maxBet,
-      smallBet: Math.min(Math.round(potPlusRaises * 0.5) + this.currentTotalRaise, maxBet),
-      mediumBet: Math.min(Math.round(potPlusRaises * 2/3) + this.currentTotalRaise, maxBet),
-      largeBet: Math.min(potPlusRaises + this.currentTotalRaise, maxBet),
+      smallBet: Math.min(Math.round((potPlusRaises + callDelta) * 0.5) + this.currentTotalRaise, maxBet),
+      mediumBet: Math.min(Math.round((potPlusRaises + callDelta) * 2/3) + this.currentTotalRaise, maxBet),
+      largeBet: Math.min((potPlusRaises + callDelta) + this.currentTotalRaise, maxBet),
       smallBetText: '1/2 Pot',
       mediumBetText: '2/3 Pot',
       largeBetText: 'Pot',
