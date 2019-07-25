@@ -10,7 +10,7 @@ class VersusResult extends React.Component {
   render() {
     const {game} = this.props;
     return(
-      <div id = 'VersusResult'>
+      <div className = 'VersusResult'>
         <PlayerListing player = {game[0][0]} status = {game[0][1]}/>
         <PlayerListing player = {game[1][0]} status = {game[1][1]}/>
       </div>

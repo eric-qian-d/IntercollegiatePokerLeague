@@ -1,6 +1,7 @@
 import React from 'react';
 import VersusResult from './VersusResult';
 import {getResults} from "../../js/custom-match-lobby";
+import './ResultsContainer.css';
 
 class ResultsContainer extends React.Component {
   constructor(props) {
@@ -11,13 +12,11 @@ class ResultsContainer extends React.Component {
   }
 
   render() {
-    console.log('matches');
-    console.log(this.state.matches);
     const versusResultsList = this.state.matches.map(game => {
       return <VersusResult game = {game}/>
     })
     return (
-      <div className = 'ResultsContainer'>
+      <div id = 'ResultsContainer'>
         {versusResultsList}
       </div>
     )

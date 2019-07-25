@@ -1,7 +1,10 @@
-#VersusResult{
+.VersusResult{
   width: 50%;
-  margin: auto;
+  height: 4em;
+  margin: 40px auto;
   display: flex;
   justify-content: center;
   color: white;
+  position: relative;
+
 }
