@@ -1,7 +1,19 @@
 .MatchResultPlayerListing {
-  width: 40%;
+  width: 90%;
   display: inline-block;
   margin: auto;
   text-align: center;
   height:5vh;
+  border: solid black 1px;
+  /* position: absolute; */
+}
+
+.MatchResultPlayerListingContainer {
+  width: 40%;
+  height: 3em;
+}
+
+.WinCrown {
+  width: 40px;
+  height: 40px;
 }

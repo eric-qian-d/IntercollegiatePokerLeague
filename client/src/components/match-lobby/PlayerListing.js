@@ -10,23 +10,27 @@ class PlayerListing extends React.Component {
   //eventually should make props pass in something that's not just a name
   render() {
     const {player, status} = this.props;
-    const statusColorMap = {
-      'lobby': 'black',
-      'in progress': 'yellow',
-      'won': 'green',
-      'lost': 'red',
+    if (status === 'won') {
+      return (
+
+        <div  className = 'MatchResultPlayerListingContainer'>
+          <img className = 'WinCrown' src = '/images/crown.png'/>
+          <div className = 'MatchResultPlayerListing'>
+            {player}
+          </div>
+        </div>
+      )
+    } else {
+      return (
+
+        <div className = 'MatchResultPlayerListingContainer'>
+          <div className = 'MatchResultPlayerListing'>
+            {player}
+          </div>
+        </div>
+      )
     }
-    const style = {
-      borderStyle: 'solid',
-      borderWidth: '3px',
-      // width: '200px',
-    }
-    style.borderColor = statusColorMap[status];
-    return (
-      <div style = {style} className = 'MatchResultPlayerListing'>
-        {player}
-      </div>
-    )
+
   }
 }
 
