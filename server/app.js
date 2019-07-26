@@ -37,14 +37,9 @@ app.use('/api/users', users);
 app.use('/api/choose-game', chooseGame);
 app.use('/api/rankings', rankings);
 
-function usernameToLowerCase(req, res, next){
-  // console.log(req);
-    req.body.email = req.body.email.toLowerCase();
-    next();
-}
 
 //keep this here to keep passport modularized
-app.post('/login', usernameToLowerCase, function(req, res, next) {
+app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       return next(err); // will generate a 500 error
@@ -53,7 +48,6 @@ app.post('/login', usernameToLowerCase, function(req, res, next) {
     if (! user) {
       return res.status(401).send({ success : false, message : 'authentication failed' });
     }
-    console.log(user);
     req.login(user, function(err){
       if(err){
         return next(err);
@@ -66,7 +60,7 @@ app.post('/login', usernameToLowerCase, function(req, res, next) {
 
 app.post('/logout', function(req, res, next) {
   req.session.destroy(function (err) {
-    console.log(err);
+    return res.status(200).send({ success : true, message : 'logout succeeded' });
   })
 });
 

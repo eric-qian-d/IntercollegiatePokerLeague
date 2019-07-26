@@ -21,7 +21,7 @@ class Navbar1 extends React.Component {
             <Nav.Link className = 'NavbarItem' href="/">Home</Nav.Link>
             <Nav.Link className = 'NavbarItem' href="/choose-game">Games</Nav.Link>
             <Nav.Link className = 'NavbarItem' href="/rankings">Rankings</Nav.Link>
-            <Nav.Link className = 'NavbarItem' href="/" onClick = {()=> {
+            <Nav.Link className = 'NavbarItem' onClick = {()=> {
                   fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/logout', {
                     method: 'POST',
                     headers: {
@@ -31,8 +31,15 @@ class Navbar1 extends React.Component {
                     body: JSON.stringify(this.state),
                     credentials : 'include',
                     withCredentials : true,
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.success) {
+                      this.props.history.push("/login");
+                    } else {
+                      alert("Logout failed");
+                    }
                   });
-                  this.props.history.push('/login');
                 }
               }>
               Logout

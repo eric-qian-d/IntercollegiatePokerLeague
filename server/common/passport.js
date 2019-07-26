@@ -16,8 +16,7 @@ module.exports = {
 
     passport.use(
       new LocalStrategy({usernameField: 'email'}, async function(email, password, done) {
-        console.log(email);
-        console.log(password);
+        email = email.toLowerCase();
         const user = await models.User.findOne({ where: { email: email } });
         if (!user) {
           console.log("user doesnt exist");
@@ -28,7 +27,6 @@ module.exports = {
           console.log("wrong password");
           return done(null, false, { message: 'Password does not match username.' });
         }
-        console.log("success");
         return done(null, user);
       })
     )

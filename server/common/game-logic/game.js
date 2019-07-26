@@ -637,7 +637,7 @@ module.exports = class Game { // maybe rename this to be Table
       time: this.time,
       maxTime: this.maxTime,
       checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
-      minBet: Math.max(2 * this.currentTotalRaise - this.lastRaiseSize, this.bigBlindValue),
+      minBet: Math.min(Math.max(2 * this.currentTotalRaise - this.lastRaiseSize, this.bigBlindValue), maxBet),
       maxBet: maxBet,
       smallBet: Math.min(Math.round((potPlusRaises + callDelta) * 0.5) + this.currentTotalRaise, maxBet),
       mediumBet: Math.min(Math.round((potPlusRaises + callDelta) * 2/3) + this.currentTotalRaise, maxBet),
