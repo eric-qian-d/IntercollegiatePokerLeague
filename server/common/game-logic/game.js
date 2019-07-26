@@ -72,7 +72,11 @@ module.exports = class Game { // maybe rename this to be Table
         //current player has run out of time
         const playerToAct = game.seatMap[game.action];
         const playerToActId = playerToAct.id;
-        game.fold(playerToActId);
+        if (game.seatMap[game.action].investedStack === game.currentTotalRaise) {
+          game.call(playerToActId);
+        } else {
+          game.fold(playerToActId);
+        }
       } else {
         //just ticking waiting for player to act
         game.time--;
