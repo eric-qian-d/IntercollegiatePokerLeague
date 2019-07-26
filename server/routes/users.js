@@ -4,7 +4,7 @@ const models = "./models";
 const userLogic = require("../common/userLogic");
 
 router.post('/registration', async (req, res, next) => {
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const splitEmail = email.split('@');
   //check for valid email
   if (splitEmail.length === 2 && splitEmail[1].slice(-4) === '.edu') {
