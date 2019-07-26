@@ -28,12 +28,13 @@ class RegistrationForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {email, password, reenteredPassword} = this.state;
-    if (email.length < 4 || email.slice(-4) !== ".edu") {
+    if (email.length < 4 || email.toLowerCase().slice(-4) !== ".edu") {
       alert("Must use a .edu email!")
     }
     else if (password !== reenteredPassword) {
       alert("Passwords don't match!")
     } else {
+      this.state.email = this.state.email.toLowerCase();
       fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/registration', {
         method: 'POST',
         headers: {

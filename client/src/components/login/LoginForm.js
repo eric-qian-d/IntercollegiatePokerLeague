@@ -27,9 +27,10 @@ class LoginForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {email, password} = this.state;
-    if (email.length < 4 || email.slice(-4) !== ".edu") {
+    if (email.length < 4 || email.toLowerCase().slice(-4) !== ".edu") {
       alert("must use a .edu email!")
     } else {
+      this.state.email = this.state.email.toLowerCase();
       fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/login', {
         method: 'POST',
         headers: {
