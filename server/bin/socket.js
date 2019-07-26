@@ -138,6 +138,8 @@ module.exports = {
       if(socket.request.isAuthenticated()) {
         //associate user with a socket
         const userId = socket.request.user.id;
+        console.log('CONNECTION');
+        console.log(socket.id);
         userSocketMap[userId] = socket.id;
 
         if (!userLocation.hasOwnProperty(userId)) {
@@ -154,6 +156,11 @@ module.exports = {
           socket.join(userMatchMap[userId]);
         }
       }
+
+      socket.on('TEST', async () => {
+        console.log('test received!');
+      })
+
       //Sends user the correct page when they refresh
       socket.on('WHICH PAGE', async () => {
         const state = userLocation[socket.request.user.id];

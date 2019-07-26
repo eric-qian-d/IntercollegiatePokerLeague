@@ -1,5 +1,6 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./store/reducer";
-const store = createStore(rootReducer);
+import socketMiddleware from './store/socket.js';
+const store = createStore(rootReducer, applyMiddleware(socketMiddleware));
 
 export default store;

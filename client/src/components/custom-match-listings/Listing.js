@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from "react-redux";
-
 import {joinMatch} from "../../js/custom-match-listings";
 import {changeStoreState} from '../../actions/index';
 import './Listing.css';

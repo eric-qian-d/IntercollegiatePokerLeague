@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from '../navbar/Navbar';
+import TestButton from './TestButton';
 import vars from '../../vars';
 
 class HomeContainer extends React.Component {
@@ -23,6 +24,7 @@ class HomeContainer extends React.Component {
     return(
       <div>
         <Navbar {...this.props}/>
+        <TestButton/>
       </div>
     )
   }
