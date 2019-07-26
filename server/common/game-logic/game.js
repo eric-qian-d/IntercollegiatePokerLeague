@@ -279,12 +279,7 @@ module.exports = class Game { // maybe rename this to be Table
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
       })[0];
-      console.log('raise req');
-      console.log(finalAmount);
       const raiseDelta = finalAmount - player.investedStack;
-      // console.log(this.currentTotalRaise);
-      // console.log(this.lastRaiseSize);
-      // console.log(2 * this.currentTotalRaise - this.lastRaiseSize);
       if (finalAmount >= 2 * this.currentTotalRaise - this.lastRaiseSize) {
         clearInterval(this.timer)
         //legal raise
@@ -631,8 +626,7 @@ module.exports = class Game { // maybe rename this to be Table
     const potPlusRaises = this.pot + Object.values(this.seatMap).reduce(((accumulator, player) => {
       return accumulator + player.investedStack;
     }), 0);
-    const callDelta = (this.currentTotalRaise - this.seatMap[playerSeat].investedStack)
-
+    const callDelta = Math.max(0, (this.currentTotalRaise - this.seatMap[playerSeat].investedStack));
     const maxBet = parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize);
     const gameInfo = {
       numPlayers: this.numPlayers,
@@ -643,7 +637,7 @@ module.exports = class Game { // maybe rename this to be Table
       time: this.time,
       maxTime: this.maxTime,
       checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
-      minBet: 2 * this.currentTotalRaise - this.lastRaiseSize,
+      minBet: Math.max(2 * this.currentTotalRaise - this.lastRaiseSize, this.bigBlindValue),
       maxBet: maxBet,
       smallBet: Math.min(Math.round((potPlusRaises + callDelta) * 0.5) + this.currentTotalRaise, maxBet),
       mediumBet: Math.min(Math.round((potPlusRaises + callDelta) * 2/3) + this.currentTotalRaise, maxBet),
