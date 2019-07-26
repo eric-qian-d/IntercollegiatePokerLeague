@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from "react-redux";
 import vars from '../../vars';
-import {changeGameType} from '../../actions/index';
+import {changeStoreState} from '../../actions/index';
 import './RankedHUGameButton.css';
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeGameType: article => dispatch(changeGameType(article))
+    changeStoreState: article => dispatch(changeStoreState(article))
   };
 }
 
@@ -25,7 +25,7 @@ class RawRankedHUGameButton extends React.Component {
   }
   clickLogic() {
     const {test} = this.state;
-    this.props.changeGameType({ gameType: test });
+    this.props.changeStoreState({ gameType: test });
   }
 
   render() {

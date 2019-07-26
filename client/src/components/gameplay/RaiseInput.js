@@ -1,12 +1,12 @@
 import React from 'react';
 import {raise} from "../../js/gameplay";
 import { connect } from "react-redux";
-import {changeGameType} from '../../actions/index';
+import {changeStoreState} from '../../actions/index';
 import './RaiseInput.css';
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeGameType: article => dispatch(changeGameType(article))
+    changeStoreState: article => dispatch(changeStoreState(article))
   };
 }
 
@@ -27,7 +27,7 @@ class RawRaiseInput extends React.Component {
   }
 
   handleChange(event) {
-    this.props.changeGameType({raiseSize: event.target.value});
+    this.props.changeStoreState({raiseSize: event.target.value});
   }
 
 

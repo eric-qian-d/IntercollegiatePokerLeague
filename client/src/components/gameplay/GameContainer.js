@@ -3,11 +3,11 @@ import Table from "./Table";
 import ButtonBox from "./ButtonBox";
 import ReturnToLobbyButton from "./ReturnToLobbyButton";
 import { connect } from "react-redux";
-import {changeGameType} from '../../actions/index';
+import {changeStoreState} from '../../actions/index';
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeGameType: article => dispatch(changeGameType(article))
+    changeStoreState: article => dispatch(changeStoreState(article))
   };
 }
 

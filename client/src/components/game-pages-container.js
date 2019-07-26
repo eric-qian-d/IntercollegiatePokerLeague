@@ -70,12 +70,6 @@ class GamePagesContainer extends React.Component {
     }
   }
 
-  // componentDidMount() {
-  //   const {socket} = this.state;
-  //
-  //
-  // }
-
 }
 
 export default GamePagesContainer;

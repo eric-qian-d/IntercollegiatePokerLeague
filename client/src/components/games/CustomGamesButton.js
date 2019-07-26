@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from "react-redux";
 import './CustomGamesButton.css';
-import {changeGameType} from '../../actions/index';
+import {changeStoreState} from '../../actions/index';
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeGameType: article => dispatch(changeGameType(article))
+    changeStoreState: article => dispatch(changeStoreState(article))
   };
 }
 
@@ -26,7 +26,7 @@ class RawCustomGamesButton extends React.Component {
 
   clickLogic() {
     const {test} = this.state;
-    this.props.changeGameType({ gameType: test });
+    this.props.changeStoreState({ gameType: test });
     //this.props.history.push("/games")
   }
 

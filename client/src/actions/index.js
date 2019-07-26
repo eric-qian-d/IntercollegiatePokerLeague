@@ -1,4 +1,4 @@
-export function changeGameType(payload) {
+export function changeStoreState(payload) {
   return { type: 'CHANGE_STATE', payload }
 };
 

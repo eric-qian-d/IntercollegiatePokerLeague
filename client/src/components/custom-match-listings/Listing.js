@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from "react-redux";
 
 import {joinMatch} from "../../js/custom-match-listings";
-import {changeGameType} from '../../actions/index';
+import {changeStoreState} from '../../actions/index';
 import './Listing.css';
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeGameType: article => dispatch(changeGameType(article))
+    changeStoreState: article => dispatch(changeStoreState(article))
   };
 }
 
@@ -22,15 +22,9 @@ class RawListing extends React.Component {
     super(props);
   }
 
-  // joinMatchButtonLogic() {
-  //   joinMatch(this.props.socket, this.props.matchId);
-  // }
-
   clickLogic() {
     const {matchId} = this.props;
-    console.log('clicked')
-    this.props.changeGameType({ selectedCustomMatchId: matchId });
-    //this.props.history.push("/games")
+    this.props.changeStoreState({ selectedCustomMatchId: matchId });
   }
 
 
