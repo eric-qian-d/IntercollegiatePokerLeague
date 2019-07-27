@@ -13,9 +13,9 @@ class PlayerListing extends React.Component {
     if (status === 'won') {
       return (
 
-        <div  className = 'MatchResultPlayerListingContainer'>
+        <div  className = 'MatchResultPlayerListingContainer '>
           <img className = 'WinCrown' src = '/images/crown.png'/>
-          <div className = 'MatchResultPlayerListing'>
+          <div className = 'MatchResultPlayerListing DarkDiv'>
             {player}
           </div>
         </div>
@@ -24,7 +24,7 @@ class PlayerListing extends React.Component {
       return (
 
         <div className = 'MatchResultPlayerListingContainer'>
-          <div className = 'MatchResultPlayerListing'>
+          <div className = 'MatchResultPlayerListing DarkDiv'>
             {player}
           </div>
         </div>

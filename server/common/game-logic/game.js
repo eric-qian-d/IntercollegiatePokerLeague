@@ -364,7 +364,6 @@ module.exports = class Game { // maybe rename this to be Table
       return player.stackSize > 0;
     })
     if (listOfLivePlayers.length === 1) {
-      //someone has won the match
       this.endGame(listOfLivePlayers[0].id);
     }
   }

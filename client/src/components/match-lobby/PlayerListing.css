@@ -1,11 +1,10 @@
 .MatchResultPlayerListing {
-  width: 100px;
-  /* display: inline-block; */
+  width: 40%;
+  max-width: 300px;
   margin: auto;
   text-align: center;
-  height:5vh;
+  height:4em;
   border: solid black 1px;
-
   position: absolute;
   top:0px;
 
