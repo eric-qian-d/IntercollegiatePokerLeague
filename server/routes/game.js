@@ -19,6 +19,9 @@ const rankedQueue = [];
 router.post('/join-ranked', async (req, res, next) => {
   const user = req.user;
   const userId = user.id;
+  if (!userStatus.hasOwnProperty[userId]) {
+    userStatus[userId] = constants.userStatus.AVAILABLE;
+  }
   if (userStatus[userId] === constants.userStatus.AVAILABLE) {
     userStatus[userId] = constants.userStatus.IN_RANKED_HU_QUEUE;
     userLocation[userId] = constants.userLocation.IN_QUEUE;
@@ -28,26 +31,31 @@ router.post('/join-ranked', async (req, res, next) => {
     } else {
       rankedQueue.push(user);
     }
+    return res.status(200).send({ success : true, message : 'join match succeeded' });
   }
-  return res.status(200).send({ success : true, message : 'join match succeeded' });
+
 });
 
 router.post('/join-normal', async (req, res, next) => {
   const user = req.user;
   const userId = user.id;
+  // console.log(user);
+  // console.log(userStatus);
+  if (!userStatus.hasOwnProperty[userId]) {
+    userStatus[userId] = constants.userStatus.AVAILABLE;
+  }
   if (userStatus[userId] === constants.userStatus.AVAILABLE) {
     userStatus[userId] = constants.userStatus.IN_NORMAL_HU_QUEUE;
     userLocation[userId] = constants.userLocation.IN_QUEUE;
-    console.log(user);
-    console.log(normalQueue);
     if (normalQueue.length == 1) {
       const otherPlayer = normalQueue.shift();
       socketLogic.createNewNormalHUMatch(user, otherPlayer);
     } else {
       normalQueue.push(user);
     }
+    return res.status(200).send({ success : true, message : 'join match succeeded' });
   }
-  return res.status(200).send({ success : true, message : 'join match succeeded' });
+
 });
 
 router.post('/cancel-match', async (req, res, next) => {

@@ -62,8 +62,8 @@ module.exports = class Match {
         userGameMap[team1[i].id] = newGameId;
         userGameMap[team2[i].id] = newGameId;
         console.log(userSocketMap);
-        io.to(userSocketMap[team1[i].id]).emit('GAME START', constants.userLocation.GAME);
-        io.to(userSocketMap[team2[i].id]).emit('GAME START', constants.userLocation.GAME);
+        io.to(userSocketMap[team1[i].id]).emit('PAGE', constants.userLocation.GAME);
+        io.to(userSocketMap[team2[i].id]).emit('PAGE', constants.userLocation.GAME);
       }
     }
   }

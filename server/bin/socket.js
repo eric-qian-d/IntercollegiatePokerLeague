@@ -157,10 +157,6 @@ module.exports = {
         }
       }
 
-      socket.on('TEST', async () => {
-        console.log('test received!');
-      })
-
       //Sends user the correct page when they refresh
       socket.on('WHICH PAGE', async () => {
         const state = userLocation[socket.request.user.id];

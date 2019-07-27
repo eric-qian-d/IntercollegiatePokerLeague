@@ -36,6 +36,7 @@ class RawPlayButton extends React.Component {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
+          console.log(data);
           this.props.history.push('/games');
         } else {
           alert('Logout failed');
