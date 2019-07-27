@@ -357,6 +357,18 @@ module.exports = class Game { // maybe rename this to be Table
     }
   }
 
+  surrender(playerId) {
+    const playerSeatNumber = this.getPlayerSeatById(playerId);
+    this.seatMap[playerSeatNumber].stackSize = 0;
+    const listOfLivePlayers = Object.values(this.seatMap).filter(player => {
+      return player.stackSize > 0;
+    })
+    if (listOfLivePlayers.length === 1) {
+      //someone has won the match
+      this.endGame(listOfLivePlayers[0].id);
+    }
+  }
+
   nextStreet() {
     this.time = this.maxTime;
     //gets a list of all the players still in the hand
@@ -550,22 +562,7 @@ module.exports = class Game { // maybe rename this to be Table
         })
         if (listOfLivePlayers.length === 1) {
           //someone has won the match
-          this.finished = true;
-          const winnerId = listOfLivePlayers[0].id;
-          if (this.parentMatch !== null) {
-            //should be true by default now
-            this.parentMatch.games[this.id].winner = winnerId;
-            const numRemainingMatches = Object.values(this.parentMatch.games).filter(game => {
-              return game.winner === 'none';
-            }).length;
-            if (numRemainingMatches === 0) {
-              this.parentMatch.end();
-            }
-          }
-          this.emitAll(true);
-          Object.values(this.seatMap).forEach(player => {
-              this.io.to(this.userSocketMap[player.id]).emit('GAME ENDED', player.id === winnerId);
-          })
+          this.endGame(listOfLivePlayers[0].id);
         } else {
           setTimeout(() => {
             this.startHand();
@@ -674,7 +671,11 @@ module.exports = class Game { // maybe rename this to be Table
         }
 
       } else {
-        hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
+        if (secondaryPlayer.hand.length == 2) {
+          hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
+        } else {
+          hand = [["none", "none"], ["none", "none"]];
+        }
       }
 
       return (
@@ -701,6 +702,25 @@ module.exports = class Game { // maybe rename this to be Table
         player.id
       )
     });
+  }
+
+  endGame(winnerId) {
+    this.finished = true;
+    clearInterval(this.timer);
+    if (this.parentMatch !== null) {
+      //should be true by default now
+      this.parentMatch.games[this.id].winner = winnerId;
+      const numRemainingMatches = Object.values(this.parentMatch.games).filter(game => {
+        return game.winner === 'none';
+      }).length;
+      if (numRemainingMatches === 0) {
+        this.parentMatch.end();
+      }
+    }
+    this.emitAll(true);
+    Object.values(this.seatMap).forEach(player => {
+        this.io.to(this.userSocketMap[player.id]).emit('GAME ENDED', player.id === winnerId);
+    })
   }
 
 

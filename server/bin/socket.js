@@ -71,11 +71,6 @@ function leaveGame(playerId) {
  */
 function fold(playerId) {
   const game = gameMap[userGameMap[playerId]];
-  const playerIds = game.getPlayerIds();
-  const gameuserSocketMap = {}
-  playerIds.forEach(playerId => {
-    gameuserSocketMap[playerId] = userSocketMap[playerId];
-  })
   game.fold(playerId);
 }
 
@@ -85,11 +80,6 @@ function fold(playerId) {
  */
 function call(playerId) {
   const game = gameMap[userGameMap[playerId]];
-  const playerIds = game.getPlayerIds();
-  const gameuserSocketMap = {}
-  playerIds.forEach(playerId => {
-    gameuserSocketMap[playerId] = userSocketMap[playerId];
-  })
   game.call(playerId);
 }
 
@@ -101,11 +91,12 @@ function call(playerId) {
 function raise(playerId, finalAmount) {//maybe should make it raiseAmount rather than finalAmount
   const game = gameMap[userGameMap[playerId]];
   const playerIds = game.getPlayerIds();
-  const gameuserSocketMap = {}
-  playerIds.forEach(playerId => {
-    gameuserSocketMap[playerId] = userSocketMap[playerId];
-  })
   game.raise(playerId, finalAmount);
+}
+
+function surrender(playerId) {
+  const game = gameMap[userGameMap[playerId]];
+  game.surrender(playerId);
 }
 
 function emitUserLocation(userId) {
@@ -321,6 +312,12 @@ module.exports = {
           }
         }
       });
+      socket.on('SURRENDER', async() => {
+        const userId = socket.request.user.id;
+        if (userStatus[userId] === constants.userStatus.IN_GAME) {
+          surrender(userId);
+        }
+      })
 
       socket.on('GO TO LOBBY', async () => {
         const userId = socket.request.user.id;

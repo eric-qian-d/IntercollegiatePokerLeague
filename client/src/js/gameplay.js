@@ -14,6 +14,10 @@ export const raise = (socket, finalAmount) => {
   socket.emit("RAISE", finalAmount);
 }
 
+export const surrender = (socket) => {
+  socket.emit("SURRENDER");
+}
+
 export const lobby = (socket) => {
   socket.emit("GO TO LOBBY");
 }

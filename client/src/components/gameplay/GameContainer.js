@@ -4,6 +4,7 @@ import ButtonBox from "./ButtonBox";
 import ReturnToLobbyButton from "./ReturnToLobbyButton";
 import DefeatBanner from './DefeatBanner';
 import VictoryBanner from './VictoryBanner';
+import {surrender} from "../../js/gameplay";
 import { connect } from "react-redux";
 import {changeStoreState} from '../../actions/index';
 
@@ -84,6 +85,9 @@ class RawGameContainer extends React.Component {
           mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
           mediumBetText = {mediumBetText} largeBetText = {largeBetText} />
         <ReturnToLobbyButton socket = {socket} />
+        <button id = 'SurrenderButton' onClick = {() => {surrender(socket)}}>
+          Surrender
+        </button>
         <VictoryBanner display = {finished && victory} socket = {socket}/>
         <DefeatBanner display = {finished && !victory} socket = {socket}/>
       </div>
