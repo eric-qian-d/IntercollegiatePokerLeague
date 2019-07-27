@@ -21,7 +21,14 @@ class QuitSearchButton extends React.Component {
       credentials : 'include',
       withCredentials : true,
     });
-    this.props.history.push('/choose-game');
+    .then(data => {
+      if (data.success) {
+        console.log(data);
+        this.props.history.push('/choose-game');
+      } else {
+        alert('Logout failed');
+      }
+    });
   }
 
   render() {
