@@ -39,7 +39,10 @@ router.post('/join-ranked', async (req, res, next) => {
 router.post('/join-normal', async (req, res, next) => {
   const user = req.user;
   const userId = user.id;
-  if (!userStatus.hasOwnProperty[userId]) {
+  console.log(userStatus);
+  console.log(userStatus.hasOwnProperty(userId));
+  console.log(userId);
+  if (!userStatus.hasOwnProperty(userId)) {
     userStatus[userId] = constants.userStatus.AVAILABLE;
   }
   if (userStatus[userId] === constants.userStatus.AVAILABLE) {

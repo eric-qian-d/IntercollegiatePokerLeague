@@ -26,7 +26,7 @@ class QuitSearchButton extends React.Component {
         console.log(data);
         this.props.history.push('/choose-game');
       } else {
-        alert('Logout failed');
+        alert('Quit search failed');
       }
     });
   }

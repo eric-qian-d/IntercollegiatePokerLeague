@@ -138,8 +138,6 @@ module.exports = {
       if(socket.request.isAuthenticated()) {
         //associate user with a socket
         const userId = socket.request.user.id;
-        console.log('CONNECTION');
-        console.log(socket.id);
         userSocketMap[userId] = socket.id;
 
         if (!userLocation.hasOwnProperty(userId)) {
