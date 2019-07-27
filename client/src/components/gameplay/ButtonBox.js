@@ -3,6 +3,7 @@ import CallButton from "./CallButton";
 import FoldButton from "./FoldButton";
 import RaiseButton from './RaiseButton';
 import RaiseInput from './RaiseInput';
+import RaiseSlider from './RaiseSlider';
 import RaiseContainer from "./RaiseContainer";
 
 import './ButtonBox.css';
@@ -20,12 +21,16 @@ class ButtonBox extends React.Component {
         maxBet = {maxBet} smallBet = {smallBet}
         mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
         mediumBetText = {mediumBetText} largeBetText = {largeBetText}/>
-
+        <div id = 'RaiseInputsContainer'>
+          <RaiseSlider minBet = {minBet} maxBet = {maxBet} />
+          <RaiseInput/>
+        </div>
         <div id = 'ActionButtonContainer'>
+
           <FoldButton socket = {socket}/>
           <CallButton  socket = {socket} checkable = {checkable}/>
           <RaiseButton socket = {socket}/>
-          <RaiseInput/>
+
         </div>
       </div>
 

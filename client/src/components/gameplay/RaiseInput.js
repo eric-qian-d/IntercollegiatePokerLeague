@@ -1,5 +1,4 @@
 import React from 'react';
-import {raise} from "../../js/gameplay";
 import { connect } from "react-redux";
 import {changeStoreState} from '../../actions/index';
 import './RaiseInput.css';
@@ -20,9 +19,6 @@ class RawRaiseInput extends React.Component {
   //from https://reactjs.org/docs/forms.html
   constructor(props) {
     super(props);
-    this.state = {
-      value : '',
-    };
     this.handleChange = this.handleChange.bind(this);
   }
 

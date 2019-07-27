@@ -20,4 +20,5 @@
   border: solid white 1px;
   height: 3em;
   margin: 2px;
+  cursor: pointer;
 }

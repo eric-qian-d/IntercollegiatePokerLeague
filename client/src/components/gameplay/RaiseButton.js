@@ -40,7 +40,7 @@ class RawRaiseButton extends React.Component {
   render() {
     return (
         <button id = 'RaiseButton' className = 'ActionButton BackgroundDiv' onClick = {() => this.handleSubmit()}>
-          Raise to
+          Raise to {this.props.raiseSize}
         </button>
     );
   }
