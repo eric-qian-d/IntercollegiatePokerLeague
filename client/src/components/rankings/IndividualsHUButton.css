@@ -2,6 +2,7 @@
   display: inline-block;
   margin: auto;
   width: 40%;
+  cursor: pointer;
 }
 
 #IndividualsHUButton:hover {

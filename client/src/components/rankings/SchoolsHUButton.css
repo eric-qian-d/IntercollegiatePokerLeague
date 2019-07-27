@@ -1,6 +1,7 @@
 #SchoolsHUButton {
   display: inline-block;
   margin: auto;
+  cursor: pointer;
 }
 
 #SchoolsHUButton:hover {

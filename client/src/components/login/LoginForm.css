@@ -81,6 +81,7 @@ input:-webkit-autofill:active {
   font-size: 20px;
   border-radius: 50px;
   border: 0px;
+  cursor: pointer;
 }
 
 .FormTitle {

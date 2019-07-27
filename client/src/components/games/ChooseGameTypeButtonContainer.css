@@ -18,6 +18,7 @@
   min-width: 200px;
   border: 1px solid transparent;
   border-radius: 5px;
+  cursor: pointer;
 
 }
 
@@ -73,6 +74,10 @@
 .WhiteDiv {
   background-color: white;
   color: black
+}
+
+.more {
+  cursor:pointer;
 }
 
 :focus {
