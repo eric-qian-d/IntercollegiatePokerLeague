@@ -15,7 +15,7 @@ class LoginContainer extends React.Component {
     .then(response => response.json())
     .then(data => {
       if (data.loggedIn) {
-        this.props.history.push("/games");
+        this.props.history.push("/");
       }
     });
   }

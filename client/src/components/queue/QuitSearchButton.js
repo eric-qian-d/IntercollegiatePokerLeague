@@ -20,7 +20,7 @@ class QuitSearchButton extends React.Component {
       body: JSON.stringify(this.state),
       credentials : 'include',
       withCredentials : true,
-    });
+    })
     .then(data => {
       if (data.success) {
         console.log(data);
