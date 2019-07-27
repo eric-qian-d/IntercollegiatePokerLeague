@@ -39,9 +39,6 @@ router.post('/join-ranked', async (req, res, next) => {
 router.post('/join-normal', async (req, res, next) => {
   const user = req.user;
   const userId = user.id;
-  console.log(userStatus);
-  console.log(userStatus.hasOwnProperty(userId));
-  console.log(userId);
   if (!userStatus.hasOwnProperty(userId)) {
     userStatus[userId] = constants.userStatus.AVAILABLE;
   }
@@ -66,12 +63,16 @@ router.post('/cancel-match', async (req, res, next) => {
     rankedQueue.shift();
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.OTHER;
+    return res.status(200).send({ success : true, message : 'cancel match succeeded' });
   } else if (userStatus[userId] === constants.userStatus.IN_NORMAL_HU_QUEUE) {
     normalQueue.shift();
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.OTHER;
+    return res.status(200).send({ success : true, message : 'cancel match succeeded' });
+  } else {
+    return res.status(200).send({ success : false, message : 'cancel match failed' });
   }
-  return res.status(200).send({ success : true, message : 'cancel match succeeded' });
+
 });
 
 

@@ -21,9 +21,9 @@ class QuitSearchButton extends React.Component {
       credentials : 'include',
       withCredentials : true,
     })
+    .then(response => response.json())
     .then(data => {
       if (data.success) {
-        console.log(data);
         this.props.history.push('/choose-game');
       } else {
         alert('Quit search failed');
