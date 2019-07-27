@@ -2,6 +2,8 @@ import React from "react";
 import Table from "./Table";
 import ButtonBox from "./ButtonBox";
 import ReturnToLobbyButton from "./ReturnToLobbyButton";
+import DefeatBanner from './DefeatBanner';
+import VictoryBanner from './VictoryBanner';
 import { connect } from "react-redux";
 import {changeStoreState} from '../../actions/index';
 
@@ -36,8 +38,8 @@ class RawGameContainer extends React.Component {
         largeBetText: gameInfo.largeBetText,
       });
     })
-    socket.on("MATCH ENDED", () => {
-      this.setState({finish: true});
+    socket.on('GAME ENDED', (victory) => {
+      this.setState({ finished: true , victory: victory})
     })
     this.state = {
       numPlayers: 0,
@@ -57,7 +59,8 @@ class RawGameContainer extends React.Component {
       largeBet: 0,
       smallBetText: '1/2 Pot',
       mediumBetText: '2/3 Pot',
-      largeBetText: 'Pot'
+      largeBetText: 'Pot',
+      victory: false
     }
   }
 
@@ -69,7 +72,7 @@ class RawGameContainer extends React.Component {
   render() {
     const {numPlayers, buttonLocation, action, pot, board, time, players,
       maxTime, checkable, minBet, maxBet, smallBet, mediumBet, largeBet,
-      smallBetText, mediumBetText, largeBetText} = this.state;
+      smallBetText, mediumBetText, largeBetText, finished, victory} = this.state;
     return (
       <div id = 'GameContainer'>
         <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation}
@@ -80,6 +83,8 @@ class RawGameContainer extends React.Component {
           mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
           mediumBetText = {mediumBetText} largeBetText = {largeBetText} />
         <ReturnToLobbyButton socket = {this.props.socket} />
+        <VictoryBanner display = {finished && victory}/>
+        <DefeatBanner display = {finished && !victory} />
       </div>
     )
   }

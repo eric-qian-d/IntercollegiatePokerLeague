@@ -519,12 +519,9 @@ module.exports = class Game { // maybe rename this to be Table
           }
         })
         //hacky solution that currently only works for 2 players
-        console.log(winners.length);
-        console.log(this.getPlayerSeatById(winners[0].id));
-        console.log(this.lastRaiser);
+        //determines how to show/muck cards on river
         if (winners.length === 1) {
           if (this.getPlayerSeatById(winners[0].id) === this.lastRaiser) {
-            console.log('emitting from here');
             this.emitAll(false, true, [this.lastRaiser])
           } else {
             this.emitAll(true);
@@ -566,6 +563,9 @@ module.exports = class Game { // maybe rename this to be Table
             }
           }
           this.emitAll(true);
+          Object.values(this.seatMap).forEach(player => {
+              this.io.to(this.userSocketMap[player.id]).emit('GAME ENDED', player.id === winnerId);
+          })
         } else {
           setTimeout(() => {
             this.startHand();
@@ -662,8 +662,6 @@ module.exports = class Game { // maybe rename this to be Table
             hand = [["none", "none"], ["none", "none"]];
           }
         } else {
-          console.log(playerId);
-          console.log(whichPlayers.includes(playerSeatNumber));
           if (secondaryPlayer.id === playerId || whichPlayers.includes(playerSeatNumber)) {
             if (secondaryPlayer.hand.length == 2) {
               hand = [[secondaryPlayer.hand[0].rank.toString(), secondaryPlayer.hand[0].suit], [secondaryPlayer.hand[1].rank.toString(), secondaryPlayer.hand[1].suit]];
