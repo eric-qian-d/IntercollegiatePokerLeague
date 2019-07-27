@@ -14,6 +14,8 @@ class GamePagesContainer extends React.Component {
     super(props);
     const socket = makeSocket();
     socket.on('PAGE', (page) => {
+      console.log('got page');
+      console.log(page);
       this.setState({page : page});
     });
     socket.emit('WHICH PAGE');

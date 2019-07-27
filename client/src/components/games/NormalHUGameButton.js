@@ -11,7 +11,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  console.log(state.gameType);
   return {
     gameType: state.gameType,
   }

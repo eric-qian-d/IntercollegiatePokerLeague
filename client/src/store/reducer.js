@@ -9,7 +9,6 @@ function rootReducer(state = initialState, action) {
     const newState = Object.assign({}, state,
       action.payload
     );
-    console.log(newState);
     return newState;
   }
   return state;

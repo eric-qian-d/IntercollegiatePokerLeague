@@ -17,7 +17,6 @@ class ChooseGameTypeButtonContainer extends React.Component {
       <div id = 'ChooseGameTypeButtonContainer'>
           <NormalHUGameButton />
           <RankedHUGameButton />
-          <CustomGamesButton  />
 
       </div>
     )

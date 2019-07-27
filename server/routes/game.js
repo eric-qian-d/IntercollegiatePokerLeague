@@ -29,7 +29,7 @@ router.post('/join-ranked', async (req, res, next) => {
       rankedQueue.push(user);
     }
   }
-
+  return res.status(200).send({ success : true, message : 'join match succeeded' });
 });
 
 router.post('/join-normal', async (req, res, next) => {
@@ -38,6 +38,8 @@ router.post('/join-normal', async (req, res, next) => {
   if (userStatus[userId] === constants.userStatus.AVAILABLE) {
     userStatus[userId] = constants.userStatus.IN_NORMAL_HU_QUEUE;
     userLocation[userId] = constants.userLocation.IN_QUEUE;
+    console.log(user);
+    console.log(normalQueue);
     if (normalQueue.length == 1) {
       const otherPlayer = normalQueue.shift();
       socketLogic.createNewNormalHUMatch(user, otherPlayer);
@@ -45,7 +47,7 @@ router.post('/join-normal', async (req, res, next) => {
       normalQueue.push(user);
     }
   }
-
+  return res.status(200).send({ success : true, message : 'join match succeeded' });
 });
 
 router.post('/cancel-match', async (req, res, next) => {
@@ -60,7 +62,7 @@ router.post('/cancel-match', async (req, res, next) => {
     userStatus[userId] = constants.userStatus.AVAILABLE;
     userLocation[userId] = constants.userLocation.OTHER;
   }
-
+  return res.status(200).send({ success : true, message : 'cancel match succeeded' });
 });
 
 

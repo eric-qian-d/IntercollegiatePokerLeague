@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
 import vars from '../../vars';
 import './PlayButton.css';
@@ -21,7 +21,7 @@ class RawPlayButton extends React.Component {
   clickLogic() {
     const {gameType} = this.props;
     if (gameType === 'CustomMatch') {
-      this.props.history.push("/games")
+      this.props.history.push('/games')
     } else if (gameType === 'NormalHUMatch') {
       fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/choose-game/join-normal', {
         method: 'POST',
@@ -32,8 +32,15 @@ class RawPlayButton extends React.Component {
         body: JSON.stringify(this.state),
         credentials : 'include',
         withCredentials : true,
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          this.props.history.push('/games');
+        } else {
+          alert('Logout failed');
+        }
       });
-      this.props.history.push('/games');
     } else if (gameType === 'RankedHUGameButton') {
       fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/choose-game/join-ranked', {
         method: 'POST',
@@ -45,7 +52,14 @@ class RawPlayButton extends React.Component {
         credentials : 'include',
         withCredentials : true,
       })
-      this.props.history.push('/games');
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          this.props.history.push('/games');
+        } else {
+          alert('Logout failed');
+        }
+      });
     }
   }
 
