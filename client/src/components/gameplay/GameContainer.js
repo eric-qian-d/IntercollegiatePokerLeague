@@ -73,6 +73,7 @@ class RawGameContainer extends React.Component {
     const {numPlayers, buttonLocation, action, pot, board, time, players,
       maxTime, checkable, minBet, maxBet, smallBet, mediumBet, largeBet,
       smallBetText, mediumBetText, largeBetText, finished, victory} = this.state;
+    const {socket} = this.props;
     return (
       <div id = 'GameContainer'>
         <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation}
@@ -82,9 +83,9 @@ class RawGameContainer extends React.Component {
           minBet = {minBet} maxBet = {maxBet} smallBet = {smallBet}
           mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
           mediumBetText = {mediumBetText} largeBetText = {largeBetText} />
-        <ReturnToLobbyButton socket = {this.props.socket} />
-        <VictoryBanner display = {finished && victory}/>
-        <DefeatBanner display = {finished && !victory} />
+        <ReturnToLobbyButton socket = {socket} />
+        <VictoryBanner display = {finished && victory} socket = {socket}/>
+        <DefeatBanner display = {finished && !victory} socket = {socket}/>
       </div>
     )
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import './DefeatBanner.css';
+import {lobby} from "../../js/gameplay";
 
 class DefeatBanner extends React.Component {
   constructor(props) {
@@ -11,7 +12,12 @@ class DefeatBanner extends React.Component {
     if (display) {
       return (
         <div id = 'DefeatBanner'>
-          Defeat
+          <div id = 'DefeatBannerHeader'>
+            Defeat
+          </div>
+          <button id = 'DefeatButton' onClick = {() => {lobby(this.props.socket)}}>
+            Continue
+          </button>
         </div>
       )
     } else {
