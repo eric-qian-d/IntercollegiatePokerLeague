@@ -2,9 +2,9 @@
   bottom: 10px;
   position: fixed;
   /* margin: auto; */
-  min-width: 400px;
-  max-width: 600px;
-  width: 80%;
+  min-width: 200px;
+  max-width: 500px;
+  width: 50%;
   right: 0px;
   /* transform: translateX(-30%); */
 }

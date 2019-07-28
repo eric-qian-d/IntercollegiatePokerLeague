@@ -52,9 +52,6 @@ class Table extends React.Component {
 
 
     })
-    console.log(theta);
-    console.log(buttonLocation);
-    console.log(340 + Math.round(160 * (Math.cos(theta[buttonLocation]))))
     const button = <div id = 'DealerButton' style = {{'width': '50px', 'text-align': 'center', position: 'absolute', top: 340 - Math.round(160 * (Math.cos(theta[buttonLocation]))) + 'px', 'left': 250 - 25 + Math.round(200 * (Math.sin(theta[buttonLocation]))) + 'px'}}> B </div>
     const potDiv = <div id = 'Pot' style = {{'width': '50px', 'text-align': 'center',position: 'absolute', top: '280px', left: '225px'}}>{pot}</div>
     return (
