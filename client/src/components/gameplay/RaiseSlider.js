@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import {changeStoreState} from '../../actions/index';
-// import './RaiseSlider.css';
+import './RaiseSlider.css';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -28,7 +28,7 @@ class RawRaiseSlider extends React.Component {
   render() {
     const {minBet, maxBet} = this.props;
     return(
-      <div id="slideContainer">
+      <div id="sliderContainer">
         <input type="range" min={minBet} max={maxBet} id="slider" value={this.props.raiseSize} onChange={this.handleChange}/>
       </div>
     )

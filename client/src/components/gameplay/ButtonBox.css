@@ -1,11 +1,11 @@
 .ButtonBox{
-  bottom: 100px;
+  bottom: 10px;
   position: fixed;
   /* margin: auto; */
   min-width: 400px;
   max-width: 600px;
   width: 80%;
-  right: 10%;
+  right: 0px;
   /* transform: translateX(-30%); */
 }
 
@@ -13,12 +13,17 @@
   width: 100%;
 }
 
+#RaiseInputsContainer {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .ActionButton {
-  width: 20%;
+  width: 30%;
   text-align: center;
   border-radius: 5px;
   border: solid white 1px;
   height: 3em;
-  margin: 2px;
+  margin: 4px 8px 0px 0px;
   cursor: pointer;
 }

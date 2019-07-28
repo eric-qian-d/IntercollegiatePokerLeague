@@ -1,3 +1,9 @@
 #RaiseInput {
-  width: 10%;
+  width: 15%;
+  display: inline;
+  height: 40px;
+  font-size: 1.3em;
+  margin-left: 10px;
+  text-align: center;
+  border-radius: 5px;
 }
