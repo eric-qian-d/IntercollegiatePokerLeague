@@ -80,6 +80,10 @@
   cursor:pointer;
 }
 
+button:hover{
+  cursor:pointer;
+}
+
 :focus {
   outline: 0;
 }

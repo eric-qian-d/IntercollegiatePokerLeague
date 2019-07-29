@@ -1,5 +1,6 @@
 import React from 'react';
 import {returnToHome} from "../../js/match-lobby";
+import './ReturnToHomeButton.css';
 
 class ReturnToHomeButton extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class ReturnToHomeButton extends React.Component {
 
   render() {
     return (
-      <button className = 'ReturnToHomeButton' onClick = {() => {this.onClick()}}>
+      <button id = 'ReturnToHomeButton' className = 'BackgroundDiv' onClick = {() => {this.onClick()}}>
         Return to Home
       </button>
     )
