@@ -19,7 +19,7 @@ const rankedQueue = [];
 router.post('/join-ranked', async (req, res, next) => {
   const user = req.user;
   const userId = user.id;
-  if (!userStatus.hasOwnProperty[userId]) {
+  if (!userStatus.hasOwnProperty(userId)) {
     userStatus[userId] = constants.userStatus.AVAILABLE;
   }
   if (userStatus[userId] === constants.userStatus.AVAILABLE) {
