@@ -7,6 +7,7 @@ import VictoryBanner from './VictoryBanner';
 import {surrender} from "../../js/gameplay";
 import { connect } from "react-redux";
 import {changeStoreState} from '../../actions/index';
+import './GameContainer.css';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -61,7 +62,8 @@ class RawGameContainer extends React.Component {
       smallBetText: '1/2 Pot',
       mediumBetText: '2/3 Pot',
       largeBetText: 'Pot',
-      victory: false
+      victory: false,
+      displaySurrender: false,
     }
   }
 
@@ -70,11 +72,32 @@ class RawGameContainer extends React.Component {
     socket.emit("GET GAME STATE");
   }
 
+  surrenderLogic() {
+    this.setState({displaySurrender: false});
+    surrender(this.props.socket);
+  }
+
   render() {
     const {numPlayers, buttonLocation, action, pot, board, time, players,
       maxTime, checkable, minBet, maxBet, smallBet, mediumBet, largeBet,
-      smallBetText, mediumBetText, largeBetText, finished, victory} = this.state;
+      smallBetText, mediumBetText, largeBetText, finished, victory, displaySurrender} = this.state;
     const {socket} = this.props;
+
+    const surrenderBanner = displaySurrender ?
+    <div id = 'SurrenderBanner' className = 'DarkDiv'>
+      <div id = 'SurrenderBannerHeader'>
+        Are you sure you want to surrender?
+      </div>
+      <button id = 'SubmitSurrenderButton' className = 'SurrenderBannerButton DarkDiv' onClick = {() => {this.surrenderLogic()}}>
+        Yes
+      </button>
+      <button id = 'CancelSurrenderButton' className = 'SurrenderBannerButton DarkDiv' onClick = {() => {this.setState({displaySurrender: false}) }}>
+        No
+      </button>
+    </div>
+    :
+    null;
+
     return (
       <div id = 'GameContainer'>
         <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation}
@@ -85,9 +108,13 @@ class RawGameContainer extends React.Component {
           mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
           mediumBetText = {mediumBetText} largeBetText = {largeBetText} />
         <ReturnToLobbyButton socket = {socket} />
-        <button id = 'SurrenderButton' onClick = {() => {surrender(socket)}}>
+        <button id = 'SurrenderButton' onClick = {() => {this.setState({displaySurrender: true})}}>
           Surrender
         </button>
+        {surrenderBanner}
+
+
+
         <VictoryBanner display = {finished && victory} socket = {socket}/>
         <DefeatBanner display = {finished && !victory} socket = {socket}/>
       </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import TimeBar from './TimeBar';
 import './PlayerInfo.css';
 
 class PlayerInfo extends React.Component {

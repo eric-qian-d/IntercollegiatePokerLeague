@@ -645,12 +645,12 @@ module.exports = class Game { // maybe rename this to be Table
     };
 
     if (this.board.length === 0) {
-      gameInfo.smallBetText = '3 BB';
-      gameInfo.mediumBetText = '9 BB';
-      gameInfo.largeBetText = '27 BB';
       gameInfo.smallBet = Math.min(3 * this.bigBlindValue, maxBet);
       gameInfo.mediumBet = Math.min(9 * this.bigBlindValue, maxBet);
       gameInfo.largeBet = Math.min(27 * this.bigBlindValue, maxBet);
+      gameInfo.smallBetText = '3 BB';
+      gameInfo.mediumBetText = '9 BB';
+      gameInfo.largeBetText = '27 BB';
     }
 
 

@@ -1,34 +1,31 @@
-#VictoryBanner {
+#SurrenderBanner {
   position: absolute;
   top: 45%;
   left: 50%;
   margin-top: -50px;
-  margin-left: -100px;
-  width: 200px;
+  margin-left: -150px;
+  width: 300px;
   height: 100px;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.2em;
   border: 1px solid white;
   border-radius: 5px;
-  background-color: rgb(44,81,154);
-  color: white;
 }
 
-#VictoryBannerHeader {
+#SurrenderBannerHeader {
   margin-top: 10px;
 }
 
-#VictoryButton {
+.SurrenderBannerButton {
   width:100px;
   height: 30px;
   margin-top: 10px;
   border: 1px solid white;
   border-radius: 5px;
-  background-color: rgb(44,81,154);
-  color: white;
+  margin: 5px 4px 0px 4px;
 }
 
-#VictoryButton:hover {
+.SurrenderBannerButton:hover {
   background-color: white;
   color: black;
 }
