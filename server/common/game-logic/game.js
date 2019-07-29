@@ -624,6 +624,7 @@ module.exports = class Game { // maybe rename this to be Table
     }), 0);
     const callDelta = Math.max(0, (this.currentTotalRaise - this.seatMap[playerSeat].investedStack));
     const maxBet = parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize);
+
     const gameInfo = {
       numPlayers: this.numPlayers,
       buttonLocation: this.buttonLocation,
@@ -641,8 +642,18 @@ module.exports = class Game { // maybe rename this to be Table
       smallBetText: '1/2 Pot',
       mediumBetText: '2/3 Pot',
       largeBetText: 'Pot',
-
     };
+
+    if (this.board.length === 0) {
+      gameInfo.smallBetText = '3 BB';
+      gameInfo.mediumBetText = '9 BB';
+      gameInfo.largeBetText = '27 BB';
+      gameInfo.smallBet = Math.min(3 * this.bigBlindValue, maxBet);
+      gameInfo.mediumBet = Math.min(9 * this.bigBlindValue, maxBet);
+      gameInfo.largeBet = Math.min(27 * this.bigBlindValue, maxBet);
+    }
+
+
     const allPlayerInfo = [];
     const adjustedPlayersList = Object.values(this.seatMap).map((secondaryPlayer, playerSeatNumber) => {
       var hand;
