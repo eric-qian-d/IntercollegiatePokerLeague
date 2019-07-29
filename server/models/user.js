@@ -48,6 +48,14 @@ module.exports = (sequelize, DataTypes) => {
         field: 'email_is_verified',
         defaultValue: false
       },
+      emailVerificationId: {
+        type: DataTypes.UUID,
+        field: 'email_verification_id'
+      },
+      emailVerificationSentOn: {
+        type: DataTypes.DATE,
+        field: 'email_verification_sent_on'
+      },
       normalHURanking : {
         type: DataTypes.INTEGER,
         field: 'normal_hu_ranking',

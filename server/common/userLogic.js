@@ -2,6 +2,7 @@ const uuidV4 = require('uuid/v4');
 const models = require('../models');
 // const Op = models.Sequelize.Op;
 const bcrypt = require('bcrypt');
+const sendgrid = require('../integrations/sendgrid');
 
 const hashRounds = 5;
 
