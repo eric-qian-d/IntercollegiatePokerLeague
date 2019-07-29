@@ -1,7 +1,8 @@
 .PlayerInfo {
-  width: 120px;
+  width: 180px;
   height: 50px;
   border: 2px solid black;
+  border-radius: 10px;
   text-align: center;
   top: 40px;
   position: absolute;

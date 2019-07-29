@@ -1,5 +1,8 @@
 .Hand{
   margin: auto;
+  width: 184px;
+  position: absolute;
+  top: -10px;
 }
 
 .flex-container {

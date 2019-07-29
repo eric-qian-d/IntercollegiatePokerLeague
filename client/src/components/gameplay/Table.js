@@ -17,14 +17,14 @@ class Table extends React.Component {
     }
     const playersList = players.map((player, seat) => {
       const style = {
-        'top': 280 - Math.round(250 * (Math.cos(theta[seat]))) + 'px',
-        'left': 250 - 62 + Math.round(200 * (Math.sin(theta[seat]))) + 'px',
+        'top': 290 - Math.round(250 * (Math.cos(theta[seat]))) + 'px',
+        'left': 250 - 90 + Math.round(200 * (Math.sin(theta[seat]))) + 'px',
         'height': `150px`,
         'width': `125px`,
         'position': `absolute`,
       };
       return (
-        <div className = "test" style = {style}>
+        <div className = "PlayerContainerPositioningDiv" style = {style}>
          <PlayerContainer card1 = {player.hand[0]} card2 = {player.hand[1]} name = {player.name} stackSize = {player.stackSize} action = {seat === action} inHand = {player.inHand} time = {time} maxTime = {maxTime}/>
          </div>
       )
@@ -37,6 +37,7 @@ class Table extends React.Component {
         'width': `125px`,
         'position': `absolute`,
         'text-align': 'center',
+        color: 'white',
       };
       if (player.investedStack > 0) {
         return (
@@ -52,15 +53,15 @@ class Table extends React.Component {
 
 
     })
-    const button = <div id = 'DealerButton' style = {{'width': '50px', 'text-align': 'center', position: 'absolute', top: 340 - Math.round(160 * (Math.cos(theta[buttonLocation]))) + 'px', 'left': 250 - 25 + Math.round(200 * (Math.sin(theta[buttonLocation]))) + 'px'}}> B </div>
-    const potDiv = <div id = 'Pot' style = {{'width': '50px', 'text-align': 'center',position: 'absolute', top: '280px', left: '225px'}}>{pot}</div>
+    const button = <div id = 'DealerButton' style = {{color: 'white', 'width': '50px', 'text-align': 'center', position: 'absolute', top: 340 - Math.round(160 * (Math.cos(theta[buttonLocation]))) + 'px', 'left': 250 - 25 + Math.round(200 * (Math.sin(theta[buttonLocation]))) + 'px'}}> B </div>
+    const potDiv = <div id = 'Pot' style = {{color: 'white', 'width': '50px', 'text-align': 'center',position: 'absolute', top: '280px', left: '225px'}}>{pot}</div>
     return (
-      <div className = 'Table'>
+      <div id = 'Table'>
       {potDiv}
       {playersList}
       {playerInvestmentsList}
       {button}
-      <div style = {{borderRadius: `50%`, backgroundColor: '#bbb', height: '400px', width: '400px', left: '50px', top: '150px', position: 'absolute', zIndex: '-1'}}>
+      <div style = {{borderRadius: `50%`, backgroundColor: 'green', border: '5px solid grey', height: '400px', width: '400px', left: '50px', top: '150px', position: 'absolute', zIndex: '-1'}}>
         <Board cardList = {board}/>
       </div>
       </div>

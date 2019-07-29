@@ -12,13 +12,16 @@ class PlayerInfo extends React.Component {
     if (action) {
       const style = {
         'height': `5px`,
-        'width': 118 * time/maxTime + 'px',
+        'width': 177 * time/maxTime + 'px',
         'position': `absolute`,
-        'border': '2px solid black'
+        'border': '2px solid black',
+        'background-color': 'grey',
+        'margin-top': '4px',
+        'border-radius': '5px',
       };
 
       return (
-        <div className = "PlayerInfo" style = { {'box-shadow': '0px 0px 0px 3px rgb(44,81,154)' } }>
+        <div className = "PlayerInfo LightGreyDiv" style = { {'box-shadow': '0px 0px 0px 1px white' } }>
           <div className = "PlayerName">
             {name}
           </div>
@@ -31,7 +34,7 @@ class PlayerInfo extends React.Component {
       )
     } else {
       return (
-        <div className = "PlayerInfo" style = { {'box-shadow': '0px 0px 0px 1px white', } }>
+        <div className = "PlayerInfo LightGreyDiv" style = { {'box-shadow': '0px 0px 0px 1px white', } }>
           <div className = "PlayerName">
             {name}
           </div>

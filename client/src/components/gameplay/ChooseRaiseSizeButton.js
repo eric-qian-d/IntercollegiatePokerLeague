@@ -23,7 +23,7 @@ class RawChooseRaiseSizeButton extends React.Component {
   render() {
     const {buttonText} = this.props;
     return(
-      <button className = 'ChooseRaiseSizeButton DarkDiv' onClick = {() => {this.clickLogic()}}>
+      <button className = 'ChooseRaiseSizeButton BackgroundDiv' onClick = {() => {this.clickLogic()}}>
         {buttonText}
       </button>
     )
