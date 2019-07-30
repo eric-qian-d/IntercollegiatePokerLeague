@@ -15,6 +15,9 @@ class HomeContainer extends React.Component {
     .then(data => {
       if (!data.loggedIn) {
         this.props.history.push("/login");
+      } else {
+        if (!data.emailIsVerified);
+        this.props.history.push('/verify-email');
       }
     });
   }

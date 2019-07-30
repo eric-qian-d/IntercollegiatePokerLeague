@@ -32,20 +32,14 @@ router.post('/registration', async (req, res, next) => {
 });
 
 router.post('/verify-email', async (req, res, next) => {
-  console.log(req.session);
-  console.log(req.body);
   const reqUser = req.session.passport.user;
   const userId = reqUser.id;
   const email = reqUser.email.toLowerCase();
   const user = await userLogic.getUserByEmail(email);
-  console.log(user);
 
   if (!user) {
 
   } else {
-    console.log(user.id === userId);
-    console.log(req.body.emailVerificationId === user.emailVerificationId);
-    console.log(Math.abs(new Date() - user.emailVerificationSentOn));
     if (user.id === userId && req.body.emailVerificationId === user.emailVerificationId && Math.abs(new Date() - user.emailVerificationSentOn) < 24 * 60 * 60 * 100000) {
       userLogic.verifyEmail(userId);
     }
@@ -54,11 +48,19 @@ router.post('/verify-email', async (req, res, next) => {
 
 router.get('/loggedin', function(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.status(200).send({loggedIn: true});
+    const reqUser = req.session.passport.user;
+    const email = reqUser.email.toLowerCase();
+    const user = await userLogic.getUserByEmail(email);
+    return res.status(200).send({loggedIn: true, emailIsVerified: user.emailIsVerified});
   } else {
     return res.status(200).send({loggedIn: false});
   }
 });
+
+router.get('/email-verified', function(req, res, next) {
+
+  return res.status(200).send( {emailIsVerified: user.emailIsVerified})
+})
 
 
 
