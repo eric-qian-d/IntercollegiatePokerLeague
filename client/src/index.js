@@ -10,6 +10,7 @@ import GamesContainer from './components/games/GamesContainer';
 import HomeContainer from "./components/home/HomeContainer";
 import RankingsContainer from './components/rankings/RankingsContainer';
 import QueueContainer from './components/queue/QueueContainer';
+import VerifyEmailContainer from './components/verify-email/VerifyEmailContainer';
 import Helmet from 'react-helmet';
 
 //
@@ -24,6 +25,7 @@ const routing = (
         <Route path = "/games" component = {GamePagesContainer} />
         <Route path = "/rankings" component = {RankingsContainer} />
         <Route path = '/queue' component = {QueueContainer} />
+        <Route path = '/verify-email' component = {VerifyEmailContainer} />
     </Router>
   </Provider>
 )

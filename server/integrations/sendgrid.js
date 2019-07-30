@@ -1,17 +1,20 @@
 const sgMail = require('@sendgrid/mail');
+const models = require('../models');
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY || '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');
 
-// module.exports = {
-//   sendWelcome: async (firstName, lastName, email, )
-//
-//
-// }
+module.exports = {
+  sendWelcomeEmail: async (email, firstName, lastName, emailVerificationId) => {
+    const msg = {
+      to: email,
+      from: 'admin@pokerzone.io',
+      subject: 'Welcome to PokerZone!',
+      text: 'Let\'s verify your email!',
+      html: '<p> Welcome, '.concat(firstName, '! Let\'s verify your email! Your code is ', emailVerificationId, '</p>'),
+    };
 
-const msg = {
-  to: 'eric.qian.d@gmail.com',
-  from: 'admin@pokerzone.io',
-  subject: 'Welcome to PokerZone!',
-  text: 'Welcome to PokerZone! This is your validation code: a',
-  html: 'Welcome to PokerZone! This is your validation code: a',
-};
-sgMail.send(msg);
+    sgMail.send(msg);
+  }
+
+
+}

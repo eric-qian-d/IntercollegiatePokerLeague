@@ -24,10 +24,16 @@ module.exports = {
         user.schoolId = school.id;
       }
 
+      const emailVerificationId = uuidV4();
+      const emailVerificationSentOn = new Date();
+
+      user.emailVerificationId = emailVerificationId;
+      user.emailVerificationSentOn = emailVerificationSentOn;
 
       bcrypt.hash(user.password, hashRounds, function(err, hash) {
         user.password = hash;
         models.User.create(user);
+        sendgrid.sendWelcomeEmail(user.email, user.firstName, user.lastName, emailVerificationId);
       });
     }
 
@@ -35,7 +41,7 @@ module.exports = {
 
   getUserByEmail : async (email) => {
     const match = { email: email };
-    return await models.User.findOne({ where: match, attributes: { exclude: ['password'] } });
+    return await models.User.findOne({ where: match, attributes: { exclude: ['password'] }, raw: true });
   },
 
   getUserById : async (id) => {
@@ -82,6 +88,11 @@ module.exports = {
     });
     return leaders; //can limit the number of leaders returned from here
   },
+
+  verifyEmail: async (userId) => {
+    console.log('verifying email');
+    models.User.update({emailIsVerified: true}, {where: {id: userId}});
+  }
 
 
 }
