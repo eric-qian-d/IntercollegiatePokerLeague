@@ -90,7 +90,6 @@ module.exports = {
   },
 
   verifyEmail: async (userId) => {
-    console.log('verifying email');
     models.User.update({emailIsVerified: true}, {where: {id: userId}});
   },
 

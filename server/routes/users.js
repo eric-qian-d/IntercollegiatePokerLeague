@@ -53,9 +53,9 @@ router.post('/resend-email-verification', async (req, res, next) => {
   const user = await userLogic.getUserById(userId);
 
   if (!user) {
-
+    
   } else {
-    userLogic.resendEmailVerification(user.email, user.firstName, user.lastName, user.id);
+    await userLogic.resendEmailVerification(user.email, user.firstName, user.lastName, user.id);
   }
 })
 
@@ -64,7 +64,6 @@ router.get('/loggedin', async function(req, res, next) {
     const reqUser = req.session.passport.user;
     const email = reqUser.email.toLowerCase();
     const user = await userLogic.getUserByEmail(email);
-    console.log(user);
     return res.status(200).send({loggedIn: true, emailIsVerified: user.emailIsVerified});
   } else {
     return res.status(200).send({loggedIn: false});
@@ -72,7 +71,6 @@ router.get('/loggedin', async function(req, res, next) {
 });
 
 router.get('/email-verified', function(req, res, next) {
-
   return res.status(200).send( {emailIsVerified: user.emailIsVerified})
 })
 

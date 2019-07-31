@@ -16,9 +16,9 @@ class HomeContainer extends React.Component {
       if (!data.loggedIn) {
         this.props.history.push("/login");
       } else {
-        if (!data.emailIsVerified) {
-          this.props.history.push('/verify-email');
-        }
+        // if (!data.emailIsVerified) {
+        //   this.props.history.push('/verify-email');
+        // }
 
       }
     });

@@ -1,5 +1,6 @@
 import React from 'react';
 import vars from '../../vars';
+import './VerifyEmailContainer.css';
 
 class VerifyEmailContainer extends React.Component{
   constructor(props) {
@@ -44,30 +45,37 @@ class VerifyEmailContainer extends React.Component{
   render() {
     return (
       <div id = 'VerifyEmailContainer'>
-        <form  onSubmit={this.handleSubmit} id = 'RegistrationForm'>
-          <label className = 'RegistrationLabel'>
-            <input className = 'RegistrationInput' type="text" name = "emailVerificationId" placeholder = 'verification Code' value={this.state.emailVerificationId} onChange={this.handleChange} />
-          </label>
-        <input id = 'RegistrationButton' className = 'FormButton MediumDiv' type="submit" value="Verify Email" />
-        </form>
+        <div id = 'VerifyEmailFormContainer'>
+          <div id = 'VerifyEmailHeader'>
+            Verify your email address
+          </div>
+          <div id = 'VerifyEmailBody'>
+            Please copy in the code that was sent to your email to verify your email. Once your email is verified, you will be associated with a school and ranked!
+          </div>
+          <form  onSubmit={this.handleSubmit} id = 'VerifyEmailForm'>
+            <label className = 'RegistrationLabel'>
+              <input className = 'RegistrationInput' type="text" name = "emailVerificationId" placeholder = 'Verification Code' value={this.state.emailVerificationId} onChange={this.handleChange} />
+            </label>
+          <input id = 'RegistrationButton' className = 'FormButton DarkDiv' type="submit" value="Verify Email" />
+          </form>
 
 
-        <div id = 'ResendEmailVerificationButton' onClick = {() => {
-          fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/resend-email-verification', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(this.state),
-            credentials : 'include',
-            withCredentials : true,
-          })
-
-
-
-        }}>
-          Reset Password
+          <div id = 'ResendEmailVerificationButtonContainer'>
+            <div id = 'ResendEmailVerificationButton' onClick = {() => {
+              fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/resend-email-verification', {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.state),
+                credentials : 'include',
+                withCredentials : true,
+              })
+            }}>
+              Resend Verification Code
+            </div>
+          </div>
         </div>
       </div>
     )
