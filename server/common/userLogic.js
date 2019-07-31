@@ -92,6 +92,13 @@ module.exports = {
   verifyEmail: async (userId) => {
     console.log('verifying email');
     models.User.update({emailIsVerified: true}, {where: {id: userId}});
+  },
+
+  resendEmailVerification: async (userEmail, userFirstName, userLastName, userId) => {
+    const emailVerificationId = uuidV4();
+    const emailVerificationSentOn = new Date();
+    models.User.update({emailVerificationId: emailVerificationId, emailVerificationSentOn: emailVerificationSentOn}, {where: {id: userId}});
+    sendgrid.sendWelcomeEmail(userEmail, userFirstName, userLastName, emailVerificationId);
   }
 
 

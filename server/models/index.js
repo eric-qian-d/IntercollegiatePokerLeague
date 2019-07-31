@@ -15,7 +15,7 @@ Sequelize.Promise.config({
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
         dialect: 'postgres',
         host: dbEndpoint,
-        // logging: false,
+        logging: false,
         max: 4000,
         min: 0,
         idle: 2000000000,

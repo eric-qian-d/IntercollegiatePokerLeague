@@ -46,10 +46,29 @@ class VerifyEmailContainer extends React.Component{
       <div id = 'VerifyEmailContainer'>
         <form  onSubmit={this.handleSubmit} id = 'RegistrationForm'>
           <label className = 'RegistrationLabel'>
-            <input className = 'RegistrationInput' type="text" name = "emailVerificationId" placeholder = 'First Name' value={this.state.emailVerificationId} onChange={this.handleChange} />
+            <input className = 'RegistrationInput' type="text" name = "emailVerificationId" placeholder = 'verification Code' value={this.state.emailVerificationId} onChange={this.handleChange} />
           </label>
-        <input id = 'RegistrationButton' className = 'FormButton MediumDiv' type="submit" value="Register" />
+        <input id = 'RegistrationButton' className = 'FormButton MediumDiv' type="submit" value="Verify Email" />
         </form>
+
+
+        <div id = 'ResendEmailVerificationButton' onClick = {() => {
+          fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/resend-email-verification', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.state),
+            credentials : 'include',
+            withCredentials : true,
+          })
+
+
+
+        }}>
+          Reset Password
+        </div>
       </div>
     )
   }

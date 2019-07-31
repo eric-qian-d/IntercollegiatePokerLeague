@@ -35,7 +35,7 @@ router.post('/verify-email', async (req, res, next) => {
   const reqUser = req.session.passport.user;
   const userId = reqUser.id;
   const email = reqUser.email.toLowerCase();
-  const user = await userLogic.getUserByEmail(email);
+  const user = await userLogic.getUserById(userId);
 
   if (!user) {
 
@@ -46,11 +46,25 @@ router.post('/verify-email', async (req, res, next) => {
   }
 })
 
-router.get('/loggedin', function(req, res, next) {
+router.post('/resend-email-verification', async (req, res, next) => {
+  const reqUser = req.session.passport.user;
+  const userId = reqUser.id;
+  const email = reqUser.email.toLowerCase();
+  const user = await userLogic.getUserById(userId);
+
+  if (!user) {
+
+  } else {
+    userLogic.resendEmailVerification(user.email, user.firstName, user.lastName, user.id);
+  }
+})
+
+router.get('/loggedin', async function(req, res, next) {
   if (req.isAuthenticated()) {
     const reqUser = req.session.passport.user;
     const email = reqUser.email.toLowerCase();
     const user = await userLogic.getUserByEmail(email);
+    console.log(user);
     return res.status(200).send({loggedIn: true, emailIsVerified: user.emailIsVerified});
   } else {
     return res.status(200).send({loggedIn: false});
