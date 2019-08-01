@@ -73,6 +73,7 @@ module.exports = {
     const leaders = await models.User.findAll({
       attributes: ['firstName', 'lastName', 'rankedHURanking', 'schoolName'],
       raw: true,
+      where: { emailIsVerified: true },
       order: [['rankedHURanking', 'desc']]
     });
     return leaders; //can limit the number of leaders returned from here
