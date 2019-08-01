@@ -99,6 +99,20 @@ module.exports = {
     const emailVerificationSentOn = new Date();
     models.User.update({emailVerificationId: emailVerificationId, emailVerificationSentOn: emailVerificationSentOn}, {where: {id: userId}});
     sendgrid.sendWelcomeEmail(userEmail, userFirstName, userLastName, emailVerificationId);
+  },
+
+  resetPassword: async (userId, newPassword) => {
+    bcrypt.hash(newPassword, hashRounds, function(err, hash) {
+      models.User.update({password: hash}, {where: {id: userId}});
+    }
+
+  }
+
+  resendPasswordVerification: async (userEmail, userFirstName, userLastName, userId) => {
+    const passwordVerificationId = uuidV4();
+    const passwordVerificationSentOn = new Date();
+    models.User.update({passwordVerificationId: passwordVerificationId, passwordVerificationSentOn: passwordVerificationSentOn}, {where: {id: userId}});
+    sendgrid.sendPasswordResetEmail(userEmail, userFirstName, userLastName, passwordVerificationId);
   }
 
 

@@ -42,7 +42,7 @@ router.post('/verify-email', async (req, res, next) => {
   } else {
     if (req.body.emailVerificationId !== user.emailVerificationId) {
       return res.status(200).send({ success: false, status: 'Verification code does not match!' });
-    } else if (user.id === userId && req.body.emailVerificationId === user.emailVerificationId && Math.abs(new Date() - user.emailVerificationSentOn) < 24 * 60 * 60 * 100000) {
+    } else if (user.id === userId && req.body.emailVerificationId === user.emailVerificationId && Math.abs(new Date() - user.emailVerificationSentOn) < 24 * 60 * 60 * 1000) {
       await userLogic.verifyEmail(userId);
       return res.status(200).send({ success: true, status: 'Your email has been verified!' });
     }
@@ -59,7 +59,38 @@ router.post('/resend-email-verification', async (req, res, next) => {
     return res.status(200).send({ success: false, status: 'User does not exist!' });
   } else {
     await userLogic.resendEmailVerification(user.email, user.firstName, user.lastName, user.id);
-    console.log('sent correctly');
+    return res.status(200).send({ success: true, status: 'New code sent to your email!' });
+  }
+})
+
+router.post('/reset-password', async (req, res, next) => {
+  const reqUser = req.session.passport.user;
+  const userId = reqUser.id;
+  const email = reqUser.email.toLowerCase();
+  const user = await userLogic.getUserById(userId);
+
+  if (!user) {
+    return res.status(200).send({ success: false, status: 'User does not exist!' });
+  } else {
+    if (req.body.passwordVerificationId !== user.passwordVerificationId) {
+      return res.status(200).send({ success: false, status: 'Temporary password does not match!' });
+    } else if (user.id === userId && req.body.passwordVerificationId === user.passwordVerificationId && Math.abs(new Date() - user.passwordVerificationSentOn) < 24 * 60 * 60 * 1000) {
+      await userLogic.verifyEmail(userId, req.body.newPassword);
+      return res.status(200).send({ success: true, status: 'Your password has been reset!' });
+    }
+  }
+})
+
+router.post('/resend-password-verification', async (req, res, next) => {
+  const reqUser = req.session.passport.user;
+  const userId = reqUser.id;
+  const email = reqUser.email.toLowerCase();
+  const user = await userLogic.getUserById(userId);
+
+  if (!user) {
+    return res.status(200).send({ success: false, status: 'User does not exist!' });
+  } else {
+    await userLogic.resendPasswordVerification(user.email, user.firstName, user.lastName, user.id);
     return res.status(200).send({ success: true, status: 'New code sent to your email!' });
   }
 })

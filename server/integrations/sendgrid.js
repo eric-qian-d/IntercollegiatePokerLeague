@@ -12,7 +12,16 @@ module.exports = {
       text: 'Let\'s verify your email!',
       html: '<p> Welcome, '.concat(firstName, '! Let\'s verify your email! Your code is ', emailVerificationId, '</p>'),
     };
-
+    sgMail.send(msg);
+  },
+  sendPasswordResetEmail: async (email, firstName, lastName, passwordVerificationId) => {
+    const msg = {
+      to: email,
+      from: 'admin@pokerzone.io',
+      subject: 'PokerZone Email Reset',
+      text: 'Let\'s reset your password',
+      html: '<p> Hi, '.concat(firstName, '. Your temporary password is ', passwordVerificationId, '</p>'),
+    };
     sgMail.send(msg);
   }
 
