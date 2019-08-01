@@ -16,7 +16,9 @@ class PlayerListing extends React.Component {
         <div  className = 'MatchResultPlayerListingContainer '>
           <img className = 'WinCrown' src = '/images/crown.png'/>
           <div className = 'MatchResultPlayerListing LightGreyDiv'>
-            {player}
+            <div className = 'MatchResultPlayerListingPlayerName'>
+              {player}
+            </div>
           </div>
         </div>
       )
@@ -25,7 +27,9 @@ class PlayerListing extends React.Component {
 
         <div className = 'MatchResultPlayerListingContainer'>
           <div className = 'MatchResultPlayerListing LightGreyDiv'>
-            {player}
+            <div className = 'MatchResultPlayerListingPlayerName'>
+              {player}
+            </div>
           </div>
         </div>
       )

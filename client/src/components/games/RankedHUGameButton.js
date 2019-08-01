@@ -34,7 +34,9 @@ class RawRankedHUGameButton extends React.Component {
       return (
         <div id = 'RankedHUGameButtonSelected' className = 'ChooseGameTypePanel' onClick = {() => {this.clickLogic()}}>
           <div className = 'ChooseGameTypeHeader DarkDiv'>
-            Ranked
+            <div className = 'ChooseGameTypeHeaderText'>
+              Ranked
+            </div>
           </div>
           <div className = 'ChooseGameTypeBody WhiteDiv'>
             Play a ranked heads up match against a random opponent
@@ -45,7 +47,9 @@ class RawRankedHUGameButton extends React.Component {
       return (
         <div id = 'RankedHUGameButton' className = 'ChooseGameTypePanel' onClick = {() => {this.clickLogic()}}>
           <div className = 'ChooseGameTypeHeader BackgroundDiv'>
-            Ranked
+            <div className = 'ChooseGameTypeHeaderText'>
+              Ranked
+            </div>
           </div>
           <div id = 'RankedHUGameButtonBody' className = 'ChooseGameTypeBody WhiteDiv'>
             Play a ranked heads up match against a random opponent

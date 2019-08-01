@@ -67,7 +67,7 @@ input:-webkit-autofill:active {
   display: block;
   width: 300px;
   height: 30px;
-  font-size: 18px;
+  font-size: 18px !important;
   border: 0px;
   border-bottom: 1px white solid;
   background-color:rgba(0, 0, 0, 0) !important;

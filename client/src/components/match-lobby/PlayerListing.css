@@ -1,3 +1,10 @@
+.MatchResultPlayerListingContainer {
+  width: 30%;
+  height: 3em;
+  top: 0px;
+  margin: auto;
+}
+
 .MatchResultPlayerListing {
   width: 40%;
   max-width: 300px;
@@ -9,14 +16,14 @@
   top:0px;
   color: black;
   font-size: 1.2em;
-
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
 }
 
-.MatchResultPlayerListingContainer {
-  width: 30%;
-  height: 3em;
-  top: 0px;
+.MatchResultPlayerListingPlayerName {
   margin: auto;
+  text-align: center;
 }
 
 .WinCrown {
