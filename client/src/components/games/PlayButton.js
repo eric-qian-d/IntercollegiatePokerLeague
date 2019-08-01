@@ -58,7 +58,10 @@ class RawPlayButton extends React.Component {
         if (data.success) {
           this.props.history.push('/games');
         } else {
-          alert('Logout failed');
+          alert(data.message);
+          if (!data.emailIsVerified) {
+            this.props.history.push('/verify-email');
+          }
         }
       });
     }
