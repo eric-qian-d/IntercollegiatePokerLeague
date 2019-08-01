@@ -1,6 +1,8 @@
 import React from 'react';
 import vars from '../../vars';
+import Navbar from '../navbar/Navbar';
 import './VerifyEmailContainer.css';
+
 
 class VerifyEmailContainer extends React.Component{
   constructor(props) {
@@ -46,6 +48,7 @@ class VerifyEmailContainer extends React.Component{
   render() {
     return (
       <div id = 'VerifyEmailContainer'>
+        <Navbar  {...this.props}/>
         <div id = 'VerifyEmailFormContainer'>
           <div id = 'VerifyEmailHeader'>
             Verify your email address
@@ -54,10 +57,10 @@ class VerifyEmailContainer extends React.Component{
             Please copy in the code that was sent to your email to verify your email. Once your email is verified, you will be associated with a school and ranked!
           </div>
           <form  onSubmit={this.handleSubmit} id = 'VerifyEmailForm'>
-            <label className = 'RegistrationLabel'>
-              <input className = 'RegistrationInput' type="text" name = "emailVerificationId" placeholder = 'Verification Code' value={this.state.emailVerificationId} onChange={this.handleChange} />
+            <label className = 'VerifyEmailLabel'>
+              <input className = 'VerifyEmailInput' type="text" name = "emailVerificationId" placeholder = 'Verification Code' value={this.state.emailVerificationId} onChange={this.handleChange} />
             </label>
-          <input id = 'RegistrationButton' className = 'FormButton DarkDiv' type="submit" value="Verify Email" />
+          <input id = 'VerifyEmailButton' className = 'FormButton DarkDiv' type="submit" value="Verify Email" />
           </form>
 
 
