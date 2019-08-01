@@ -31,5 +31,6 @@
   width: 40px;
   height: 40px;
   top: -30px;
-  left: 13%;
+  margin-left: 10px;
+  /* left: 0%; */
 }
