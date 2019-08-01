@@ -61,7 +61,7 @@ class Table extends React.Component {
       {playersList}
       {playerInvestmentsList}
       {button}
-      <div style = {{borderRadius: `50%`, backgroundColor: 'green', border: '5px solid grey', height: '400px', width: '400px', left: '50px', top: '150px', position: 'absolute', zIndex: '-1'}}>
+      <div style = {{borderRadius: `50%`, backgroundColor: 'green', border: '5px solid grey', height: '400px', width: '400px', left: 250 - 205 + 'px', top: '150px', position: 'absolute', zIndex: '-1'}}>
         <Board cardList = {board}/>
       </div>
       </div>
