@@ -104,9 +104,9 @@ module.exports = {
   resetPassword: async (userId, newPassword) => {
     bcrypt.hash(newPassword, hashRounds, function(err, hash) {
       models.User.update({password: hash}, {where: {id: userId}});
-    }
+    })
 
-  }
+  },
 
   resendPasswordVerification: async (userEmail, userFirstName, userLastName, userId) => {
     const passwordVerificationId = uuidV4();

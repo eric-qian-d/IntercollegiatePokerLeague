@@ -10,7 +10,7 @@ const users = require('./routes/users');
 const rankings = require('./routes/rankings');
 
 // const school = require('./config/school-script');
-// school.createAllSchools();
+// school.createUndeterminedSchool();
 
 // const userLogic = require('./common/userLogic');
 // userLogic.associateAllUsersWithSchools();

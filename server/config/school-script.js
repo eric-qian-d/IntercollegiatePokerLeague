@@ -8,8 +8,6 @@ const fs = require('fs');
 async function addSchool(list) {
   // const existingSchool = await models.School.findOne({where : {name : list[1]}});
   // if (!existingSchool) {
-    // console.log('creating');
-    // console.log(list);
     await models.School.create(
       {
         name: list[1],
@@ -20,6 +18,7 @@ async function addSchool(list) {
 }
 
 module.exports = {
+
   createAllSchools: async () => {
     //list of school domains and names taken from https://pastebin.com/LND21t5F
 
@@ -55,28 +54,16 @@ module.exports = {
           const split = [school.domains[0], school.name];
           await addSchool(split)
         }
-
-
-        // if (uniqueDomains.hasOwnProperty(school.domains[0])) {
-        //   uniqueDomains[school.domains[0]]++;
-        // } else {
-        //   uniqueDomains[school.domains[0]] = 1;
-        // }
-
-        // if (school.domains.length > 1)  {
-        //   console.log(school.name);
-        //   console.log(school.domains);
-        //   ctr++;
-        // }
-      }
-    })
-    // console.log(ctr);
-
-    Object.keys(uniqueDomains).forEach(domain => {
-      if (uniqueDomains[domain] > 1) {
-        console.log(domain);
       }
     })
 
+    // Object.keys(uniqueDomains).forEach(domain => {
+    //   if (uniqueDomains[domain] > 1) {
+    //   }
+    // })
+
+  },
+  createUndeterminedSchool: async () => {
+    addSchool(['', 'Undetermined']);
   }
 }
