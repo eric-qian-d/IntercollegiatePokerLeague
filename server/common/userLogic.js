@@ -71,7 +71,7 @@ module.exports = {
 
   getLeaders: async () => {
     const leaders = await models.User.findAll({
-      attributes: ['firstName', 'lastName', 'rankedHURanking', 'schoolName'],
+      attributes: ['firstName', 'lastName', 'rankedHURanking', 'schoolName', 'schoolId'],
       raw: true,
       where: { emailIsVerified: true },
       order: [['rankedHURanking', 'desc']]

@@ -3,29 +3,29 @@ const userLogic = require('./userLogic');
 
 module.exports = {
   getTopSchools: async () => {
+    const leaders = await userLogic.getLeaders();
     const schools = await models.School.findAll({
       attributes: ['id', 'name'],
       raw: true,
     });
-    var schoolNum = 0;
-    const schoolRankings = [];
-    const schoolPlayers = await Promise.all(schools.map(async (school) => {
-      return await userLogic.getTopUsersBySchool(school.id);
+    console.log(leaders);
+    const schoolMultiplyer = {};
+    const schoolScore = {};
+    leaders.forEach(player => {
+      const schoolId = player.schoolId;
+      if (!schoolMultiplyer.hasOwnProperty(schoolId)) {
+        schoolMultiplyer[schoolId] = 1;
+        schoolScore[schoolId] = 0;
+      }
+      if (schoolMultiplyer[schoolId] > 0.51) {
+        schoolScore[schoolId] = schoolScore[schoolId] + player.rankedHURanking * schoolMultiplyer[schoolId];
+        schoolMultiplyer[schoolId] = schoolMultiplyer[schoolId] - 0.01;
 
+      }
     })
-  );
-    for (var i = 0; i < schools.length; i++) {
-      var ctr = 0;
-      var schoolRanking = 0;
-      while (ctr < 50 && ctr < schoolPlayers[i].length) {
-        schoolRanking = schoolRanking + (1- 0.01 * ctr) * schoolPlayers[i][ctr].rankedHURanking;
-        ctr++;
-      }
-      schools[i].ranking = Math.round(schoolRanking);
-      if (schools[i].name === 'Undetermined') {
-        schools[i].ranking = -1;
-      }
-    }
+    schools.forEach(school => {
+      school.ranking = schoolScore.hasOwnProperty(school.id) ?  schoolScore[school.id] : 0;
+    })
 
     schools.sort((a, b) => (a.ranking > b.ranking) ? -1 : 1);
     return schools;
