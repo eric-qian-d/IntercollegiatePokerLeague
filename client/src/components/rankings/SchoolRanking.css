@@ -1,28 +1,5 @@
-.SchoolRankingInfo{
-  margin-right: 50px;
-  margin-left: 10px;
-  display: inline-block;
-  text-align: center;
-  height: 20px;
-  line-height: 7vh;
-}
-
-.SchoolRankingPlace{
-  width: 10%;
-}
-
-.SchoolRankingName{
-  width: 55%;
-}
-
-.SchoolRankingRanking{
-  width: 20%;
-}
-
 .SchoolRanking {
   display: flex;
   border-bottom: 1px solid lightgrey;
-  /* height: 30px; */
-  /* margin-top: 5px; */
   padding: 5px;
 }

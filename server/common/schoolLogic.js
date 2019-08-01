@@ -8,7 +8,6 @@ module.exports = {
       attributes: ['id', 'name'],
       raw: true,
     });
-    console.log(leaders);
     const schoolMultiplyer = {};
     const schoolScore = {};
     leaders.forEach(player => {

@@ -13,7 +13,7 @@ class RankingsContainer extends React.Component {
 
   render() {
     return(
-      <div id = 'RankingsContainer'>
+      <div id = 'RankingsPageContainer'>
         <Navbar {...this.props}/>
         <div id = 'ListingsWrapper'>
           <div id = 'ListingsHeader' className = ''>

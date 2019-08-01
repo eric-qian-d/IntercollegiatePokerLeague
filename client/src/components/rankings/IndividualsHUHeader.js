@@ -5,16 +5,16 @@ class IndividualsHUHeader extends React.Component {
   render() {
     return (
       <div id = 'IndividualsHUHeader' className = 'RankingHeader MediumDiv'>
-        <div className = 'PlayerRankingPlace IndividualsHeaderInfo'>
+        <div className = 'PlayerRankingPlace PlayerRankingInfo'>
           Rank
         </div>
-        <div className = 'PlayerRankingName IndividualsHeaderInfo'>
+        <div className = 'PlayerRankingName PlayerRankingInfo'>
           Name
         </div>
-        <div className = 'PlayerRankingSchool IndividualsHeaderInfo'>
+        <div className = 'PlayerRankingSchool PlayerRankingInfo'>
           School
         </div>
-        <div className = 'PlayerRankingRanking IndividualsHeaderInfo'>
+        <div className = 'PlayerRankingRanking PlayerRankingInfo'>
           Elo
         </div>
       </div>

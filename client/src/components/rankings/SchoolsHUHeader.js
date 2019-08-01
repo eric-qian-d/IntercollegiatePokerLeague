@@ -5,13 +5,13 @@ class SchoolsHUHeader extends React.Component {
   render() {
     return (
       <div id = 'SchoolsHUHeader' className = 'RankingHeader MediumDiv'>
-        <div className = 'SchoolRankingPlace SchoolHeaderInfo'>
+        <div className = 'SchoolRankingPlace SchoolRankingInfo'>
           Ranking
         </div>
-        <div className = 'SchoolRankingName SchoolHeaderInfo'>
+        <div className = 'SchoolRankingName SchoolRankingInfo'>
           Name
         </div>
-        <div className = 'SchoolRankingRanking SchoolHeaderInfo'>
+        <div className = 'SchoolRankingRanking SchoolRankingInfo'>
           Elo
         </div>
       </div>
