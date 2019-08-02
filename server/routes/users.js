@@ -56,10 +56,10 @@ router.post('/resend-email-verification', async (req, res, next) => {
   const user = await userLogic.getUserById(userId);
 
   if (!user) {
-    return res.status(200).send({ success: false, status: 'User does not exist!' });
+    return res.status(200).send({ success: false, message: 'User does not exist!' });
   } else {
     await userLogic.resendEmailVerification(user.email, user.firstName, user.lastName, user.id);
-    return res.status(200).send({ success: true, status: 'New code sent to your email!' });
+    return res.status(200).send({ success: true, message: 'New code sent to your email!' });
   }
 })
 
@@ -71,20 +71,18 @@ router.post('/reset-password', async (req, res, next) => {
   const user = await userLogic.getUserById(userId);
 
   if (!user) {
-    return res.status(200).send({ success: false, status: 'User does not exist!' });
+    return res.status(200).send({ success: false, message: 'User does not exist!' });
   } else {
-    if (req.body.passwordVerificationId !== user.passwordVerificationId) {
-      return res.status(200).send({ success: false, status: 'Temporary password does not match!' });
-    } else if (user.id === userId && req.body.passwordVerificationId === user.passwordVerificationId && Math.abs(new Date() - user.passwordVerificationSentOn) < 24 * 60 * 60 * 1000) {
-      await userLogic.verifyEmail(userId, req.body.newPassword);
-      return res.status(200).send({ success: true, status: 'Your password has been reset!' });
+    if (req.body.password === req.body.reenteredPassword) {
+      await userLogic.resetPassword(userId, req.body.password);
+      return res.status(200).send({ success: true, message: 'Your password has been reset!' });
+    } else {
+      return res.status(200).send({ success: false, message: 'Passwords do not match!' });
     }
   }
 })
 
 router.post('/send-password-reset', async (req, res, next) => {
-  console.log('got req!');
-  console.log(req.body.email);
   const user = await userLogic.getUserByEmail(req.body.email);
 
   if (!user) {

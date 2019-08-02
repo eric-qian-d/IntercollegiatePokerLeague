@@ -36,11 +36,11 @@ class VerifyEmailContainer extends React.Component{
       })
       .then(response => response.json())
       .then(data => {
+        alert(data.message);
         if (data.success) {
-          alert(data.status);
+
           this.props.history.push("/");
         } else {
-          alert(data.status);
         }
       });
     }
@@ -78,7 +78,7 @@ class VerifyEmailContainer extends React.Component{
               })
               .then(response => response.json())
               .then(data => {
-                alert(data.status);
+                alert(data.message);
               });
             }}>
               Resend Verification Code

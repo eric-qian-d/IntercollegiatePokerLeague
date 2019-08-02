@@ -8,8 +8,8 @@ class ResetPasswordForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      temporaryPassword: "",
+      password: "",
+      reenteredPassword: "",
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,12 +26,11 @@ class ResetPasswordForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const {email, password} = this.state;
-    if (email.length < 4 || email.toLowerCase().slice(-4) !== ".edu") {
-      alert("must use a .edu email!")
+    const {password, reenteredPassword} = this.state;
+    if (password !== reenteredPassword) {
+      alert("Passwords don't match!")
     } else {
-      this.state.email = this.state.email.toLowerCase();
-      fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/reset-password', {
+      fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/reset-password', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -43,10 +42,11 @@ class ResetPasswordForm extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
+        alert(data.message);
         if (data.success) {
           this.props.history.push("/");
         } else {
-          alert("Password reset failed");
+
         }
       });
     }
@@ -61,18 +61,16 @@ class ResetPasswordForm extends React.Component {
           PokerZone
         </div>
         <div id = 'ResetPasswordDescription' className = 'FormDescription'>
-          ResetPassword to your account
+          Set a new password
         </div>
         <label className = 'ResetPasswordLabel'>
           <div className = 'InputContainer'>
-
-            <input className = 'ResetPasswordInput' type="text" name = "email" placeholder = 'Email' value={this.state.email} onChange={this.handleChange} />
+            <input className = 'RegistrationInput' type="password" name = "password" placeholder = 'Password' value={this.state.password} onChange={this.handleChange} />
           </div>
         </label>
         <label className = 'ResetPasswordLabel'>
           <div className = 'InputContainer'>
-
-            <input className = 'ResetPasswordInput' type="password" name = "temporaryPassword" placeholder = 'Temporary Password' value={this.state.temporaryPassword} onChange={this.handleChange} />
+            <input className = 'RegistrationInput' type="password" name = "reenteredPassword" placeholder = 'Reenter Password' value={this.state.reenteredPassword} onChange={this.handleChange} />
           </div>
         </label>
         <input id = 'ResetPasswordButton' className = 'FormButton MediumDiv' type="submit" value="Reset Password" />

@@ -102,6 +102,7 @@ module.exports = {
   },
 
   resetPassword: async (userId, newPassword) => {
+    console.log(newPassword);
     bcrypt.hash(newPassword, hashRounds, function(err, hash) {
       models.User.update({password: hash, passwordVerificationActive: false}, {where: {id: userId}});
     })
