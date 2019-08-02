@@ -47,14 +47,15 @@ app.post('/login', function(req, res, next) {
     }
     // Generate a JSON response reflecting authentication status
     if (!user) {
-      return res.status(401).send({ success : false, message : 'authentication failed' });
+      return res.status(401).send({ success : false, message : info.message });
     }
     req.login(user, function(err){
       if(err){
         return next(err);
       }
       req.session.cookie.playerId = req.user.dataValues.id;
-      return res.status(200).send({ success : true, message : 'authentication succeeded' });
+      return res.status(200).send({ success : true, resetEmail: info.resetEmail, message : 'authentication succeeded' });
+
     });
   })(req, res, next);
 });
