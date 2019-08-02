@@ -24,8 +24,15 @@ module.exports = {
         }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-          console.log("wrong password");
-          return done(null, false, { message: 'Password does not match username.' });
+          console.log(password);
+          console.log(user.passwordVerificationId);
+          console.log(user.passwordVerificationActive);
+          if (user.passwordVerificationActive && password === user.passwordVerificationId && Math.abs(new Date() - user.passwordVerificationSentOn) < 24 * 60 * 60 * 1000) {
+            return done(null, user, { message: 'Temporary password being used'});
+          } else {
+            return done(null, false, { message: 'Password does not match username.' });
+          }
+
         }
         return done(null, user);
       })

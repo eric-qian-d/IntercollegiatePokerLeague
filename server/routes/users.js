@@ -89,7 +89,7 @@ router.post('/send-password-reset', async (req, res, next) => {
   if (!user) {
     return res.status(200).send({ success: false, message: 'Email does not exist in our system!' });
   } else {
-    await userLogic.resendPasswordVerification(user.email, user.firstName, user.lastName, user.id);
+    await userLogic.sendPasswordVerification(user.email, user.firstName, user.lastName, user.id);
     return res.status(200).send({ success: true, message: 'Instructions sent to your email!' });
   }
 })

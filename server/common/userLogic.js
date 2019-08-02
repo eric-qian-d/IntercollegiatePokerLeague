@@ -103,15 +103,15 @@ module.exports = {
 
   resetPassword: async (userId, newPassword) => {
     bcrypt.hash(newPassword, hashRounds, function(err, hash) {
-      models.User.update({password: hash}, {where: {id: userId}});
+      models.User.update({password: hash, passwordVerificationActive: false}, {where: {id: userId}});
     })
 
   },
 
-  resendPasswordVerification: async (userEmail, userFirstName, userLastName, userId) => {
+  sendPasswordVerification: async (userEmail, userFirstName, userLastName, userId) => {
     const passwordVerificationId = uuidV4();
     const passwordVerificationSentOn = new Date();
-    models.User.update({passwordVerificationId: passwordVerificationId, passwordVerificationSentOn: passwordVerificationSentOn}, {where: {id: userId}});
+    models.User.update({passwordVerificationId: passwordVerificationId, passwordVerificationSentOn: passwordVerificationSentOn, passwordVerificationActive: true}, {where: {id: userId}});
     sendgrid.sendPasswordResetEmail(userEmail, userFirstName, userLastName, passwordVerificationId);
   }
 

@@ -64,6 +64,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         field: 'password_verification_sent_on'
       },
+      passwordVerificationActive: {
+        type: DataTypes.BOOLEAN,
+        field: 'password_verification_active',
+        defaultValue: false
+      },
       normalHURanking : {
         type: DataTypes.INTEGER,
         field: 'normal_hu_ranking',
