@@ -75,7 +75,7 @@ input:-webkit-autofill:active {
 
 .FormButton {
   display: block;
-  margin: 50px auto;
+  margin: 40px auto 70px;
   width: 300px;
   height: 50px;
   font-size: 20px;

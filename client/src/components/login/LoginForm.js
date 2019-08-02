@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import vars from '../../vars';
 import './LoginForm.css';
 import ToRegistrationButton from "./ToRegistrationButton";
+import ToResetPasswordButton from './ToResetPasswordButton';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -75,6 +76,7 @@ class LoginForm extends React.Component {
             <input className = 'LoginInput' type="password" name = "password" placeholder = 'Password' value={this.state.password} onChange={this.handleChange} />
           </div>
         </label>
+        <ToResetPasswordButton {...this.props}/>
         <input id = 'LoginButton' className = 'FormButton MediumDiv' type="submit" value="Login" />
         <ToRegistrationButton {...this.props}/>
       </form>
