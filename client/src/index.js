@@ -12,6 +12,7 @@ import RankingsContainer from './components/rankings/RankingsContainer';
 import QueueContainer from './components/queue/QueueContainer';
 import VerifyEmailContainer from './components/verify-email/VerifyEmailContainer';
 import ResetPasswordPageContainer from './components/reset-password/ResetPasswordPageContainer';
+import SendPasswordResetPageContainer from './components/send-password-reset/SendPasswordResetPageContainer';
 import Helmet from 'react-helmet';
 
 //
@@ -28,6 +29,7 @@ const routing = (
         <Route path = '/queue' component = {QueueContainer} />
         <Route path = '/verify-email' component = {VerifyEmailContainer} />
         <Route path = '/reset-password' component = {ResetPasswordPageContainer} />
+        <Route path = '/send-password-reset' component = {SendPasswordResetPageContainer} />
     </Router>
   </Provider>
 )

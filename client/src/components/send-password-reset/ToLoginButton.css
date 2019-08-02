@@ -1,0 +1,14 @@
+.ToLoginButtonContainer {
+  font-size: 15px;
+  margin-top: 30px;
+  text-align: center;
+  height: 30px;
+}
+
+#ToLoginButton {
+  display: inline-block;
+  margin: 5px;
+  color: lightgrey;
+  text-decoration: underline;
+  cursor: pointer;
+}
