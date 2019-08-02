@@ -30,7 +30,7 @@ class SendPasswordResetForm extends React.Component {
       alert("must use a .edu email!")
     } else {
       this.state.email = this.state.email.toLowerCase();
-      fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/reset-password', {
+      fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/send-password-reset', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -42,10 +42,10 @@ class SendPasswordResetForm extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
+        alert(data.message);
         if (data.success) {
-          this.props.history.push("/");
+          this.props.history.push("/login");
         } else {
-          alert("Password reset failed");
         }
       });
     }

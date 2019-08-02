@@ -81,17 +81,16 @@ router.post('/reset-password', async (req, res, next) => {
   }
 })
 
-router.post('/resend-password-verification', async (req, res, next) => {
-  const reqUser = req.session.passport.user;
-  const userId = reqUser.id;
-  const email = reqUser.email.toLowerCase();
-  const user = await userLogic.getUserById(userId);
+router.post('/send-password-reset', async (req, res, next) => {
+  console.log('got req!');
+  console.log(req.body.email);
+  const user = await userLogic.getUserByEmail(req.body.email);
 
   if (!user) {
-    return res.status(200).send({ success: false, status: 'User does not exist!' });
+    return res.status(200).send({ success: false, message: 'Email does not exist in our system!' });
   } else {
     await userLogic.resendPasswordVerification(user.email, user.firstName, user.lastName, user.id);
-    return res.status(200).send({ success: true, status: 'New code sent to your email!' });
+    return res.status(200).send({ success: true, message: 'Instructions sent to your email!' });
   }
 })
 
