@@ -11,6 +11,7 @@ import HomeContainer from "./components/home/HomeContainer";
 import RankingsContainer from './components/rankings/RankingsContainer';
 import QueueContainer from './components/queue/QueueContainer';
 import VerifyEmailContainer from './components/verify-email/VerifyEmailContainer';
+import ResetPasswordPageContainer from './components/reset-password/ResetPasswordPageContainer';
 import Helmet from 'react-helmet';
 
 //
@@ -26,6 +27,7 @@ const routing = (
         <Route path = "/rankings" component = {RankingsContainer} />
         <Route path = '/queue' component = {QueueContainer} />
         <Route path = '/verify-email' component = {VerifyEmailContainer} />
+        <Route path = '/reset-password' component = {ResetPasswordPageContainer} />
     </Router>
   </Provider>
 )
