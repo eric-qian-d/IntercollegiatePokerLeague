@@ -64,6 +64,7 @@ router.post('/resend-email-verification', async (req, res, next) => {
 })
 
 router.post('/reset-password', async (req, res, next) => {
+  console.log(req.session);
   const reqUser = req.session.passport.user;
   const userId = reqUser.id;
   const email = reqUser.email.toLowerCase();

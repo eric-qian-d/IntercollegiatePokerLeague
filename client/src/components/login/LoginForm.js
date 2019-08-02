@@ -45,7 +45,7 @@ class LoginForm extends React.Component {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          this.props.history.push("/");
+          this.props.history.push(data.resetEmail ? "/reset-password" : '/');
         } else {
           alert("Login failed");
         }
