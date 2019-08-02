@@ -18,7 +18,7 @@ module.exports = {
     const msg = {
       to: email,
       from: 'admin@pokerzone.io',
-      subject: 'PokerZone Email Reset',
+      subject: 'PokerZone Password Reset',
       text: 'Let\'s reset your password',
       html: '<p> Hi, '.concat(firstName, '. Your temporary password is ', passwordVerificationId, '</p>'),
     };

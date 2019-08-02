@@ -38,13 +38,13 @@ router.post('/verify-email', async (req, res, next) => {
   const user = await userLogic.getUserById(userId);
 
   if (!user) {
-    return res.status(200).send({ success: false, status: 'User does not exist!' });
+    return res.status(200).send({ success: false, message: 'User does not exist!' });
   } else {
     if (req.body.emailVerificationId !== user.emailVerificationId) {
-      return res.status(200).send({ success: false, status: 'Verification code does not match!' });
+      return res.status(200).send({ success: false, message: 'Verification code does not match!' });
     } else if (user.id === userId && req.body.emailVerificationId === user.emailVerificationId && Math.abs(new Date() - user.emailVerificationSentOn) < 24 * 60 * 60 * 1000) {
       await userLogic.verifyEmail(userId);
-      return res.status(200).send({ success: true, status: 'Your email has been verified!' });
+      return res.status(200).send({ success: true, message: 'Your email has been verified!' });
     }
   }
 })
