@@ -1,4 +1,5 @@
 .MatchResultPlayerListingContainer {
+  position: relative;
   width: 30%;
   height: 3em;
   top: 0px;
@@ -6,14 +7,14 @@
 }
 
 .MatchResultPlayerListing {
-  width: 40%;
+  width: 100%;
   max-width: 300px;
   margin: auto;
   text-align: center;
   height:4em;
   border: solid black 1px;
   position: absolute;
-  top:0px;
+  top:40px;
   color: black;
   font-size: 1.2em;
   display: flex;
@@ -30,7 +31,7 @@
   position: absolute;
   width: 40px;
   height: 40px;
-  top: -30px;
+  top: 10px;
   margin-left: 10px;
   /* left: 0%; */
 }

@@ -1,10 +1,13 @@
 .VersusResult{
   width: 50%;
-  height: 4em;
+  height: 5em;
   margin: 40px auto;
+  /* padding: 40px; */
   display: flex;
   justify-content: center;
   color: white;
   position: relative;
 
 }
+
+.parent { overflow: hidden; }
