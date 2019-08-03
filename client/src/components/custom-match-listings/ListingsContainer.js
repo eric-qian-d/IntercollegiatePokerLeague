@@ -1,7 +1,7 @@
 import React from 'react';
 import Listing from "./Listing";
 import ListingsInfo from './ListingsInfo';
-import OptionsContainer from './OptionsContainer';
+
 import './ListingsContainer.css';
 
 class ListingsContainer extends React.Component {
@@ -21,7 +21,7 @@ class ListingsContainer extends React.Component {
         <div id = 'CustomListings'>
           {lines}
         </div>
-        <OptionsContainer socket = {socket} {...this.props}/>
+
       </div>
     );
   }

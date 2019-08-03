@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import vars from '../../vars';
 import {joinMatch} from "../../js/custom-match-listings";
+import './PlayButton.css';
 
 function mapStateToProps(state) {
   console.log(state);
@@ -31,7 +32,7 @@ class RawPlayButton extends React.Component {
       )
     } else {
       return (
-        <button id = 'PlayGameButton' onClick = {() => {this.clickLogic();}}>
+        <button id = 'PlayGameButton' className = 'CustomListingsButton' onClick = {() => {this.clickLogic();}}>
           Play
         </button>
       )

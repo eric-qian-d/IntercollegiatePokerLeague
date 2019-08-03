@@ -1,5 +1,6 @@
 import React from 'react';
 import {makeNewHUMatchRequest} from '../../js/custom-match-listings';
+import './NewMatchButton.css';
 
 class NewMatchButton extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class NewMatchButton extends React.Component {
 
   render() {
     return (
-      <button id = 'NewMatchButton' onClick = {() => {this.onClick();}}>
+      <button id = 'NewMatchButton' className = 'CustomListingsButton' onClick = {() => {this.onClick();}}>
         New Match
       </button>
     )

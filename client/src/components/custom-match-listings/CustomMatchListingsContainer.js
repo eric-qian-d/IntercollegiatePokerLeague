@@ -1,5 +1,6 @@
 import React from "react";
 import ListingsContainer from "./ListingsContainer";
+import OptionsContainer from './OptionsContainer';
 import './CustomMatchListingsContainer.css';
 
 
@@ -20,7 +21,7 @@ class CustomMatchListingsContainer extends React.Component {
       <div id = 'CustomMatchListingsContainer'>
 
         <ListingsContainer socket = {socket} {...this.props}/>
-
+        <OptionsContainer socket = {socket} {...this.props}/>
 
       </div>
     )

@@ -2,6 +2,7 @@ import React from 'react';
 import NewMatchButton from "./NewMatchButton";
 import GamesButton from './GamesButton';
 import PlayButton from './PlayButton';
+import './OptionsContainer.css';
 
 class OptionsContainer extends React.Component {
   constructor(props) {

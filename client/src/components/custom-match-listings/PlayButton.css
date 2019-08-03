@@ -1,0 +1,8 @@
+#PlayGameButton {
+  position: absolute;
+  left: calc(50% - 100px);
+  bottom: 30px;
+  height: 50px;
+  width: 200px;
+  /* background-color: rgb(35,50,82,0.5); */
+}
