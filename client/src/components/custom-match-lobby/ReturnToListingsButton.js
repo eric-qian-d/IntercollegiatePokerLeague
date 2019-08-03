@@ -13,7 +13,7 @@ class ReturnToListingsButton extends React.Component {
 
   render() {
     return(
-        <button id = 'ReturnToListingsButton' onClick = {() => {this.beginMatchLogic()}}>
+        <button id = 'ReturnToListingsButton' className = 'BackgroundDiv' onClick = {() => {this.beginMatchLogic()}}>
           Return to Listings
         </button>
     )

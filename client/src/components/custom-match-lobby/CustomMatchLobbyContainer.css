@@ -1,5 +1,6 @@
 #CustomMatchButtonBox {
-  width: 30%;
+  width: 50%;
+  min-width: 600px;
   margin: auto;
   display: flex;
 }

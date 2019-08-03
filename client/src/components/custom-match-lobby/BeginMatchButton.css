@@ -1,4 +1,13 @@
 #BeginMatchButton {
-  margin: auto;
-  width: 30%;
+  margin: 100px auto;
+  display: block;
+  width: 250px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 50px;
+  border: 0px;
+}
+
+#BeginMatchButton:hover {
+  border: solid white 1px;
 }
