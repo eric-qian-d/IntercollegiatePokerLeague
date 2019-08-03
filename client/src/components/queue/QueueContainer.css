@@ -1,6 +1,9 @@
 #QueueContainer {
-  margin-top: 10vh;
   color: white;
-  font-size: 4vh;
+  font-size: 2em;
   text-align: center;
+}
+
+#QueueBody {
+  padding-top: 10vh;
 }

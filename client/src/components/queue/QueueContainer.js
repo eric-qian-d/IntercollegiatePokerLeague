@@ -10,8 +10,10 @@ class QueueContainer extends React.Component {
   render() {
     return (
       <div id = 'QueueContainer'>
-        Finding Match
-        <QuitSearchButton {...this.props}/>
+        <div id = 'QueueBody'>
+          Finding Match
+          <QuitSearchButton {...this.props}/>
+        </div>
       </div>
     )
   }
