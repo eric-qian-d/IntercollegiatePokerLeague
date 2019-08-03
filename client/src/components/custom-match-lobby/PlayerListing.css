@@ -1,9 +1,19 @@
-.CustomMatchPlayerListing {
+.CustomMatchPlayerListingContainer {
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto 0px;
   text-align: center;
-  height:5vh;
-  font-size: 20px;
-  border: solid white;
-  border-width: 1px;
-  background-color: rgb(128, 0, 0);
-  color: white;
+  height:2.4em;
+  border: solid black 1px;
+  color: black;
+  font-size: 0.7em;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+}
+
+
+.CustomMatchPlayerListingText {
+  margin: auto;
+  text-align: center;
 }

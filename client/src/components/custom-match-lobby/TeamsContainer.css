@@ -7,9 +7,12 @@
   font-size: 30px;
   text-align: center;
   color: white;
+  min-width: 600px;
 }
 
 .TeamContainer {
-  margin: 10vh auto;
+  margin-top: 10vh;
+  width: 40%;
+  /* margin: 10vh auto; */
   height: 40vh;
 }
