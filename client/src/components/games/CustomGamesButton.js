@@ -36,7 +36,9 @@ class RawCustomGamesButton extends React.Component {
       return (
         <div id = 'CustomGamesButtonSelected' className = 'ChooseGameTypePanel' onClick = {() => {this.clickLogic();}}>
           <div className = 'ChooseGameTypeHeader DarkDiv'>
-            Custom
+            <div className = 'ChooseGameTypeHeaderText'>
+              Custom
+            </div>
           </div>
           <div className = 'ChooseGameTypeBody WhiteDiv'>
             Create a custom match to play with your friends
@@ -47,7 +49,9 @@ class RawCustomGamesButton extends React.Component {
       return (
         <div id = 'CustomGamesButton' className = 'ChooseGameTypePanel' onClick = {() => {this.clickLogic();}}>
           <div className = 'ChooseGameTypeHeader BackgroundDiv'>
-            Custom
+            <div className = 'ChooseGameTypeHeaderText'>
+              Custom
+            </div>
           </div>
           <div className = 'ChooseGameTypeBody WhiteDiv'>
             Create a custom match to play with your friends
