@@ -17,7 +17,7 @@ const userMatchMap = states.userMatchMap;
 //Use this class later, once Game works
 module.exports = class Match {
 
-  constructor(matchId, name, numPlayers, ownerId, ownerName, io, type) {
+  constructor(matchId, name, numPlayers, ownerId, ownerName, io, type, numBlinds = 100, bigBlindValue = 10) {
     this.ownerId = ownerId;
     this.ownerName = ownerName;
     this.id = matchId;
@@ -30,7 +30,9 @@ module.exports = class Match {
     this.status = constants.matchStates.CREATION;
     this.type = type;
     this.io = io;
-
+    this.numBlinds = numBlinds;
+    this.bigBlindValue = bigBlindValue;
+    console.log(this.numBlinds);
   }
 
   start() {
@@ -42,9 +44,9 @@ module.exports = class Match {
       this.status = constants.matchStates.IN_PROGRESS;
       for(var i = 0; i < team1.length; i++) {
         const newGameId = uuidv4();
-        const newGame = new Game(newGameId, '', 2, 10, this.id, userSocketMap, io, this);
-        newGame.addPlayer(team1[i].id, 0, 1000, team1[i].firstName + ' ' + team1[i].lastName);
-        newGame.addPlayer(team2[i].id, 1, 1000, team2[i].firstName + ' ' + team2[i].lastName);
+        const newGame = new Game(newGameId, '', 2, this.bigBlindValue, this.id, userSocketMap, io, this);
+        newGame.addPlayer(team1[i].id, 0, this.numBlinds * this.bigBlindValue, team1[i].firstName + ' ' + team1[i].lastName);
+        newGame.addPlayer(team2[i].id, 1, this.numBlinds * this.bigBlindValue, team2[i].firstName + ' ' + team2[i].lastName);
         games[newGameId] = {
           team1Player : team1[i],
           team2Player : team2[i],

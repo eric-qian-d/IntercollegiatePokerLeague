@@ -8,6 +8,7 @@ class newHUMatchForm extends React.Component {
     this.state = {
       name: 'a',
       numPlayers: '1',
+      numBlinds: '100',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,8 +24,7 @@ class newHUMatchForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("from new match button ")
-    addNewHUMatch(this.props.socket, this.state.name, this.state.numPlayers);
+    addNewHUMatch(this.props.socket, this.state.name, this.state.numPlayers, this.state.numBlinds);
   }
 
   render() {
@@ -37,6 +37,10 @@ class newHUMatchForm extends React.Component {
         <label className = 'NewMatchLabel'>
           Number of Players:
           <input type="text" name = "numPlayers" className = 'NewMatchInput' value={this.state.numPlayers} onChange={this.handleChange} />
+        </label>
+        <label className = 'NewMatchLabel'>
+          Number of BLinds:
+          <input type="text" name = "numBlinds" className = 'NewMatchInput' value={this.state.numBlinds} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Make New Game" id = 'CreateNewMatchButton'/>
       </form>
