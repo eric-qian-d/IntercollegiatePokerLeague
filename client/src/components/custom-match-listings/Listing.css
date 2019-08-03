@@ -1,38 +1,21 @@
 .CustomListing{
   display: flex;
+  align-items: center;
+  /* border-bottom: 1px solid grey; */
   padding: 5px;
-  border: solid white;
-  border-width: 1px;
-  background-color: rgb(128, 0, 0);
-  color: white;
+  height: 0.3em;
+  min-height: 40px;
+  font-size: 1em;
+  background-color: rgb(255,255,255,0.3);
+  border-radius: 10px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.CustomListing:hover {
+  background-color: rgb(255,255,255,0.5);
 }
 
 .SelectedCustomListing{
-  display: flex;
-  padding: 5px;
-  border: solid maroon;
-  border-width: 1px;
-  background-color: white;
-  color: maroon;
-}
-
-.CustomListingInfo{
-  display: inline-block;
-  margin-right:2.5%;
-
-}
-
-.CustomListingOwnerName {
-  width: 30%;
-  text-align: center;
-}
-
-.CustomListingName{
-  width: 35%;
-  text-align: center;
-}
-
-.CustomListingNumPlayers{
-  width: 20%;
-  text-align: center;
+  background-color: rgb(19,33,69,0.5) !important;
 }

@@ -1,17 +1,25 @@
 #CustomListingsContainer {
-  height: 80%;
-  width: 60%;
-  margin: 2% auto;
-  font-size: 1.5em;
+  /* font-size: 1.5em; */
   color: white;
-  border-color: white;
+  /* border-color: white;
   border-width: 3px;
-  border: solid;
+  border: solid; */
+
+
+  position: relative;
+  width: 80%;
+  min-width: 700px;
+  height: 500px;
+  top: calc(50% - 300px);
+  left: calc(10%);
+  background: inherit;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 #CustomListings {
   height: 80%;
   overflow-y: scroll;
-  font-size: 4em;
-  border: 2px solid black;
+  /* font-size: 4em; */
+  /* border: 2px solid black; */
 }

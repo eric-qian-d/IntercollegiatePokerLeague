@@ -12,7 +12,7 @@ class ListingsInfo extends React.Component {
           Owner
         </div>
         <div className = 'CustomListingInfo CustomListingNumPlayers'>
-          Number of Players
+          Players
         </div>
       </div>
     );

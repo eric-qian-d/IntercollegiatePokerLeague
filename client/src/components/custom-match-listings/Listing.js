@@ -31,7 +31,7 @@ class RawListing extends React.Component {
     const {name, numPlayers, matchId, selectedCustomMatchId} = this.props;
     if (matchId === selectedCustomMatchId) {
       return (
-        <div className = 'SelectedCustomListing' onClick = {() => {this.clickLogic();}}>
+        <div className = 'CustomListing SelectedCustomListing' onClick = {() => {this.clickLogic();}}>
           <div className = 'CustomListingInfo CustomListingName'>
             {this.props.name}
           </div>
