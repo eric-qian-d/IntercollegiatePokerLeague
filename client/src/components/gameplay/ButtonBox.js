@@ -23,7 +23,7 @@ class ButtonBox extends React.Component {
         mediumBetText = {mediumBetText} largeBetText = {largeBetText}/>
         <div id = 'RaiseInputsContainer'>
           <RaiseSlider minBet = {minBet} maxBet = {maxBet} />
-          <RaiseInput/>
+          <RaiseInput socket = {socket}/>
         </div>
         <div id = 'ActionButtonContainer'>
 

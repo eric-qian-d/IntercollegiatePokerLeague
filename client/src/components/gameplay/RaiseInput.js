@@ -1,4 +1,5 @@
 import React from 'react';
+import {raise} from "../../js/gameplay";
 import { connect } from "react-redux";
 import {changeStoreState} from '../../actions/index';
 import './RaiseInput.css';
@@ -16,20 +17,28 @@ function mapStateToProps(state) {
 }
 
 class RawRaiseInput extends React.Component {
-  //from https://reactjs.org/docs/forms.html
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.props.changeStoreState({raiseSize: event.target.value});
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    raise(this.props.socket, this.props.raiseSize);
+    // this.setState({value: ''});
+  }
+
 
   render() {
     return (
+      <form id = 'RaiseForm' onSubmit={this.handleSubmit}>
         <input id = 'RaiseInput' type="text" value={this.props.raiseSize} onChange={this.handleChange} />
+      </form>
     );
   }
 }
