@@ -29,7 +29,10 @@ class newHUMatchForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} id = 'NewMatchForm'>
+      <form onSubmit={this.handleSubmit} id = 'NewMatchForm' className = 'DarkDiv'>
+        <div id = 'NewMatchDescription' className = 'FormDescription'>
+          Design your match
+        </div>
         <label className = 'NewMatchLabel'>
           Game Name:
           <input type="text" name = "name" className = 'NewMatchInput' value={this.state.name} onChange={this.handleChange} />
@@ -39,10 +42,10 @@ class newHUMatchForm extends React.Component {
           <input type="text" name = "numPlayers" className = 'NewMatchInput' value={this.state.numPlayers} onChange={this.handleChange} />
         </label>
         <label className = 'NewMatchLabel'>
-          Number of BLinds:
+          Number of Blinds:
           <input type="text" name = "numBlinds" className = 'NewMatchInput' value={this.state.numBlinds} onChange={this.handleChange} />
         </label>
-        <input type="submit" value="Make New Game" id = 'CreateNewMatchButton'/>
+        <input type="submit" value="Create" id = 'CreateNewMatchButton'/>
       </form>
     );
   }

@@ -1,15 +1,24 @@
 #NewMatchForm {
-  height: 250px;
+  position: relative;
+  width: 400px;
+  height: 500px;
+  top: calc(50% - 250px);
+  left: calc(30% - 200px);
+  border-radius: 5px;
+  overflow: hidden;
+  /* background-color: rgb(128,0,0); */
+
+
+  /* height: 400px;
   width: 300px;
   border: 2px solid black;
   font-size: 25px;
   margin: auto;
   color:white;
   background-color: rgb(128,0,0);
-  transform: translate(-50%,-50%);
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  position: relative;
+  top: calc(50%-100px);
+  left: calc(50%-150px); */
 }
 
 .NewMatchLabel{
@@ -31,8 +40,17 @@
 
 #CreateNewMatchButton {
   display: block;
+  width: 80px;
   height: 30px;
   border-radius:6px;
-  margin: auto;
+  margin: 90px auto;
+  cursor: pointer;
+  font-size: 1.1em;
   /* border: 2px solid black; */
+}
+
+#NewMatchDescription {
+  margin: 40px auto 60px;
+  text-align: center;
+  font-size: 1.7em;
 }

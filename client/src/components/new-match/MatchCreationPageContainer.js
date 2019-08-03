@@ -1,5 +1,6 @@
 import React from 'react';
 import NewMatchForm from './NewMatchForm';
+import './MatchCreationPageContainer.css';
 
 class MatchCreationPageContainer extends React.Component {
   constructor(props) {
@@ -9,7 +10,9 @@ class MatchCreationPageContainer extends React.Component {
   render() {
     const {socket} = this.props;
     return (
-      <NewMatchForm socket = {socket} />
+      <div id = 'MatchCreationPageContainer'>
+        <NewMatchForm socket = {socket} />
+      </div>
     )
   }
 }
