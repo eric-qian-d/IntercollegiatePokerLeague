@@ -37,17 +37,17 @@ class newHUMatchForm extends React.Component {
         </div>
         <label className = 'NewMatchLabel'>
           Game Name:
-          <input type="text" name = "name" className = 'NewMatchInput' value={this.state.name} onChange={this.handleChange} />
+          <input type="text" name = "name" className = 'NewMatchInput' placeholder = 'Enter a game name' value={this.state.name} onChange={this.handleChange} />
         </label>
         <label className = 'NewMatchLabel'>
           Number of Players:
-          <input type="text" name = "numPlayers" className = 'NewMatchInput' value={this.state.numPlayers} onChange={this.handleChange} />
+          <input type="text" name = "numPlayers" className = 'NewMatchInput' placeholder = 'Enter number of players' value={this.state.numPlayers} onChange={this.handleChange} />
         </label>
         <label className = 'NewMatchLabel'>
           Number of Blinds:
-          <input type="text" name = "numBlinds" className = 'NewMatchInput' value={this.state.numBlinds} onChange={this.handleChange} />
+          <input type="text" name = "numBlinds" className = 'NewMatchInput' placeholder = 'Enter number of blinds' value={this.state.numBlinds} onChange={this.handleChange} />
         </label>
-        <input type="submit" value="Create" id = 'CreateNewMatchButton' className = 'MediumDiv'/>
+        <input type="submit" value="Create" id = 'CreateNewMatchButton' className = 'DarkDiv'/>
       </form>
     );
   }
