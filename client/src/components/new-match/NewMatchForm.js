@@ -6,7 +6,7 @@ class newHUMatchForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'a',
+      name: 'My game',
       numPlayers: '1',
       numBlinds: '100',
     };
@@ -29,9 +29,11 @@ class newHUMatchForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} id = 'NewMatchForm' className = 'DarkDiv'>
-        <div id = 'NewMatchDescription' className = 'FormDescription'>
-          Design your match
+      <form onSubmit={this.handleSubmit} id = 'NewMatchForm' className = 'WhiteDiv'>
+        <div id = 'NewMatchDescriptionContainer' className = 'FormDescription DarkDiv'>
+          <div id = 'NewMatchDescription'>
+            Design your match
+          </div>
         </div>
         <label className = 'NewMatchLabel'>
           Game Name:
@@ -45,7 +47,7 @@ class newHUMatchForm extends React.Component {
           Number of Blinds:
           <input type="text" name = "numBlinds" className = 'NewMatchInput' value={this.state.numBlinds} onChange={this.handleChange} />
         </label>
-        <input type="submit" value="Create" id = 'CreateNewMatchButton'/>
+        <input type="submit" value="Create" id = 'CreateNewMatchButton' className = 'MediumDiv'/>
       </form>
     );
   }

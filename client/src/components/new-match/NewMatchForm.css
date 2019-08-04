@@ -4,7 +4,7 @@
   height: 500px;
   top: calc(50% - 250px);
   left: calc(30% - 200px);
-  border-radius: 5px;
+  border-radius: 10px;
   overflow: hidden;
   /* background-color: rgb(128,0,0); */
 
@@ -31,26 +31,36 @@
 }
 
 .NewMatchInput {
-  margin: auto;
+  margin: 5px auto;
   display: block;
   width: 250px;
-  height: 20px;
+  height: 30px;
   font-size: 18px;
 }
 
 #CreateNewMatchButton {
+  margin: 100px auto;
   display: block;
-  width: 80px;
-  height: 30px;
-  border-radius:6px;
-  margin: 90px auto;
-  cursor: pointer;
-  font-size: 1.1em;
-  /* border: 2px solid black; */
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: 0px;
+}
+
+#CreateNewMatchButton:hover {
+  border: solid white 1px;
+}
+
+#NewMatchDescriptionContainer {
+  height:80px;
+  display: flex;
+  text-align: center;
+  font-size: 1.7em;
+  align-items: center;
 }
 
 #NewMatchDescription {
-  margin: 40px auto 60px;
   text-align: center;
-  font-size: 1.7em;
+  margin: auto;
 }
