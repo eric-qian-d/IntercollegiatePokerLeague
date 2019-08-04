@@ -1,5 +1,5 @@
 import React from "react";
-import {addNewHUMatch} from "../../js/new-match";
+import {addNewHUMatch, cancelNewHUMatch} from "../../js/new-match";
 import './NewMatchForm.css';
 
 class newHUMatchForm extends React.Component {
@@ -47,7 +47,12 @@ class newHUMatchForm extends React.Component {
           Number of Blinds:
           <input type="text" name = "numBlinds" className = 'NewMatchInput' placeholder = 'Enter number of blinds' value={this.state.numBlinds} onChange={this.handleChange} />
         </label>
-        <input type="submit" value="Create" id = 'CreateNewMatchButton' className = 'DarkDiv'/>
+        <div id = 'CustomMatchFormButtonsContainer' >
+          <button type="button" id = 'CancelMakeNewCustomMatchButton' className = 'LightGreyDiv CustomMatchFormButton' onClick = {() => {cancelNewHUMatch(this.props.socket)}}>
+            Cancel
+          </button>
+          <input type="submit" value="Create" id = 'CreateNewMatchButton' className = 'DarkDiv CustomMatchFormButton'/>
+        </div>
       </form>
     );
   }

@@ -42,18 +42,28 @@
   color: black;
 }
 
-#CreateNewMatchButton {
+#CustomMatchFormButtonsContainer {
   margin: 100px auto;
-  display: block;
-  width: 200px;
+  display: flex;
+}
+
+.CustomMatchFormButton {
+
+  display: inline-block;
+  width: 100px;
   height: 50px;
   font-size: 20px;
   border-radius: 10px;
   border: 0px;
+  cursor: pointer;
+  margin: auto;
 }
 
-#CreateNewMatchButton:hover {
-  border: solid white 1px;
+.CustomMatchFormButton:hover {
+  /* border: solid rgb(19,33,69) 1px;
+  color: rgb(19,33,69); */
+  background-color: rgb(44,81,154);
+  color: white;
 }
 
 #NewMatchDescriptionContainer {

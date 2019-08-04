@@ -183,6 +183,13 @@ module.exports = {
         }
       });
 
+      socket.on('CANCEL NEW MATCH FORM', async () => {
+        const userId = socket.request.user.id;
+        userStatus[userId] = constants.userStatus.AVAILABLE;
+        userLocation[userId] = constants.userLocation.CUSTOM_LISTINGS;
+        io.to(userSocketMap[userId]).emit('PAGE', userLocation[userId]);
+      })
+
       //a user cannot be queued in anything else before they request to create a custom game
       socket.on('JOIN CUSTOM MATCH', async (matchId) => {
         const userId = socket.request.user.id;
