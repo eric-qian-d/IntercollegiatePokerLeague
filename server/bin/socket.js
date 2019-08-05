@@ -172,7 +172,7 @@ module.exports = {
         if (userStatus[userId] !== constants.userStatus.AVAILABLE) {
           io.to(userSocketMap[userId]).emit('CREATE FAILED', userStatus[userId]);
         } else {
-          if (isNormalInteger(numPlayers)) {
+          if (isNormalInteger(numPlayers) && isNormalInteger(numBlinds)) {
             userStatus[userId] = constants.userStatus.CUSTOM_MATCH_OWNER;
             const newMatchId = uuidv4();
             addCustomMatch(newMatchId, name, numPlayers, userId, userName, numBlinds);
