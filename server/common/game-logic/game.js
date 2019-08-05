@@ -57,6 +57,7 @@ module.exports = class Game { // maybe rename this to be Table
     this.finished = false;
     this.allIn = false;
     this.timer = null;
+    this.playable = true;
     for(var i = 0; i < numPlayers; i++) {
       this.seatMap[i] = "";
     };
@@ -231,7 +232,7 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {Boolean}         True if the call is legal (correct turn) and went through, False otherwise
    */
   call(playerId) {
-    if (this.isPlayersTurn(playerId)) {
+    if (this.isPlayersTurn(playerId) && this.playable) {
       clearInterval(this.timer);
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
@@ -277,7 +278,7 @@ module.exports = class Game { // maybe rename this to be Table
    */
   raise(playerId, finalAmount) {
     //make sure raise is legal
-    if (this.isPlayersTurn(playerId)) {
+    if (this.isPlayersTurn(playerId) && this.playable) {
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
       })[0];
@@ -328,7 +329,7 @@ module.exports = class Game { // maybe rename this to be Table
    * @return {Boolean}         True if the fold is legal (correct turn) and went through, False otherwise
    */
   fold(playerId) {
-    if (this.isPlayersTurn(playerId)) {
+    if (this.isPlayersTurn(playerId) && this.playable) {
       const player = Object.values(this.seatMap).filter(player => {
         return player.id === playerId;
       })[0];
@@ -374,6 +375,7 @@ module.exports = class Game { // maybe rename this to be Table
 
   nextStreet() {
     this.time = this.maxTime;
+    this.playable = false;
     //gets a list of all the players still in the hand
     const playersInHandList = Object.values(this.seatMap).filter(player => {
       return player.inHand;
@@ -391,8 +393,10 @@ module.exports = class Game { // maybe rename this to be Table
       playersInHandList[0].stackSize += this.pot;
       setTimeout(() => {
         this.startHand();
+        this.playable = true;
         this.timer = setInterval(this.timerLogic, 1000, this);
       }, 2000);
+
 
     } else {
       //makes sure animation happens in next clock tick - to change this so that there's no timing issues
@@ -469,7 +473,10 @@ module.exports = class Game { // maybe rename this to be Table
           setTimeout(() => this.emitAll(), 500);
           console.log('settingtimer within next');
           clearInterval(this.timer)
-          setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 500);
+          setTimeout(() => {
+            this.timer = setInterval(this.timerLogic, 1000, this);
+            this.playable = true;
+          }, 500);
         }
 
 
@@ -518,7 +525,10 @@ module.exports = class Game { // maybe rename this to be Table
           if (!this.allIn && !this.finished) {
             setTimeout(() => this.emitAll(), 500);
             clearInterval(this.timer)
-            setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 500);
+            setTimeout(() => {
+              this.timer = setInterval(this.timerLogic, 1000, this);
+              this.playable = true;
+            }, 500);
           }
         }
 
@@ -573,6 +583,7 @@ module.exports = class Game { // maybe rename this to be Table
         } else {
           setTimeout(() => {
             this.startHand();
+            this.playable = true;
           }, 2000);
           clearInterval(this.timer)
           setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 2000);
