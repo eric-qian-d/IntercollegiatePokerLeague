@@ -20,18 +20,18 @@ module.exports = {
         const user = await models.User.findOne({ where: { email: email } });
         if (!user) {
           console.log("user doesnt exist");
-          return done(null, false, { message: 'User does not exist.', resetEmail: false });
+          return done(null, false, { message: 'User does not exist.', resetPassword: false });
         }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
           if (user.passwordVerificationActive && password === user.passwordVerificationId && Math.abs(new Date() - user.passwordVerificationSentOn) < 24 * 60 * 60 * 1000) {
-            return done(null, user, { message: 'Temporary password being used', resetEmail: true});
+            return done(null, user, { message: 'Temporary password being used', resetPassword: true, verifyEmail: user.emailIsVerified });
           } else {
-            return done(null, false, { message: 'Password does not match username.', resetEmail: false });
+            return done(null, false, { message: 'Password does not match username.', resetPassword: false, verifyEmail: user.emailIsVerified });
           }
 
         }
-        return done(null, user, { message: 'Login success!', resetEmail: false});
+        return done(null, user, { message: 'Login success!', resetPassword: false, verifyEmail: !user.emailIsVerified});
       })
     )
   }

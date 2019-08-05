@@ -41,7 +41,6 @@ app.use('/api/rankings', rankings);
 //keep this here to keep passport modularized
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    console.log(info);
     if (err) {
       return next(err); // will generate a 500 error
     }
@@ -54,7 +53,7 @@ app.post('/login', function(req, res, next) {
         return next(err);
       }
       req.session.cookie.playerId = req.user.dataValues.id;
-      return res.status(200).send({ success : true, resetEmail: info.resetEmail, message : 'authentication succeeded' });
+      return res.status(200).send({ success : true, resetPassword: info.resetPassword, verifyEmail: info.verifyEmail,  message : 'authentication succeeded' });
 
     });
   })(req, res, next);
