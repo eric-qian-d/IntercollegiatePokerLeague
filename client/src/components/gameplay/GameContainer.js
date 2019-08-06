@@ -38,7 +38,7 @@ class RawGameContainer extends React.Component {
       }
     })
     socket.on('GAME ENDED', (victory) => {
-      this.setState({ finished: true , victory: victory})
+      this.setState({ inGame: false, finished: true , victory: victory})
     })
     this.state = {
       inGame: false,
