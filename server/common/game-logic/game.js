@@ -263,7 +263,6 @@ module.exports = class Game { // maybe rename this to be Table
       } else {
         this.time = this.maxTime;
         this.emitAll();
-        console.log('setting timer');
         clearInterval(this.timer)
         this.timer = setInterval(this.timerLogic, 1000, this);
       }
@@ -382,7 +381,7 @@ module.exports = class Game { // maybe rename this to be Table
     });
     const numPlayersInHand = playersInHandList.length;
     if (numPlayersInHand === 1) {
-      //one player won
+      //one player won via folds
       //gives player the pot
       Object.values(this.seatMap).forEach(player => {
         if (player.investedStack > 0) {
@@ -471,7 +470,6 @@ module.exports = class Game { // maybe rename this to be Table
         }
         if (!this.allIn && !this.finished) {
           setTimeout(() => this.emitAll(), 500);
-          console.log('settingtimer within next');
           clearInterval(this.timer)
           setTimeout(() => {
             this.timer = setInterval(this.timerLogic, 1000, this);
@@ -549,7 +547,6 @@ module.exports = class Game { // maybe rename this to be Table
         //hacky solution that currently only works for 2 players
         //determines how to show/muck cards on river
         if (winners.length === 1 && !this.allIn) {
-          console.log('showing one winner, not all in');
           if (this.getPlayerSeatById(winners[0].id) === this.lastRaiser) {
             this.emitAll(false, true, [this.lastRaiser])
           } else {
