@@ -20,19 +20,6 @@ class RawGameContainer extends React.Component {
     super(props);
     const {socket} = this.props;
     socket.on("GAME STATE", (gameInfo) => {
-      console.log(gameInfo);
-      this.setState({
-        checkable: gameInfo.checkable,
-        minBet: gameInfo.minBet,
-        maxBet: gameInfo.maxBet,
-        smallBet: gameInfo.smallBet,
-        mediumBet: gameInfo.mediumBet,
-        largeBet: gameInfo.largeBet,
-        smallBetText: gameInfo.smallBetText,
-        mediumBetText: gameInfo.mediumBetText,
-        largeBetText: gameInfo.largeBetText,
-      });
-      // this.props.changeStoreState( {players: allPlayerInfo})
       this.props.changeStoreState(gameInfo);
     })
     socket.on('GAME TIME', (gameInfo) => {

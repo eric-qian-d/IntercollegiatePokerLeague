@@ -393,6 +393,7 @@ module.exports = class Game { // maybe rename this to be Table
       setTimeout(() => {
         this.startHand();
         this.playable = true;
+        this.emitAll();
         this.timer = setInterval(this.timerLogic, 1000, this);
       }, 2000);
 
@@ -612,6 +613,8 @@ module.exports = class Game { // maybe rename this to be Table
   emitAll(all = false, specificPlayers = false, whichPlayers = []) {
     Object.values(this.seatMap).forEach(basePlayer => {
       const info = this.getGameState(basePlayer.id, all, specificPlayers, whichPlayers);
+      console.log('emitting all');
+      console.log(info);
       this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info);
     })
   }

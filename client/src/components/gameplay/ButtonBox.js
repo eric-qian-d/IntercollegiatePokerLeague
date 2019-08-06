@@ -5,10 +5,26 @@ import RaiseButton from './RaiseButton';
 import RaiseInput from './RaiseInput';
 import RaiseSlider from './RaiseSlider';
 import RaiseContainer from "./RaiseContainer";
+import { connect } from "react-redux";
+import {changeStoreState} from '../../actions/index';
 
 import './ButtonBox.css';
 
-class ButtonBox extends React.Component {
+function mapStateToProps(state) {
+  return {
+    checkable: state.checkable,
+    minBet: state.minBet,
+    maxBet: state.maxBet,
+    smallBet: state.smallBet,
+    mediumBet: state.mediumBet,
+    largeBet: state.largeBet,
+    smallBetText: state.smallBetText,
+    mediumBetText: state.mediumBetText,
+    largeBetText: state.largeBetText,
+  }
+}
+
+class RawButtonBox extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -38,4 +54,5 @@ class ButtonBox extends React.Component {
   }
 }
 
+const ButtonBox = connect(mapStateToProps)(RawButtonBox)
 export default ButtonBox;
