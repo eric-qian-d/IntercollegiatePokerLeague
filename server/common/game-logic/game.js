@@ -282,7 +282,7 @@ module.exports = class Game { // maybe rename this to be Table
         return player.id === playerId;
       })[0];
       const raiseDelta = finalAmount - player.investedStack;
-      if (finalAmount >= 2 * this.currentTotalRaise - this.lastRaiseSize) {
+      if (finalAmount >= 2 * this.currentTotalRaise - this.lastRaiseSize || finalAmount === player.stackSize + player.investedStack) {
         clearInterval(this.timer)
         //legal raise
         if (raiseDelta > player.stackSize) {
