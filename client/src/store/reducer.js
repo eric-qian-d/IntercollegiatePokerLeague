@@ -26,7 +26,7 @@ const initialState = {
 };
 
 function rootReducer(state = initialState, action) {
-  console.log(action.payload);
+  console.log(action);
   if (action.type === 'CHANGE_STATE') {
     const newState = Object.assign({}, state,
       action.payload
@@ -34,6 +34,7 @@ function rootReducer(state = initialState, action) {
     console.log(newState);
     return newState;
   }
+  console.log(state)
   return state;
 }
 

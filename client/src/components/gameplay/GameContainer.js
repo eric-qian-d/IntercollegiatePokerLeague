@@ -20,40 +20,36 @@ class RawGameContainer extends React.Component {
     super(props);
     const {socket} = this.props;
     socket.on("GAME STATE", (gameInfo) => {
-      this.props.changeStoreState(gameInfo);
+      if (gameInfo !== null) {
+        console.log('setting game state');
+        this.setState({
+          finished: gameInfo.finished,
+          victory: gameInfo.victory,
+          displaySurrender: gameInfo.displaySurrender
+      });
+        this.props.changeStoreState(gameInfo);
+      }
+
     })
     socket.on('GAME TIME', (gameInfo) => {
-      this.props.changeStoreState(gameInfo);
+      if (gameInfo !== null) {
+        this.props.changeStoreState(gameInfo);
+      }
     })
     socket.on('GAME ENDED', (victory) => {
       this.setState({ finished: true , victory: victory})
     })
     this.state = {
-      numPlayers: 0,
-      buttonLocation: 0,
-      action: 0,
-      pot: 0,
-      board: [],
-      players: [],
-      time: 0,
+
       finished: false,
-      maxTime: 0,
-      checkable: 0,
-      minBet: 0,
-      maxBet: 0,
-      smallBet: 0,
-      mediumBet: 0,
-      largeBet: 0,
-      smallBetText: '1/2 Pot',
-      mediumBetText: '2/3 Pot',
-      largeBetText: 'Pot',
       victory: false,
-      displaySurrender: false,
+      displaySurrender: false
     }
   }
 
   componentDidMount() {
     const {socket} = this.props;
+    console.log('getting game state')
     socket.emit("GET GAME STATE");
   }
 

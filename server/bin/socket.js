@@ -295,7 +295,7 @@ module.exports = {
         if (userStatus[userId] === constants.userStatus.IN_GAME) {
           const game = gameMap[userGameMap[userId]];
           const gameState = game.getGameState(userId);
-          // console.log(game);
+          console.log('getting game state');
           console.log(gameState);
           io.to(userSocketMap[userId]).emit('GAME STATE', gameState);
         }
