@@ -23,6 +23,7 @@ class RawGameContainer extends React.Component {
       if (gameInfo !== null) {
         console.log('setting game state');
         this.setState({
+          inGame: true,
           finished: gameInfo.finished,
           victory: gameInfo.victory,
           displaySurrender: gameInfo.displaySurrender
@@ -40,7 +41,7 @@ class RawGameContainer extends React.Component {
       this.setState({ finished: true , victory: victory})
     })
     this.state = {
-
+      inGame: false,
       finished: false,
       victory: false,
       displaySurrender: false
@@ -61,7 +62,8 @@ class RawGameContainer extends React.Component {
   render() {
     const {numPlayers, buttonLocation, action, pot, board, time, players,
       maxTime, checkable, minBet, maxBet, smallBet, mediumBet, largeBet,
-      smallBetText, mediumBetText, largeBetText, finished, victory, displaySurrender} = this.state;
+      smallBetText, mediumBetText, largeBetText, finished, victory, displaySurrender,
+    inGame} = this.state;
     const {socket} = this.props;
 
     const surrenderBanner = displaySurrender ?
@@ -79,6 +81,13 @@ class RawGameContainer extends React.Component {
     :
     null;
 
+    const buttonDisplay = inGame ?
+    <button id = 'SurrenderButton' onClick = {() => {this.setState({displaySurrender: true})}}>
+      Surrender
+    </button>
+    :
+    <ReturnToLobbyButton socket = {socket} />
+
     return (
       <div id = 'GameContainer'>
         <Table/>
@@ -86,12 +95,10 @@ class RawGameContainer extends React.Component {
           minBet = {minBet} maxBet = {maxBet} smallBet = {smallBet}
           mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}
           mediumBetText = {mediumBetText} largeBetText = {largeBetText} />
-        <ReturnToLobbyButton socket = {socket} />
-        <button id = 'SurrenderButton' onClick = {() => {this.setState({displaySurrender: true})}}>
-          Surrender
-        </button>
-        {surrenderBanner}
 
+
+        {surrenderBanner}
+        {buttonDisplay}
 
 
         <VictoryBanner display = {finished && victory} socket = {socket}/>
