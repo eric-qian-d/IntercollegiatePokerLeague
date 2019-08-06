@@ -430,6 +430,13 @@ module.exports = class Game { // maybe rename this to be Table
           player.investedStack = 0;
         }
       })
+
+      if (Object.values(this.seatMap).filter(player => {
+        return player !== "" && player.inHand && player.stackSize > 0;
+      }).length <= 1) {
+        this.emitAll(true);
+        
+      }
       if (this.board.length === 0) {
         //preflop finish
         //deal flop
