@@ -19,17 +19,10 @@ class RawGameContainer extends React.Component {
   constructor(props) {
     super(props);
     const {socket} = this.props;
-    socket.on("GAME STATE", (gameInfo, allPlayerInfo) => {
+    socket.on("GAME STATE", (gameInfo) => {
+      console.log(gameInfo);
       this.setState({
-        numPlayers: gameInfo.numPlayers,
-        buttonLocation: gameInfo.buttonLocation,
-        action: gameInfo.action,
-        pot: gameInfo.pot,
-        board: gameInfo.board,
-        time: gameInfo.time,
-        maxTime: gameInfo.maxTime,
         checkable: gameInfo.checkable,
-        players: allPlayerInfo,
         minBet: gameInfo.minBet,
         maxBet: gameInfo.maxBet,
         smallBet: gameInfo.smallBet,
@@ -39,6 +32,11 @@ class RawGameContainer extends React.Component {
         mediumBetText: gameInfo.mediumBetText,
         largeBetText: gameInfo.largeBetText,
       });
+      // this.props.changeStoreState( {players: allPlayerInfo})
+      this.props.changeStoreState(gameInfo);
+    })
+    socket.on('GAME TIME', (gameInfo) => {
+      this.props.changeStoreState(gameInfo);
     })
     socket.on('GAME ENDED', (victory) => {
       this.setState({ finished: true , victory: victory})
@@ -100,9 +98,7 @@ class RawGameContainer extends React.Component {
 
     return (
       <div id = 'GameContainer'>
-        <Table numPlayers = {numPlayers} buttonLocation = {buttonLocation}
-          action = {action} pot = {pot} board = {board} players = {players}
-          time = {time} maxTime = {maxTime}/>
+        <Table/>
         <ButtonBox socket = {this.props.socket} checkable = {checkable}
           minBet = {minBet} maxBet = {maxBet} smallBet = {smallBet}
           mediumBet = {mediumBet} largeBet = {largeBet} smallBetText = {smallBetText}

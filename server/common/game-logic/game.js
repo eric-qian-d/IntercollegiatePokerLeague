@@ -81,7 +81,7 @@ module.exports = class Game { // maybe rename this to be Table
       } else {
         //just ticking waiting for player to act
         game.time--;
-        game.emitAll();
+        game.emitTime();
       }
     }
   }
@@ -612,7 +612,13 @@ module.exports = class Game { // maybe rename this to be Table
   emitAll(all = false, specificPlayers = false, whichPlayers = []) {
     Object.values(this.seatMap).forEach(basePlayer => {
       const info = this.getGameState(basePlayer.id, all, specificPlayers, whichPlayers);
-      this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info[0], info[1]);
+      this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME STATE", info);
+    })
+  }
+
+  emitTime() {
+    Object.values(this.seatMap).forEach(basePlayer => {
+      this.io.to(this.userSocketMap[basePlayer.id]).emit("GAME TIME", {time: this.time});
     })
   }
 
@@ -633,42 +639,7 @@ module.exports = class Game { // maybe rename this to be Table
    */
   getGameState(playerId, all = false, specificPlayers = false, whichPlayers = []) {
     const playerSeat = this.getPlayerSeatById(playerId);
-    const adaptedBoard = this.board.map(card => {
-      return [card.rank, card.suit];
-    });
-    const potPlusRaises = this.pot + Object.values(this.seatMap).reduce(((accumulator, player) => {
-      return accumulator + player.investedStack;
-    }), 0);
-    const callDelta = Math.max(0, (this.currentTotalRaise - this.seatMap[playerSeat].investedStack));
-    const maxBet = parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize);
 
-    const gameInfo = {
-      numPlayers: this.numPlayers,
-      buttonLocation: this.buttonLocation,
-      action: this.action,
-      pot: this.pot,
-      board: adaptedBoard,
-      time: this.time,
-      maxTime: this.maxTime,
-      checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
-      minBet: Math.min(Math.max(2 * this.currentTotalRaise - this.lastRaiseSize, this.bigBlindValue), maxBet),
-      maxBet: maxBet,
-      smallBet: Math.min(Math.round((potPlusRaises + callDelta) * 0.5) + this.currentTotalRaise, maxBet),
-      mediumBet: Math.min(Math.round((potPlusRaises + callDelta) * 2/3) + this.currentTotalRaise, maxBet),
-      largeBet: Math.min((potPlusRaises + callDelta) + this.currentTotalRaise, maxBet),
-      smallBetText: '1/2 Pot',
-      mediumBetText: '2/3 Pot',
-      largeBetText: 'Pot',
-    };
-
-    if (this.board.length === 0) {
-      gameInfo.smallBet = Math.min(3 * this.bigBlindValue, maxBet);
-      gameInfo.mediumBet = Math.min(9 * this.bigBlindValue, maxBet);
-      gameInfo.largeBet = Math.min(27 * this.bigBlindValue, maxBet);
-      gameInfo.smallBetText = '3 BB';
-      gameInfo.mediumBetText = '9 BB';
-      gameInfo.largeBetText = '27 BB';
-    }
 
 
     const allPlayerInfo = [];
@@ -716,7 +687,47 @@ module.exports = class Game { // maybe rename this to be Table
         }
       )
     });
-    return [gameInfo, adjustedPlayersList];
+
+    const adaptedBoard = this.board.map(card => {
+      return [card.rank, card.suit];
+    });
+    const potPlusRaises = this.pot + Object.values(this.seatMap).reduce(((accumulator, player) => {
+      return accumulator + player.investedStack;
+    }), 0);
+    const callDelta = Math.max(0, (this.currentTotalRaise - this.seatMap[playerSeat].investedStack));
+    const maxBet = parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack) + parseInt(this.seatMap[this.getPlayerSeatById(playerId)].stackSize);
+
+    const gameInfo = {
+      numPlayers: this.numPlayers,
+      buttonLocation: this.buttonLocation,
+      action: this.action,
+      pot: this.pot,
+      board: adaptedBoard,
+      time: this.time,
+      maxTime: this.maxTime,
+      players: adjustedPlayersList,
+      checkable: parseInt(this.currentTotalRaise) === parseInt(this.seatMap[this.getPlayerSeatById(playerId)].investedStack),
+      minBet: Math.min(Math.max(2 * this.currentTotalRaise - this.lastRaiseSize, this.bigBlindValue), maxBet),
+      maxBet: maxBet,
+      smallBet: Math.min(Math.round((potPlusRaises + callDelta) * 0.5) + this.currentTotalRaise, maxBet),
+      mediumBet: Math.min(Math.round((potPlusRaises + callDelta) * 2/3) + this.currentTotalRaise, maxBet),
+      largeBet: Math.min((potPlusRaises + callDelta) + this.currentTotalRaise, maxBet),
+      smallBetText: '1/2 Pot',
+      mediumBetText: '2/3 Pot',
+      largeBetText: 'Pot',
+    };
+
+    if (this.board.length === 0) {
+      gameInfo.smallBet = Math.min(3 * this.bigBlindValue, maxBet);
+      gameInfo.mediumBet = Math.min(9 * this.bigBlindValue, maxBet);
+      gameInfo.largeBet = Math.min(27 * this.bigBlindValue, maxBet);
+      gameInfo.smallBetText = '3 BB';
+      gameInfo.mediumBetText = '9 BB';
+      gameInfo.largeBetText = '27 BB';
+    }
+
+
+    return gameInfo;
   }
 
   getPlayerIds() {

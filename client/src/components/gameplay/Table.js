@@ -1,9 +1,23 @@
 import React from "react";
 import Board from "./Board";
 import PlayerContainer from "./PlayerContainer";
+import { connect } from "react-redux";
 import './Table.css';
 
-class Table extends React.Component {
+function mapStateToProps(state) {
+  return {
+    numPlayers: state.numPlayers,
+    buttonLocation: state.buttonLocation,
+    action: state.action,
+    pot: state.pot,
+    board: state.board,
+    players: state.players,
+    time: state.time,
+    maxTime: state.maxTime,
+  }
+}
+
+class RawTable extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -69,4 +83,5 @@ class Table extends React.Component {
   }
 }
 
+const Table = connect(mapStateToProps)(RawTable);
 export default Table;

@@ -39,6 +39,7 @@ class GamePagesContainer extends React.Component {
 
   render() {
     const {page, socket, matchId} = this.state;
+    console.log(page);
     if (page === constants.userLocation.CUSTOM_LISTINGS) {
       return (
         <CustomMatchListingsContainer socket = {socket} {...this.props}/>
