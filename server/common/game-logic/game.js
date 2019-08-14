@@ -159,8 +159,9 @@ module.exports = class Game { // maybe rename this to be Table
     if (numPlayersJoined == 2) {
       //heads up setup logic
       this.action = this.buttonLocation;
-      this.seatMap[this.action].stackSize -= this.bigBlindValue/2;
-      this.seatMap[this.action].investedStack += this.bigBlindValue/2;
+      const smallBlindRaise = Math.min(this.seatMap[this.action].stackSize, this.bigBlindValue/2);
+      this.seatMap[this.action].stackSize -= smallBlindRaise;
+      this.seatMap[this.action].investedStack += smallBlindRaise;
       this.lastRaiser = this.action;
       advanced = false;
       var nextPlayer = this.buttonLocation;
@@ -168,8 +169,9 @@ module.exports = class Game { // maybe rename this to be Table
         //finds the next player, who will be the big blind
         nextPlayer = (nextPlayer + 1) % this.numPlayers;
         if (this.seatMap[nextPlayer] !== "") {
-          this.seatMap[nextPlayer].stackSize -= this.bigBlindValue;
-          this.seatMap[nextPlayer].investedStack += this.bigBlindValue;
+          const bigBlindRaise = Math.min(this.seatMap[nextPlayer].stackSize, this.bigBlindValue);
+          this.seatMap[nextPlayer].stackSize -= bigBlindRaise;
+          this.seatMap[nextPlayer].investedStack += bigBlindRaise;
 
           this.currentTotalRaise = this.bigBlindValue;
           advanced = true;
@@ -185,12 +187,14 @@ module.exports = class Game { // maybe rename this to be Table
         if (this.seatMap[nextPlayer] !== "") {
           if (advanced === 0) {
             //finds the next player, who will be the small blind
-            this.seatMap[nextPlayer].stackSize -= this.bigBlindValue/2;
-            this.seatMap[nextPlayer].investedStack += this.bigBlindValue/2;
+            const smallBlindRaise = Math.min(this.seatMap[nextPlayer].stackSize, this.bigBlindValue/2);
+            this.seatMap[nextPlayer].stackSize -= smallBlindRaise;
+            this.seatMap[nextPlayer].investedStack += smallBlindRaise;
           } else {
             //finds the next player, who will be the big blind
-            this.seatMap[nextPlayer].stackSize -= this.bigBlindValue;
-            this.seatMap[nextPlayer].investedStack += this.bigBlindValue;
+            const bigBlindRaise = Math.min(this.seatMap[nextPlayer].stackSize, this.bigBlindValue);
+            this.seatMap[nextPlayer].stackSize -= bigBlindRaise;
+            this.seatMap[nextPlayer].investedStack += bigBlindRaise;
             this.lastRaiser = nextPlayer;
             this.currentTotalRaise = this.bigBlindValue;
           }
@@ -435,7 +439,6 @@ module.exports = class Game { // maybe rename this to be Table
         return player !== "" && player.inHand && player.stackSize > 0;
       }).length <= 1) {
         this.emitAll(true);
-        
       }
       if (this.board.length === 0) {
         //preflop finish
@@ -591,7 +594,10 @@ module.exports = class Game { // maybe rename this to be Table
             this.playable = true;
           }, 2000);
           clearInterval(this.timer)
-          setTimeout(() => this.timer = setInterval(this.timerLogic, 1000, this), 2000);
+          setTimeout(() => {
+            this.emitAll();
+            this.timer = setInterval(this.timerLogic, 1000, this)
+          }, 2000);
         }
       }
 
