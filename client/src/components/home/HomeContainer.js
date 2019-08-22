@@ -5,26 +5,16 @@ import vars from '../../vars';
 class HomeContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loggedIn: false
+    }
   }
 
 
-  componentDidMount() {
-    fetch(vars.protocol + '://' + vars.serverEndpoint + ':' + vars.port + '/api/users/loggedin', {withCredentials: true, credentials: 'include'}, {
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (!data.loggedIn) {
-        this.props.history.push("/login");
-      } else {
-        // if (!data.emailIsVerified) {
-        //   this.props.history.push('/verify-email');
-        // }
-
-      }
-    });
-  }
+  
 
   render() {
+    const {loggedIn} = this.state;
     return(
       <div>
         <Navbar {...this.props}/>
