@@ -23,7 +23,7 @@ module.exports = {
       }
     })
     schools.forEach(school => {
-      school.ranking = schoolScore.hasOwnProperty(school.id) ?  schoolScore[school.id] : 0;
+      school.ranking = schoolScore.hasOwnProperty(school.id) ?  Math.round(schoolScore[school.id]) : 0;
     })
 
     schools.sort((a, b) => (a.ranking > b.ranking) ? -1 : 1);
